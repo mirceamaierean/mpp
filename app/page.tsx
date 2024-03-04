@@ -1,7 +1,5 @@
+import { AdminDashboard } from "@/components/admin-dashboard";
+
 export default function Home() {
-  return (
-    <div>
-      <h1>First lab</h1>
-    </div>
-  );
+  return <AdminDashboard />;
 }
