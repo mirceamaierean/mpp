@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 import { SVGProps } from "react";
+import icon from "@/public/icon.svg";
 
 function Package2Icon(
   props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>,
@@ -78,20 +80,9 @@ export default function Header() {
             />
           </div>
         </form>
-        <Button className="rounded-full" size="icon" variant="ghost">
-          <img
-            alt="Avatar"
-            className="rounded-full"
-            height="32"
-            src="/icon.svg"
-            style={{
-              aspectRatio: "32/32",
-              objectFit: "cover",
-            }}
-            width="32"
-          />
-          <span className="sr-only">Toggle user menu</span>
-        </Button>
+        <Link href="/profile">
+          <Image src={icon} alt="avatar" width={32} height={32} />
+        </Link>
       </div>
     </header>
   );
