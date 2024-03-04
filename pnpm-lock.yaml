@@ -26,6 +26,9 @@ dependencies:
   next:
     specifier: 14.1.1
     version: 14.1.1(react-dom@18.2.0)(react@18.2.0)
+  prettier:
+    specifier: ^3.2.5
+    version: 3.2.5
   react:
     specifier: ^18
     version: 18.2.0
@@ -3626,6 +3629,15 @@ packages:
       }
     engines: { node: ">= 0.8.0" }
     dev: true
+
+  /prettier@3.2.5:
+    resolution:
+      {
+        integrity: sha512-3/GWa9aOC0YeD7LUfvOG2NiDyhOWRvt1k+rcKhOuYnMY24iiCphgneUfJDyFXd6rZCAnuLBv6UeAULtrhT/F4A==,
+      }
+    engines: { node: ">=14" }
+    hasBin: true
+    dev: false
 
   /prop-types@15.8.1:
     resolution:
