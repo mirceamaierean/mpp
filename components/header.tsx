@@ -33,13 +33,12 @@ export default function Header() {
           href="/"
         >
           <Package2Icon className="w-6 h-6" />
-          <span className="sr-only">Acme Inc</span>
         </Link>
-        <Link className="text-gray-500 dark:text-gray-400" href="/orders">
-          Orders
+        <Link className="text-gray-500 dark:text-gray-400" href="/rentals">
+          Rentals
         </Link>
-        <Link className="text-gray-500 dark:text-gray-400" href="/products">
-          Products
+        <Link className="text-gray-500 dark:text-gray-400" href="/cars">
+          Cars
         </Link>
         <Link className="text-gray-500 dark:text-gray-400" href="/analytics">
           Analytics
