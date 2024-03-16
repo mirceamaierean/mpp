@@ -25,7 +25,7 @@ function createData(
   body?: BodyType,
   transmission?: TransmissionType,
   driveType?: DriveType,
-  fuelType?: FuelType
+  fuelType?: FuelType,
 ) {
   return { make, model, year, color, body, transmission, driveType, fuelType };
 }
@@ -39,7 +39,7 @@ const rows = [
     "Sedan",
     "Automatic",
     "FWD",
-    "Gasoline"
+    "Gasoline",
   ),
   createData(
     "Chevy",
@@ -49,7 +49,7 @@ const rows = [
     "Coupe",
     "Automatic",
     "AWD",
-    "Electric"
+    "Electric",
   ),
   createData(
     "Toyota",
@@ -59,7 +59,7 @@ const rows = [
     "SUV",
     "Manual",
     "RWD",
-    "Hybrid"
+    "Hybrid",
   ),
   createData(
     "Honda",
@@ -69,7 +69,7 @@ const rows = [
     "Hatchback",
     "Automatic",
     "FWD",
-    "Diesel"
+    "Diesel",
   ),
   createData(
     "Nissan",
@@ -79,7 +79,7 @@ const rows = [
     "Convertible",
     "Manual",
     "AWD",
-    "Gasoline"
+    "Gasoline",
   ),
   createData(
     "Ford",
@@ -89,7 +89,7 @@ const rows = [
     "Sedan",
     "Automatic",
     "FWD",
-    "Gasoline"
+    "Gasoline",
   ),
   createData(
     "Chevy",
@@ -99,7 +99,7 @@ const rows = [
     "Coupe",
     "Automatic",
     "AWD",
-    "Electric"
+    "Electric",
   ),
   createData(
     "Toyota",
@@ -109,7 +109,7 @@ const rows = [
     "SUV",
     "Manual",
     "RWD",
-    "Hybrid"
+    "Hybrid",
   ),
   createData(
     "Honda",
@@ -119,7 +119,7 @@ const rows = [
     "Hatchback",
     "Automatic",
     "FWD",
-    "Diesel"
+    "Diesel",
   ),
   createData(
     "Nissan",
@@ -129,7 +129,7 @@ const rows = [
     "Convertible",
     "Manual",
     "AWD",
-    "Gasoline"
+    "Gasoline",
   ),
 ];
 export default function BasicTable() {
@@ -203,7 +203,7 @@ export default function BasicTable() {
                   }
                   onChange={(e) =>
                     setSelectedIds(
-                      e.target.checked ? cars.map((car) => car.id) : []
+                      e.target.checked ? cars.map((car) => car.id) : [],
                     )
                   }
                 />
@@ -226,7 +226,7 @@ export default function BasicTable() {
                       e.target.checked
                         ? setSelectedIds([...selectedIds, car.id])
                         : setSelectedIds(
-                            selectedIds.filter((id) => id !== car.id)
+                            selectedIds.filter((id) => id !== car.id),
                           );
                     }}
                   ></Checkbox>
