@@ -1,11 +1,8 @@
 import Link from "next/link";
-import { Input } from "@/components/ui/input";
-import Image from "next/image";
 import { SVGProps } from "react";
-import icon from "@/public/icon.svg";
 
 function Package2Icon(
-  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>,
+  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
 ) {
   return (
     <svg
@@ -23,26 +20,6 @@ function Package2Icon(
       <path d="M3 9h18v10a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V9Z" />
       <path d="m3 9 2.45-4.9A2 2 0 0 1 7.24 3h9.52a2 2 0 0 1 1.8 1.1L21 9" />
       <path d="M12 3v6" />
-    </svg>
-  );
-}
-
-function SearchIcon(props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>) {
-  return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <circle cx="11" cy="11" r="8" />
-      <path d="m21 21-4.3-4.3" />
     </svg>
   );
 }
@@ -68,21 +45,6 @@ export default function Header() {
           Analytics
         </Link>
       </nav>
-      <div className="flex items-center w-full gap-4 md:ml-auto md:gap-2 lg:gap-4">
-        <form className="flex-1 ml-auto sm:flex-initial">
-          <div className="relative">
-            <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500 dark:text-gray-400" />
-            <Input
-              className="pl-8 sm:w-[300px] md:w-[200px] lg:w-[300px]"
-              placeholder="Search for something..."
-              type="search"
-            />
-          </div>
-        </form>
-        <Link href="/profile">
-          <Image src={icon} alt="avatar" width={32} height={32} />
-        </Link>
-      </div>
     </header>
   );
 }
