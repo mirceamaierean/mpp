@@ -15,7 +15,7 @@ import AddIcon from "@mui/icons-material/Add";
 import UpdateIcon from "@mui/icons-material/Update";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { BodyType, FuelType, TransmissionType, DriveType } from "@/types";
-import UpdateCarModal from "./UpdateCarModal";
+import Link from "next/link";
 
 function createData(
   make: string,
@@ -154,11 +154,11 @@ export default function BasicTable() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <AddCarModal open={open} setOpen={setOpen} />
-      <UpdateCarModal
+      {/* <UpdateCarModal
         open={openUpdateModal}
         setOpen={setOpenUpdateModal}
         carId={carId}
-      />
+      /> */}
       <div className="flex justify-end">
         <Button
           className="px-4 py-2 m-2 bg-primary rounded-md text-white"
@@ -236,14 +236,9 @@ export default function BasicTable() {
                 <TableCell>{car.year}</TableCell>
                 <TableCell>{car.color}</TableCell>
                 <TableCell>
-                  <Button
-                    onClick={() => {
-                      setCarId(car.id);
-                      setOpenUpdateModal(true);
-                    }}
-                  >
-                    Update
-                  </Button>
+                  <Link href={`/cars/${car.id}`}>
+                    <Button>View Details</Button>
+                  </Link>
                 </TableCell>
               </TableRow>
             ))}
