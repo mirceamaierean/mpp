@@ -143,7 +143,7 @@ export default function AddCarModal({ open, setOpen }: Props) {
       aria-labelledby="modal-modal-title"
       aria-describedby="modal-modal-description"
     >
-      <Box className="absolute top-[25%] left-[50%] transform translate-x-[-50%] translate-y-[-50%]  w-96 sm:w-[700px] bg-white p-4 rounded-lg">
+      <Box className="absolute top-[40%] sm:top-[25%] left-[50%] transform translate-x-[-50%] translate-y-[-50%]  w-96 sm:w-[700px] bg-white p-4 rounded-lg">
         <CloseIcon
           onClick={() => setOpen(false)}
           className="absolute top-0 right-0 cursor-pointer m-4"

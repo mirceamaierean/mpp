@@ -31,13 +31,13 @@ function UpdateCarForm({ carId }: Props) {
   const [color, setColor] = useState(currentCar?.color || "");
   const [body, setBody] = useState<BodyType>(currentCar?.body || "Sedan");
   const [transmission, setTransmission] = useState<TransmissionType>(
-    currentCar?.transmission || "Automatic",
+    currentCar?.transmission || "Automatic"
   );
   const [driveType, setDriveType] = useState<DriveType>(
-    currentCar?.driveType || "FWD",
+    currentCar?.driveType || "FWD"
   );
   const [fuelType, setFuelType] = useState<FuelType>(
-    currentCar?.fuelType || "Gasoline",
+    currentCar?.fuelType || "Gasoline"
   );
 
   const handleSubmit = (e: React.FormEvent) => {
