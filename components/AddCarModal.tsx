@@ -16,6 +16,7 @@ import {
   BodyTypes,
 } from "@/types";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import "react-toastify/dist/ReactToastify.css";
 
 type Props = {
   open: boolean;

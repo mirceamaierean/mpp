@@ -1,10 +1,8 @@
 "use client";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
-import { useState, Dispatch, SetStateAction } from "react";
+import { useState } from "react";
 import { useCarStore } from "@/store/zustand";
-import CloseIcon from "@mui/icons-material/Close";
 import { Button, FormControl } from "@mui/base";
 import MenuItem from "@mui/material/MenuItem";
 import Input from "@mui/material/Input";
@@ -16,14 +14,14 @@ import {
   BodyTypes,
 } from "@/types";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 type Props = {
   carId: number;
-  open?: boolean;
-  setOpen: Dispatch<SetStateAction<boolean>>;
 };
 
-function UpdateCarForm({ carId, setOpen }: Props) {
+function UpdateCarForm({ carId }: Props) {
   const updateCar = useCarStore((state) => state.updateCar);
   const cars = useCarStore((state) => state.cars);
   const currentCar = cars.find((car) => car.id === carId);
@@ -33,13 +31,13 @@ function UpdateCarForm({ carId, setOpen }: Props) {
   const [color, setColor] = useState(currentCar?.color || "");
   const [body, setBody] = useState<BodyType>(currentCar?.body || "Sedan");
   const [transmission, setTransmission] = useState<TransmissionType>(
-    currentCar?.transmission || "Automatic",
+    currentCar?.transmission || "Automatic"
   );
   const [driveType, setDriveType] = useState<DriveType>(
-    currentCar?.driveType || "FWD",
+    currentCar?.driveType || "FWD"
   );
   const [fuelType, setFuelType] = useState<FuelType>(
-    currentCar?.fuelType || "Gasoline",
+    currentCar?.fuelType || "Gasoline"
   );
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -54,7 +52,16 @@ function UpdateCarForm({ carId, setOpen }: Props) {
       driveType,
       fuelType,
     });
-    setOpen(false);
+    toast("Car has been updated!", {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   };
 
   const handleBodyChange = (e: SelectChangeEvent) => {
@@ -138,19 +145,10 @@ function UpdateCarForm({ carId, setOpen }: Props) {
   );
 }
 
-export default function UpdateCarModal({ carId, open, setOpen }: Props) {
+export default function UpdateCarModal({ carId }: Props) {
   return (
-    <Modal
-      open={open || false}
-      onClose={() => setOpen(false)}
-      aria-labelledby="modal-modal-title"
-      aria-describedby="modal-modal-description"
-    >
-      <Box className="absolute top-[40%] sm:top-[25%] left-[50%] transform translate-x-[-50%] translate-y-[-50%]  w-96 sm:w-[700px] bg-white p-4 rounded-lg">
-        <CloseIcon
-          onClick={() => setOpen(false)}
-          className="absolute top-0 right-0 cursor-pointer m-4"
-        />
+    <>
+      <Box className="mx-auto transform w-96 sm:w-[700px] bg-white p-4 rounded-lg">
         <Typography
           id="modal-modal-title"
           variant="h6"
@@ -159,8 +157,20 @@ export default function UpdateCarModal({ carId, open, setOpen }: Props) {
         >
           Update Car Information
         </Typography>
-        <UpdateCarForm carId={carId} setOpen={setOpen} />
+        <UpdateCarForm carId={carId} />
       </Box>
-    </Modal>
+      <ToastContainer
+        position="bottom-center"
+        autoClose={5000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+    </>
   );
 }
