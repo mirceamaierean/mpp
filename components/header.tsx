@@ -27,20 +27,23 @@ function Package2Icon(
 export default function Header() {
   return (
     <header className="flex items-center h-16 px-4 border-b shrink-0 md:px-6">
-      <nav className="flex-col hidden gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+      <nav className="gap-6 text-lg font-medium flex flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <Link
-          className="flex items-center gap-2 text-lg font-semibold md:text-base"
+          className="flex items-center gap-2 text-sm font-semibold md:text-base "
           href="/"
         >
-          <Package2Icon className="w-6 h-6" />
+          <Package2Icon className="w-4 h-4 sm:w-6 sm:h-6" />
         </Link>
-        <Link className="text-gray-500 dark:text-gray-400" href="/rentals">
+        <Link
+          className="text-gray-500 text-sm dark:text-gray-400"
+          href="/rentals"
+        >
           Rentals
         </Link>
-        <Link className="text-gray-500 dark:text-gray-400" href="/cars">
+        <Link className="text-gray-500 text-sm" href="/cars">
           Cars
         </Link>
-        <Link className="text-gray-500 dark:text-gray-400" href="/analytics">
+        <Link className="text-gray-500 text-sm" href="/analytics">
           Analytics
         </Link>
       </nav>

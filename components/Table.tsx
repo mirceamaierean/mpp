@@ -10,7 +10,7 @@ import { useCarStore } from "@/store/zustand";
 import { Button } from "@mui/base";
 import AddCarModal from "./AddCarModal";
 import { useState } from "react";
-import { Checkbox } from "@mui/material";
+import { Checkbox, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import UpdateIcon from "@mui/icons-material/Update";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -154,30 +154,26 @@ export default function BasicTable() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <AddCarModal open={open} setOpen={setOpen} />
-      {/* <UpdateCarModal
-        open={openUpdateModal}
-        setOpen={setOpenUpdateModal}
-        carId={carId}
-      /> */}
       <div className="flex justify-end">
         <Button
-          className="px-4 py-2 m-2 bg-primary rounded-md text-white"
+          className="px-4 py-2 m-2 bg-primary rounded-md text-white disabled:opacity-50 flex flex-row gap-1"
           onClick={initCars}
+          disabled={cars.length > 0}
         >
           <UpdateIcon />
-          Load Data
+          <Typography className="hidden sm:block">Load Data</Typography>
         </Button>
         <Button
-          className="px-4 py-2 m-2 bg-primary rounded-md text-white"
+          className="px-4 py-2 m-2 bg-primary rounded-md text-white flex flex-row gap-1"
           onClick={() => setOpen(true)}
         >
           <AddIcon />
-          Add Car
+          <Typography className="hidden sm:block">Add Car</Typography>
         </Button>
 
         {selectedIds.length > 0 && (
           <Button
-            className="px-4 py-2 m-2 bg-primary rounded-md text-white"
+            className="px-4 py-2 m-2 bg-primary rounded-md text-white flex flex-row gap-1"
             onClick={() => {
               cars.forEach((car) => {
                 if (selectedIds.includes(car.id)) {
@@ -188,7 +184,7 @@ export default function BasicTable() {
             }}
           >
             <DeleteIcon />
-            Delete Car
+            <Typography className="hidden sm:block">Delete Car</Typography>
           </Button>
         )}
       </div>
