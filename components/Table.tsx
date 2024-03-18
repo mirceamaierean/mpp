@@ -24,7 +24,6 @@ export default function BasicTable() {
   const [open, setOpen] = useState(false);
 
   const initCars = () => {
-    ``;
     initialCars.forEach((car) => {
       addCar({
         make: car.make,
@@ -83,7 +82,7 @@ export default function BasicTable() {
                   }
                   onChange={(e) =>
                     setSelectedIds(
-                      e.target.checked ? cars.map((car) => car.id) : []
+                      e.target.checked ? cars.map((car) => car.id) : [],
                     )
                   }
                 />
@@ -106,7 +105,7 @@ export default function BasicTable() {
                       e.target.checked
                         ? setSelectedIds([...selectedIds, car.id])
                         : setSelectedIds(
-                            selectedIds.filter((id) => id !== car.id)
+                            selectedIds.filter((id) => id !== car.id),
                           );
                     }}
                   ></Checkbox>

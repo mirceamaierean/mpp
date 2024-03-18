@@ -34,10 +34,7 @@ export default function Header() {
         >
           <Package2Icon className="w-4 h-4 sm:w-6 sm:h-6" />
         </Link>
-        <Link
-          className="text-gray-500 text-sm dark:text-gray-400"
-          href="/rentals"
-        >
+        <Link className="text-gray-500 text-sm" href="/rentals">
           Rentals
         </Link>
         <Link className="text-gray-500 text-sm" href="/cars">
