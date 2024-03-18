@@ -14,134 +14,18 @@ import { Checkbox, Typography } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import UpdateIcon from "@mui/icons-material/Update";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { BodyType, FuelType, TransmissionType, DriveType } from "@/types";
+import { initialCars } from "@/service/CarsApi";
 import Link from "next/link";
 
-function createData(
-  make: string,
-  model: string,
-  year: number,
-  color: string,
-  body?: BodyType,
-  transmission?: TransmissionType,
-  driveType?: DriveType,
-  fuelType?: FuelType,
-) {
-  return { make, model, year, color, body, transmission, driveType, fuelType };
-}
-
-const rows = [
-  createData(
-    "Ford",
-    "Fusion",
-    2019,
-    "Black",
-    "Sedan",
-    "Automatic",
-    "FWD",
-    "Gasoline",
-  ),
-  createData(
-    "Chevy",
-    "Malibu",
-    2020,
-    "Red",
-    "Coupe",
-    "Automatic",
-    "AWD",
-    "Electric",
-  ),
-  createData(
-    "Toyota",
-    "Camry",
-    2021,
-    "White",
-    "SUV",
-    "Manual",
-    "RWD",
-    "Hybrid",
-  ),
-  createData(
-    "Honda",
-    "Civic",
-    2018,
-    "Blue",
-    "Hatchback",
-    "Automatic",
-    "FWD",
-    "Diesel",
-  ),
-  createData(
-    "Nissan",
-    "Altima",
-    2017,
-    "Gray",
-    "Convertible",
-    "Manual",
-    "AWD",
-    "Gasoline",
-  ),
-  createData(
-    "Ford",
-    "Fusion",
-    2019,
-    "Black",
-    "Sedan",
-    "Automatic",
-    "FWD",
-    "Gasoline",
-  ),
-  createData(
-    "Chevy",
-    "Malibu",
-    2020,
-    "Red",
-    "Coupe",
-    "Automatic",
-    "AWD",
-    "Electric",
-  ),
-  createData(
-    "Toyota",
-    "Camry",
-    2021,
-    "White",
-    "SUV",
-    "Manual",
-    "RWD",
-    "Hybrid",
-  ),
-  createData(
-    "Honda",
-    "Civic",
-    2018,
-    "Blue",
-    "Hatchback",
-    "Automatic",
-    "FWD",
-    "Diesel",
-  ),
-  createData(
-    "Nissan",
-    "Altima",
-    2017,
-    "Gray",
-    "Convertible",
-    "Manual",
-    "AWD",
-    "Gasoline",
-  ),
-];
 export default function BasicTable() {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const cars = useCarStore((state) => state.cars);
   const addCar = useCarStore((state) => state.addCar);
   const [open, setOpen] = useState(false);
-  const [openUpdateModal, setOpenUpdateModal] = useState(false);
-  const [carId, setCarId] = useState<number>(0);
 
   const initCars = () => {
-    rows.forEach((car) => {
+    ``;
+    initialCars.forEach((car) => {
       addCar({
         make: car.make,
         model: car.model,
@@ -199,7 +83,7 @@ export default function BasicTable() {
                   }
                   onChange={(e) =>
                     setSelectedIds(
-                      e.target.checked ? cars.map((car) => car.id) : [],
+                      e.target.checked ? cars.map((car) => car.id) : []
                     )
                   }
                 />
@@ -222,7 +106,7 @@ export default function BasicTable() {
                       e.target.checked
                         ? setSelectedIds([...selectedIds, car.id])
                         : setSelectedIds(
-                            selectedIds.filter((id) => id !== car.id),
+                            selectedIds.filter((id) => id !== car.id)
                           );
                     }}
                   ></Checkbox>

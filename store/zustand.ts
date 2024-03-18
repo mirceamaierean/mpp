@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Car } from "@/types";
+import { Car } from "@/types/types";
 
 type CarWithId = Car & { id: number };
 

@@ -14,7 +14,7 @@ import {
   DriveType,
   FuelType,
   BodyTypes,
-} from "@/types";
+} from "@/types/types";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import "react-toastify/dist/ReactToastify.css";
 
