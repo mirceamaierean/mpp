@@ -1,105 +1,27 @@
 import { Car } from "@/types/types";
+import {
+  BodyTypes,
+  TransmissionTypes,
+  DriveTypes,
+  FuelTypes,
+} from "@/types/types";
 
-// write data
-export const initialCars = [
-  {
-    make: "Ford",
-    model: "Fusion",
-    year: 2019,
-    color: "Black",
-    body: "Sedan",
-    transmission: "Automatic",
-    driveType: "FWD",
-    fuelType: "Gasoline",
-  },
-  {
-    make: "Chevy",
-    model: "Malibu",
-    year: 2020,
-    color: "Red",
-    body: "Coupe",
-    transmission: "Automatic",
-    driveType: "AWD",
-    fuelType: "Electric",
-  },
-  {
-    make: "Toyota",
-    model: "Camry",
-    year: 2021,
-    color: "White",
-    body: "SUV",
-    transmission: "Manual",
-    driveType: "RWD",
-    fuelType: "Hybrid",
-  },
-  {
-    make: "Honda",
-    model: "Civic",
-    year: 2018,
-    color: "Blue",
-    body: "Hatchback",
-    transmission: "Automatic",
-    driveType: "FWD",
-    fuelType: "Diesel",
-  },
-  {
-    make: "Nissan",
-    model: "Altima",
-    year: 2017,
-    color: "Gray",
-    body: "Convertible",
-    transmission: "Manual",
-    driveType: "AWD",
-    fuelType: "Gasoline",
-  },
-  {
-    make: "Ford",
-    model: "Fusion",
-    year: 2019,
-    color: "Black",
-    body: "Sedan",
-    transmission: "Automatic",
-    driveType: "FWD",
-    fuelType: "Gasoline",
-  },
-  {
-    make: "Chevy",
-    model: "Malibu",
-    year: 2020,
-    color: "Red",
-    body: "Coupe",
-    transmission: "Automatic",
-    driveType: "AWD",
-    fuelType: "Electric",
-  },
-  {
-    make: "Toyota",
-    model: "Camry",
-    year: 2021,
-    color: "White",
-    body: "SUV",
-    transmission: "Manual",
-    driveType: "RWD",
-    fuelType: "Hybrid",
-  },
-  {
-    make: "Honda",
-    model: "Civic",
-    year: 2018,
-    color: "Blue",
-    body: "Hatchback",
-    transmission: "Automatic",
-    driveType: "FWD",
-    fuelType: "Diesel",
-  },
-  {
-    make: "Nissan",
-    model: "Altima",
-    year: 2017,
-    color: "Gray",
-    body: "Convertible",
-    transmission: "Manual",
-    driveType: "AWD",
-    fuelType: "Gasoline",
-  },
-] as Car[];
+function getRandomInt(min: number, max: number) {
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+const makes = ["Ford", "Chevy", "Toyota", "Honda", "Nissan"];
+const models = ["Fusion", "Malibu", "Camry", "Civic", "Altima"];
+const colors = ["Black", "Red", "White", "Blue", "Gray"];
+
+export const initialCars = Array.from({ length: 100 }, (_, index) => ({
+  make: makes[getRandomInt(0, makes.length - 1)],
+  model: models[getRandomInt(0, models.length - 1)],
+  year: getRandomInt(2000, 2024),
+  color: colors[getRandomInt(0, colors.length - 1)],
+  body: BodyTypes[getRandomInt(0, BodyTypes.length - 1)],
+  transmission:
+    TransmissionTypes[getRandomInt(0, TransmissionTypes.length - 1)],
+  driveType: DriveTypes[getRandomInt(0, DriveTypes.length - 1)],
+  fuelType: FuelTypes[getRandomInt(0, FuelTypes.length - 1)],
+})) as Car[];

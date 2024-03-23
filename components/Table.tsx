@@ -16,12 +16,29 @@ import UpdateIcon from "@mui/icons-material/Update";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { initialCars } from "@/service/CarsApi";
 import Link from "next/link";
+import TablePagination from "@mui/material/TablePagination";
 
 export default function BasicTable() {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const cars = useCarStore((state) => state.cars);
+  const [usedCars, setUsedCars] = useState<typeof cars>(cars);
   const addCar = useCarStore((state) => state.addCar);
   const [open, setOpen] = useState(false);
+
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const handleChangePage = (event: unknown, newPage: number) => {
+    console.log(newPage);
+    console.log(rowsPerPage);
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+  };
 
   const initCars = () => {
     initialCars.forEach((car) => {
@@ -95,34 +112,45 @@ export default function BasicTable() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {cars.map((car) => (
-              <TableRow key={car.id}>
-                <TableCell>
-                  <Checkbox
-                    className="mx-auto4"
-                    checked={selectedIds.includes(car.id)}
-                    onChange={(e) => {
-                      e.target.checked
-                        ? setSelectedIds([...selectedIds, car.id])
-                        : setSelectedIds(
-                            selectedIds.filter((id) => id !== car.id),
-                          );
-                    }}
-                  ></Checkbox>
-                </TableCell>
-                <TableCell>{car.make}</TableCell>
-                <TableCell>{car.model}</TableCell>
-                <TableCell>{car.year}</TableCell>
-                <TableCell>{car.color}</TableCell>
-                <TableCell>
-                  <Link href={`/cars/${car.id}`}>
-                    <Button>View Details</Button>
-                  </Link>
-                </TableCell>
-              </TableRow>
-            ))}
+            {cars
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map((car) => (
+                <TableRow key={car.id}>
+                  <TableCell>
+                    <Checkbox
+                      className="mx-auto4"
+                      checked={selectedIds.includes(car.id)}
+                      onChange={(e) => {
+                        e.target.checked
+                          ? setSelectedIds([...selectedIds, car.id])
+                          : setSelectedIds(
+                              selectedIds.filter((id) => id !== car.id),
+                            );
+                      }}
+                    ></Checkbox>
+                  </TableCell>
+                  <TableCell>{car.make}</TableCell>
+                  <TableCell>{car.model}</TableCell>
+                  <TableCell>{car.year}</TableCell>
+                  <TableCell>{car.color}</TableCell>
+                  <TableCell>
+                    <Link href={`/cars/${car.id}`}>
+                      <Button>View Details</Button>
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={cars.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </TableContainer>
     </div>
   );
