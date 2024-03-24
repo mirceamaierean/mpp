@@ -1,7 +1,5 @@
 import { create } from "zustand";
-import { Car } from "@/types/types";
-
-type CarWithId = Car & { id: number };
+import { Car, CarWithId } from "@/types/types";
 
 type State = {
   nextId: number;
