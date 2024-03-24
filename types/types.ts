@@ -30,3 +30,5 @@ export type Car = {
   driveType?: DriveType;
   fuelType?: FuelType;
 };
+
+export type CarWithId = Car & { id: number };
