@@ -34,8 +34,8 @@ export default function Header() {
         >
           <Package2Icon className="w-4 h-4 sm:w-6 sm:h-6" />
         </Link>
-        <Link className="text-gray-500 text-sm" href="/rentals">
-          Rentals
+        <Link className="text-gray-500 text-sm" href="/inventory">
+          Inventory
         </Link>
         <Link className="text-gray-500 text-sm" href="/cars">
           Cars
