@@ -12,7 +12,7 @@ function getRandomInt(min: number, max: number) {
 
 const makes = ["Ford", "Chevy", "Toyota", "Honda", "Nissan"];
 const models = ["Fusion", "Malibu", "Camry", "Civic", "Altima"];
-const colors = ["Black", "Red", "White", "Blue", "Gray"];
+const colors = ["Black", "Red", "Yellow", "Blue", "Gray"];
 
 export const initialCars = Array.from({ length: 100 }, (_, index) => ({
   make: makes[getRandomInt(0, makes.length - 1)],

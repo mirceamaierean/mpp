@@ -35,7 +35,7 @@ export default function BasicTable() {
 
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [fuelType, setFuelType] = useState<FuelType | "All">(
-    (searchParams.get("fuel") as FuelType) || "All"
+    (searchParams.get("fuel") as FuelType) || "All",
   );
   const columnToSortDefault: keyof CarWithId = "make";
   const cars = useCarStore((state) => state.cars);
@@ -44,10 +44,10 @@ export default function BasicTable() {
   const [validCars, setValidCars] = useState<CarWithId[]>([]);
 
   const [columnToSort, setColumnToSort] = useState<keyof CarWithId>(
-    (searchParams.get("property") as keyof CarWithId) || columnToSortDefault
+    (searchParams.get("property") as keyof CarWithId) || columnToSortDefault,
   );
   const [direction, setDirection] = useState<"asc" | "desc">(
-    searchParams.get("direction") === "asc" ? "asc" : "desc"
+    searchParams.get("direction") === "asc" ? "asc" : "desc",
   );
 
   const [page, setPage] = useState(0);
@@ -81,7 +81,7 @@ export default function BasicTable() {
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
   };
@@ -190,7 +190,7 @@ export default function BasicTable() {
                     }
                     onChange={(e) =>
                       setSelectedIds(
-                        e.target.checked ? cars.map((car) => car.id) : []
+                        e.target.checked ? cars.map((car) => car.id) : [],
                       )
                     }
                   />
@@ -259,7 +259,7 @@ export default function BasicTable() {
                           e.target.checked
                             ? setSelectedIds([...selectedIds, car.id])
                             : setSelectedIds(
-                                selectedIds.filter((id) => id !== car.id)
+                                selectedIds.filter((id) => id !== car.id),
                               );
                         }}
                       ></Checkbox>
