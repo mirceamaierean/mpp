@@ -1,24 +1,23 @@
 import { create } from "zustand";
-import { Car, CarWithId } from "@/types/types";
+import { Car } from "@/types/types";
 
 type State = {
-  nextId: number;
-  cars: CarWithId[];
+  cars: Car[];
   addCar: (car: Car) => void;
   removeCar: (id: number) => void;
+  deleteAllCars: () => void;
   updateCar: (id: number, car: Partial<Car>) => void;
 };
 
 export const useCarStore = create<State>((set) => ({
-  nextId: 1,
   cars: [],
   addCar: (car) =>
     set((state) => ({
-      cars: [...state.cars, { ...car, id: state.nextId }],
-      nextId: state.nextId + 1,
+      cars: [...state.cars, car],
     })),
   removeCar: (id) =>
     set((state) => ({ cars: state.cars.filter((car) => car.id !== id) })),
+  deleteAllCars: () => set({ cars: [] }),
   updateCar: (id, car) =>
     set((state) => ({
       cars: state.cars.map((c) => (c.id === id ? { ...c, ...car } : c)),

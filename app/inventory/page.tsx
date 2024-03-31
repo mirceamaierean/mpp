@@ -1,12 +1,21 @@
 "use client";
 import BasicPie from "@/components/Chart";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Box, MenuItem, Select, SelectChangeEvent } from "@mui/material";
-import { useCarStore } from "@/store/zustand";
 import { Car } from "@/types/types";
+import { getInitialCars } from "@/service/CarsApi";
 
 const useData = () => {
-  const cars: Car[] = useCarStore((state) => state.cars);
+  const [cars, setCars] = useState<Car[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await getInitialCars();
+      setCars(data);
+    };
+
+    fetchData();
+  }, []);
 
   const getDataForKey = (key: keyof Car) => {
     const values = cars.map((car) => car[key]);

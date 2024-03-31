@@ -4,10 +4,8 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
 import { Button } from "@mui/base";
 import AddCarModal from "./AddCarModal";
-import { useCarStore } from "@/store/zustand";
 import AddIcon from "@mui/icons-material/Add";
-import { initialCars } from "@/service/CarsApi";
-import UpdateIcon from "@mui/icons-material/Update";
+import { deleteCarsInDB, getInitialCars } from "@/service/CarsApi";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Table,
@@ -25,8 +23,9 @@ import {
   SelectChangeEvent,
   MenuItem,
 } from "@mui/material";
-import { CarWithId } from "@/types/types";
+import { Car } from "@/types/types";
 import { FuelType } from "@/types/types";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function BasicTable() {
   const router = useRouter();
@@ -37,14 +36,12 @@ export default function BasicTable() {
   const [fuelType, setFuelType] = useState<FuelType | "All">(
     (searchParams.get("fuel") as FuelType) || "All",
   );
-  const columnToSortDefault: keyof CarWithId = "make";
-  const cars = useCarStore((state) => state.cars);
-  const addCar = useCarStore((state) => state.addCar);
+  const columnToSortDefault: keyof Car = "make";
+  const [cars, setCars] = useState<Car[]>([]);
   const [open, setOpen] = useState(false);
-  const [validCars, setValidCars] = useState<CarWithId[]>([]);
 
-  const [columnToSort, setColumnToSort] = useState<keyof CarWithId>(
-    (searchParams.get("property") as keyof CarWithId) || columnToSortDefault,
+  const [columnToSort, setColumnToSort] = useState<keyof Car>(
+    (searchParams.get("property") as keyof Car) || columnToSortDefault,
   );
   const [direction, setDirection] = useState<"asc" | "desc">(
     searchParams.get("direction") === "asc" ? "asc" : "desc",
@@ -65,7 +62,7 @@ export default function BasicTable() {
   const getFilteredAndSortedData = () => {
     return [...cars]
       .filter((car) => (fuelType !== "All" ? car.fuelType === fuelType : true))
-      .sort((a: CarWithId, b: CarWithId) => {
+      .sort((a: Car, b: Car) => {
         let comparison = 0;
 
         if (a[columnToSort] && b[columnToSort]) {
@@ -83,6 +80,7 @@ export default function BasicTable() {
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>,
   ) => {
+    setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
   };
 
@@ -110,7 +108,7 @@ export default function BasicTable() {
     current.set(nameOfDirection, direction);
     current.set("property", property);
 
-    setColumnToSort(property as keyof CarWithId);
+    setColumnToSort(property as keyof Car);
     setDirection(direction as "asc" | "desc");
 
     const search = current.toString();
@@ -123,11 +121,34 @@ export default function BasicTable() {
     handleParamsChange(columnToSort, direction);
   }, [fuelType, columnToSort, direction]);
 
-  const initCars = () => {
-    initialCars.forEach((car) => {
-      addCar(car);
-    });
-    setValidCars(cars);
+  useEffect(() => {
+    const initCars = async () => {
+      const initialCars = await getInitialCars();
+      setCars(initialCars);
+    };
+
+    initCars().catch((err) => console.error(err));
+  }, []);
+
+  const deleteCars = async () => {
+    const res = await deleteCarsInDB(selectedIds);
+
+    if (res.status === 400) {
+      const error = await res.json();
+      toast.warn(error, {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
+
+    setSelectedIds([]);
   };
 
   return (
@@ -147,14 +168,6 @@ export default function BasicTable() {
             ))}
           </Select>
           <Button
-            className="px-4 py-2 m-2 bg-primary rounded-md text-white disabled:opacity-50 flex flex-row gap-1"
-            onClick={initCars}
-            disabled={cars.length > 0}
-          >
-            <UpdateIcon />
-            <Typography className="hidden sm:block">Load Data</Typography>
-          </Button>
-          <Button
             className="px-4 py-2 m-2 bg-primary rounded-md text-white flex flex-row gap-1"
             onClick={() => setOpen(true)}
           >
@@ -166,12 +179,7 @@ export default function BasicTable() {
             <Button
               className="px-4 py-2 m-2 bg-primary rounded-md text-white flex flex-row gap-1"
               onClick={() => {
-                getFilteredAndSortedData().forEach((car) => {
-                  if (selectedIds.includes(car.id)) {
-                    useCarStore.getState().removeCar(car.id);
-                    setSelectedIds([]);
-                  }
-                });
+                deleteCars();
               }}
             >
               <DeleteIcon />
@@ -287,6 +295,7 @@ export default function BasicTable() {
             onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </TableContainer>
+        <ToastContainer />
       </div>
     </Suspense>
   );

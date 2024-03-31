@@ -3,7 +3,6 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { useState, Dispatch, SetStateAction } from "react";
-import { useCarStore } from "@/store/zustand";
 import CloseIcon from "@mui/icons-material/Close";
 import { Button, FormControl } from "@mui/base";
 import MenuItem from "@mui/material/MenuItem";
@@ -16,7 +15,9 @@ import {
   BodyTypes,
 } from "@/types/types";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { addCarToDB } from "@/service/CarsApi";
 
 type Props = {
   open: boolean;
@@ -28,7 +29,6 @@ function AddCarForm({
 }: {
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) {
-  const addCar = useCarStore((state) => state.addCar);
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
   const [year, setYear] = useState(0);
@@ -36,12 +36,13 @@ function AddCarForm({
   const [body, setBody] = useState<BodyType>("Sedan");
   const [transmission, setTransmission] =
     useState<TransmissionType>("Automatic");
-  const [driveType, setDriveType] = useState<DriveType>("FWD");
+  const [driveType, setDriveType] = useState<DriveType>("2WD");
   const [fuelType, setFuelType] = useState<FuelType>("Gasoline");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    addCar({
+
+    const res = await addCarToDB({
       make,
       model,
       year,
@@ -51,6 +52,27 @@ function AddCarForm({
       driveType,
       fuelType,
     });
+    if (res.status === 400) {
+      toast.warn("Failed to add car", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      return;
+    }
+
+    toast.success("Car has been added!", {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
+
     setOpen(false);
   };
 
@@ -110,7 +132,7 @@ function AddCarForm({
           ))}
         </Select>
         <Select value={driveType} onChange={handleDriveTypeChange}>
-          {["FWD", "RWD", "AWD"].map((type) => (
+          {["2WD", "4WD"].map((type) => (
             <MenuItem key={type} value={type}>
               {type}
             </MenuItem>

@@ -12,7 +12,7 @@ export const BodyTypes = [
   "Minivan",
 ] as const;
 export const TransmissionTypes = ["Automatic", "Manual"] as const;
-export const DriveTypes = ["FWD", "RWD", "AWD"] as const;
+export const DriveTypes = ["2WD", "4WD"] as const;
 export const FuelTypes = ["Gasoline", "Diesel", "Electric", "Hybrid"] as const;
 
 export type BodyType = (typeof BodyTypes)[number];
@@ -21,6 +21,7 @@ export type DriveType = (typeof DriveTypes)[number];
 export type FuelType = (typeof FuelTypes)[number];
 
 export type Car = {
+  id: number;
   make: string;
   model: string;
   year: number;
@@ -30,5 +31,3 @@ export type Car = {
   driveType?: DriveType;
   fuelType?: FuelType;
 };
-
-export type CarWithId = Car & { id: number };

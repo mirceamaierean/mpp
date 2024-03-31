@@ -1,15 +1,18 @@
 "use client";
 
-import { useCarStore } from "@/store/zustand";
 import { notFound } from "next/navigation";
 import UpdateCarModal from "@/components/UpdateCar";
+import { getCarById } from "@/service/CarsApi";
 
 export default function Page({ params }: { params: { id: number } }) {
-  const cars = useCarStore((state) => state.cars);
+  const getCar = async (id: number) => {
+    const car = await getCarById(id);
+    return car;
+  };
 
-  const car = cars.find((car) => car.id == params.id);
+  const car = getCar(params.id);
 
   if (!car) return notFound();
 
-  return UpdateCarModal({ carId: car.id });
+  return UpdateCarModal({ id: params.id });
 }
