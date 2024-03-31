@@ -1,8 +1,7 @@
 "use client";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
-import { useCarStore } from "@/store/zustand";
+import { useEffect, useState } from "react";
 import { Button, FormControl } from "@mui/base";
 import MenuItem from "@mui/material/MenuItem";
 import Input from "@mui/material/Input";
@@ -12,37 +11,39 @@ import {
   DriveType,
   FuelType,
   BodyTypes,
+  Car,
 } from "@/types/types";
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { getCarById, updateCarInDB } from "@/service/CarsApi";
 
 type Props = {
-  carId: number;
+  id: number;
 };
 
-function UpdateCarForm({ carId }: Props) {
-  const updateCar = useCarStore((state) => state.updateCar);
-  const cars = useCarStore((state) => state.cars);
-  const currentCar = cars.find((car) => car.id === carId);
-  const [make, setMake] = useState(currentCar?.make || "");
-  const [model, setModel] = useState(currentCar?.model || "");
-  const [year, setYear] = useState(currentCar?.year || 0);
-  const [color, setColor] = useState(currentCar?.color || "");
-  const [body, setBody] = useState<BodyType>(currentCar?.body || "Sedan");
+function UpdateCarForm(car: Car) {
+  console.log(car);
+  const [make, setMake] = useState(car.make);
+  const [model, setModel] = useState(car.model);
+  const [year, setYear] = useState(car.year);
+  const [color, setColor] = useState(car.color);
+  const [body, setBody] = useState<BodyType>(car.body ? car.body : "Sedan");
   const [transmission, setTransmission] = useState<TransmissionType>(
-    currentCar?.transmission || "Automatic",
+    car.transmission ? car.transmission : "Automatic",
   );
   const [driveType, setDriveType] = useState<DriveType>(
-    currentCar?.driveType || "FWD",
+    car.driveType ? car.driveType : "2WD",
   );
   const [fuelType, setFuelType] = useState<FuelType>(
-    currentCar?.fuelType || "Gasoline",
+    car.fuelType ? car.fuelType : "Gasoline",
   );
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    updateCar(carId, {
+
+    const res = await updateCarInDB({
+      id: car.id,
       make,
       model,
       year,
@@ -51,8 +52,23 @@ function UpdateCarForm({ carId }: Props) {
       transmission,
       driveType,
       fuelType,
-    });
-    toast("Car has been updated!", {
+    } as Car);
+
+    if (res.status === 400) {
+      toast.warn("Failed to update car", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      return;
+    }
+
+    toast.success("Car has been updated!", {
       position: "bottom-center",
       autoClose: 5000,
       hideProgressBar: false,
@@ -120,7 +136,7 @@ function UpdateCarForm({ carId }: Props) {
           ))}
         </Select>
         <Select value={driveType} onChange={handleDriveTypeChange}>
-          {["FWD", "RWD", "AWD"].map((type) => (
+          {["2WD", "4WD"].map((type) => (
             <MenuItem key={type} value={type}>
               {type}
             </MenuItem>
@@ -145,7 +161,20 @@ function UpdateCarForm({ carId }: Props) {
   );
 }
 
-export default function UpdateCarModal({ carId }: Props) {
+export default function UpdateCarModal({ id }: Props) {
+  const [car, setCar] = useState<Car | null>(null);
+
+  useEffect(() => {
+    const getCar = async () => {
+      const carWithId = await getCarById(id);
+      setCar(carWithId[0]);
+    };
+
+    getCar().catch((err) => {
+      console.error(err);
+    });
+  }, []);
+
   return (
     <>
       <Box className="mx-auto transform w-96 sm:w-[700px] bg-white p-4 rounded-lg">
@@ -157,20 +186,10 @@ export default function UpdateCarModal({ carId }: Props) {
         >
           Update Car Information
         </Typography>
-        <UpdateCarForm carId={carId} />
+
+        {car ? <UpdateCarForm {...car} /> : <Typography>Loading...</Typography>}
       </Box>
-      <ToastContainer
-        position="bottom-center"
-        autoClose={5000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-      />
+      <ToastContainer />
     </>
   );
 }
