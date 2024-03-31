@@ -34,17 +34,17 @@ export default function BasicTable() {
 
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [fuelType, setFuelType] = useState<FuelType | "All">(
-    (searchParams.get("fuel") as FuelType) || "All"
+    (searchParams.get("fuel") as FuelType) || "All",
   );
   const columnToSortDefault: keyof Car = "make";
   const [cars, setCars] = useState<Car[]>([]);
   const [open, setOpen] = useState(false);
 
   const [columnToSort, setColumnToSort] = useState<keyof Car>(
-    (searchParams.get("property") as keyof Car) || columnToSortDefault
+    (searchParams.get("property") as keyof Car) || columnToSortDefault,
   );
   const [direction, setDirection] = useState<"asc" | "desc">(
-    searchParams.get("direction") === "asc" ? "asc" : "desc"
+    searchParams.get("direction") === "asc" ? "asc" : "desc",
   );
 
   const [page, setPage] = useState(0);
@@ -78,7 +78,7 @@ export default function BasicTable() {
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
@@ -197,7 +197,7 @@ export default function BasicTable() {
                   }
                   onChange={(e) =>
                     setSelectedIds(
-                      e.target.checked ? cars.map((car) => car.id) : []
+                      e.target.checked ? cars.map((car) => car.id) : [],
                     )
                   }
                 />
@@ -266,7 +266,7 @@ export default function BasicTable() {
                         e.target.checked
                           ? setSelectedIds([...selectedIds, car.id])
                           : setSelectedIds(
-                              selectedIds.filter((id) => id !== car.id)
+                              selectedIds.filter((id) => id !== car.id),
                             );
                       }}
                     ></Checkbox>
