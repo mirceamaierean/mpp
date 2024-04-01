@@ -43,7 +43,7 @@ function AddCarForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!isColor(color.trim())) {
+    if (!isColor(color.trim() )) {
       toast.error("Invalid Color", {
         position: "bottom-center",
         autoClose: 5000,

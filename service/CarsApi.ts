@@ -1,6 +1,6 @@
 import { Car } from "@/types/types";
 
-export const getInitialCars = async () => {
+export const getAllCars = async () => {
   const res = await fetch("/api/cars", { method: "GET" });
 
   const data = await res.json();
