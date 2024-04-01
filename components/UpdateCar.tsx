@@ -17,7 +17,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getCarById, updateCarInDB } from "@/service/CarsApi";
-
+import { isColor } from "@/utils/functions";
 type Props = {
   id: number;
 };
@@ -30,17 +30,54 @@ function UpdateCarForm(car: Car) {
   const [color, setColor] = useState(car.color);
   const [body, setBody] = useState<BodyType>(car.body ? car.body : "Sedan");
   const [transmission, setTransmission] = useState<TransmissionType>(
-    car.transmission ? car.transmission : "Automatic",
+    car.transmission ? car.transmission : "Automatic"
   );
   const [driveType, setDriveType] = useState<DriveType>(
-    car.driveType ? car.driveType : "2WD",
+    car.driveType ? car.driveType : "2WD"
   );
   const [fuelType, setFuelType] = useState<FuelType>(
-    car.fuelType ? car.fuelType : "Gasoline",
+    car.fuelType ? car.fuelType : "Gasoline"
   );
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!isColor(color.trim())) {
+      toast.error("Invalid Color", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      return;
+    }
+
+    if (make.trim() === "" || model.trim() === "") {
+      toast.error("Make and model must not be empty", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      return;
+    }
+
+    const currentYear = new Date().getFullYear();
+    if (year < 1950 || year > currentYear) {
+      toast.error("Year must be between 1950 and the current year", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      return;
+    }
 
     const res = await updateCarInDB({
       id: car.id,

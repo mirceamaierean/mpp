@@ -18,26 +18,29 @@ const useData = () => {
   }, []);
 
   const getDataForKey = (key: keyof Car) => {
-    const values = cars.map((car) => car[key]);
-    const uniqueValues = Array.from(new Set(values));
-    let id = 0;
-    return uniqueValues.map((value) => {
-      const keyCars = cars.filter((car) => car[key] === value);
-      const count = keyCars.length;
-      if (key === "color") {
+    if (cars) {
+      const values = cars.map((car) => car[key]);
+      const uniqueValues = Array.from(new Set(values));
+      let id = 0;
+      return uniqueValues.map((value) => {
+        const keyCars = cars.filter((car) => car[key] === value);
+        const count = keyCars.length;
+        if (key === "color") {
+          return {
+            id: id++,
+            value: count,
+            label: value as string,
+            color: value as string,
+          };
+        }
         return {
           id: id++,
           value: count,
           label: value as string,
-          color: value as string,
         };
-      }
-      return {
-        id: id++,
-        value: count,
-        label: value as string,
-      };
-    });
+      });
+    }
+    return [];
   };
 
   return {

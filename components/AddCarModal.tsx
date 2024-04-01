@@ -18,6 +18,7 @@ import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { addCarToDB } from "@/service/CarsApi";
+import { isColor } from "@/utils/functions";
 
 type Props = {
   open: boolean;
@@ -41,6 +42,43 @@ function AddCarForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
+    if (!isColor(color.trim())) {
+      toast.error("Invalid Color", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      return;
+    }
+
+    if (make.trim() === "" || model.trim() === "") {
+      toast.error("Make and model must not be empty", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      return;
+    }
+
+    const currentYear = new Date().getFullYear();
+    if (year < 1950 || year > currentYear) {
+      toast.error("Year must be between 1950 and the current year", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      return;
+    }
 
     const res = await addCarToDB({
       make,

@@ -26,6 +26,7 @@ import {
 import { Car } from "@/types/types";
 import { FuelType } from "@/types/types";
 import { ToastContainer, toast } from "react-toastify";
+import isOnline from "is-online";
 
 export default function BasicTable() {
   const router = useRouter();
@@ -34,17 +35,17 @@ export default function BasicTable() {
 
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [fuelType, setFuelType] = useState<FuelType | "All">(
-    (searchParams.get("fuel") as FuelType) || "All",
+    (searchParams.get("fuel") as FuelType) || "All"
   );
   const columnToSortDefault: keyof Car = "make";
   const [cars, setCars] = useState<Car[]>([]);
   const [open, setOpen] = useState(false);
 
   const [columnToSort, setColumnToSort] = useState<keyof Car>(
-    (searchParams.get("property") as keyof Car) || columnToSortDefault,
+    (searchParams.get("property") as keyof Car) || columnToSortDefault
   );
   const [direction, setDirection] = useState<"asc" | "desc">(
-    searchParams.get("direction") === "asc" ? "asc" : "desc",
+    searchParams.get("direction") === "asc" ? "asc" : "desc"
   );
 
   const [page, setPage] = useState(0);
@@ -60,25 +61,29 @@ export default function BasicTable() {
   };
 
   const getFilteredAndSortedData = () => {
-    return [...cars]
-      .filter((car) => (fuelType !== "All" ? car.fuelType === fuelType : true))
-      .sort((a: Car, b: Car) => {
-        let comparison = 0;
+    if (cars)
+      return [...cars]
+        .filter((car) =>
+          fuelType !== "All" ? car.fuelType === fuelType : true
+        )
+        .sort((a: Car, b: Car) => {
+          let comparison = 0;
 
-        if (a[columnToSort] && b[columnToSort]) {
-          if (a[columnToSort]! > b[columnToSort]!) {
-            comparison = 1;
-          } else if (a[columnToSort]! < b[columnToSort]!) {
-            comparison = -1;
+          if (a[columnToSort] && b[columnToSort]) {
+            if (a[columnToSort]! > b[columnToSort]!) {
+              comparison = 1;
+            } else if (a[columnToSort]! < b[columnToSort]!) {
+              comparison = -1;
+            }
           }
-        }
 
-        return direction === "desc" ? comparison * -1 : comparison;
-      });
+          return direction === "desc" ? comparison * -1 : comparison;
+        });
+    return [];
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>,
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
@@ -126,6 +131,23 @@ export default function BasicTable() {
       const initialCars = await getInitialCars();
       setCars(initialCars);
     };
+
+    const checkOnlineStatus = async () => {
+      if (!(await isOnline())) {
+        toast.warn("You are offline", {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+      }
+    };
+
+    checkOnlineStatus().catch((err) => console.error(err));
 
     initCars().catch((err) => console.error(err));
   }, []);
@@ -193,11 +215,13 @@ export default function BasicTable() {
               <TableCell className="font-bold text-primary w-2">
                 <Checkbox
                   checked={
-                    selectedIds.length === cars.length && cars.length > 0
+                    cars &&
+                    selectedIds.length === cars.length &&
+                    cars.length > 0
                   }
                   onChange={(e) =>
                     setSelectedIds(
-                      e.target.checked ? cars.map((car) => car.id) : [],
+                      e.target.checked ? cars.map((car) => car.id) : []
                     )
                   }
                 />
@@ -266,7 +290,7 @@ export default function BasicTable() {
                         e.target.checked
                           ? setSelectedIds([...selectedIds, car.id])
                           : setSelectedIds(
-                              selectedIds.filter((id) => id !== car.id),
+                              selectedIds.filter((id) => id !== car.id)
                             );
                       }}
                     ></Checkbox>
