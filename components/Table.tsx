@@ -137,7 +137,7 @@ export default function BasicTable() {
   }, [fuelType, columnToSort, direction]);
 
   useEffect(() => {
-    socket.on("message2", (data) => {
+    socket.on("message2", () => {
       getCars().catch((err) => console.error(err));
     });
   }, [socket]);
