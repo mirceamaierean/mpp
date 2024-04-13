@@ -3,14 +3,14 @@ import BasicPie from "@/components/Chart";
 import { useEffect, useState } from "react";
 import { Box, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { Car } from "@/types/types";
-import { getInitialCars } from "@/service/CarsApi";
+import { getAllCars } from "@/service/CarsApi";
 
 const useData = () => {
   const [cars, setCars] = useState<Car[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getInitialCars();
+      const data = await getAllCars();
       setCars(data);
     };
 

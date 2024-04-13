@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@mui/base";
 import AddCarModal from "./AddCarModal";
 import AddIcon from "@mui/icons-material/Add";
-import { deleteCarsInDB, getInitialCars } from "@/service/CarsApi";
+import { deleteCarsInDB, getAllCars } from "@/service/CarsApi";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Table,
@@ -27,6 +27,11 @@ import { Car } from "@/types/types";
 import { FuelType } from "@/types/types";
 import { ToastContainer, toast } from "react-toastify";
 import isOnline from "is-online";
+import { io } from "socket.io-client";
+
+const PORT = process.env.NEXT_PUBLIC_SOCKETS_PORT || 3033;
+
+const socket = io("http://localhost:" + PORT);
 
 export default function BasicTable() {
   const router = useRouter();
@@ -122,16 +127,22 @@ export default function BasicTable() {
     router.push(`${pathname}${query}`);
   };
 
+  const getCars = async () => {
+    const allCars = await getAllCars();
+    setCars(allCars);
+  };
+
   useEffect(() => {
     handleParamsChange(columnToSort, direction);
   }, [fuelType, columnToSort, direction]);
 
   useEffect(() => {
-    const initCars = async () => {
-      const initialCars = await getInitialCars();
-      setCars(initialCars);
-    };
+    socket.on("generatedCar", () => {
+      getCars().catch((err) => console.error(err));
+    });
+  }, [socket]);
 
+  useEffect(() => {
     const checkOnlineStatus = async () => {
       if (!(await isOnline())) {
         toast.warn("You are offline", {
@@ -149,7 +160,7 @@ export default function BasicTable() {
 
     checkOnlineStatus().catch((err) => console.error(err));
 
-    initCars().catch((err) => console.error(err));
+    getCars().catch((err) => console.error(err));
   }, []);
 
   const deleteCars = async () => {
