@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
 
   const res = await supabase.from("cars").insert(data).select();
 
-  await fetch("http://localhost:3000/api/sockets", { method: "POST" });
+  // await fetch("http://localhost:3000/api/sockets", { method: "POST" });
 
   if (res.error) {
     console.error("Failed to add car to DB", res.error.message);
