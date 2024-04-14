@@ -31,3 +31,11 @@ export type Car = {
   driveType?: DriveType;
   fuelType?: FuelType;
 };
+
+export type Rental = {
+  id: number;
+  carId: number;
+  startDate: string;
+  endDate: string;
+  value: number;
+}

@@ -3,9 +3,8 @@ import Link from "next/link";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@mui/base";
-import AddCarModal from "./AddCarModal";
+import AddRentalModal from "./AddRentalModal";
 import AddIcon from "@mui/icons-material/Add";
-import { deleteCarsInDB, getAllCars } from "@/service/CarsApi";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Table,
@@ -19,35 +18,28 @@ import {
   Typography,
   TablePagination,
   TableSortLabel,
-  Select,
-  SelectChangeEvent,
-  MenuItem,
 } from "@mui/material";
-import { Car } from "@/types/types";
-import { FuelType } from "@/types/types";
-import { ToastContainer, toast } from "react-toastify";
+import { Rental } from "@/types/types";
 import isOnline from "is-online";
-import { io } from "socket.io-client";
+import { ToastContainer, toast } from "react-toastify";
+import { deleteRentalsInDB, getRentalsByCarId } from "@/service/RentalsApi";
 
-const PORT = process.env.NEXT_PUBLIC_SOCKETS_PORT || 3033;
+interface RentalsTableProps {
+  carId: number;
+}
 
-const socket = io("http://localhost:" + PORT);
-
-export default function BasicTable() {
+export default function RentalsTable({ carId }: RentalsTableProps) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
-  const [fuelType, setFuelType] = useState<FuelType | "All">(
-    (searchParams.get("fuel") as FuelType) || "All"
-  );
-  const columnToSortDefault: keyof Car = "make";
-  const [cars, setCars] = useState<Car[]>([]);
+  const columnToSortDefault: keyof Rental = "startDate";
+  const [rentals, setRentals] = useState<Rental[]>([]);
   const [open, setOpen] = useState(false);
 
-  const [columnToSort, setColumnToSort] = useState<keyof Car>(
-    (searchParams.get("property") as keyof Car) || columnToSortDefault
+  const [columnToSort, setColumnToSort] = useState<keyof Rental>(
+    (searchParams.get("property") as keyof Rental) || columnToSortDefault
   );
   const [direction, setDirection] = useState<"asc" | "desc">(
     searchParams.get("direction") === "asc" ? "asc" : "desc"
@@ -60,30 +52,21 @@ export default function BasicTable() {
     setPage(newPage);
   };
 
-  const handleFuelTypeChange = (e: SelectChangeEvent) => {
-    setFuelType(e.target.value as FuelType);
-    handleParamsChange(columnToSort, direction);
-  };
-
   const getFilteredAndSortedData = () => {
-    if (cars)
-      return [...cars]
-        .filter((car) =>
-          fuelType !== "All" ? car.fuelType === fuelType : true
-        )
-        .sort((a: Car, b: Car) => {
-          let comparison = 0;
+    if (rentals)
+      return [...rentals].sort((a: Rental, b: Rental) => {
+        let comparison = 0;
 
-          if (a[columnToSort] && b[columnToSort]) {
-            if (a[columnToSort]! > b[columnToSort]!) {
-              comparison = 1;
-            } else if (a[columnToSort]! < b[columnToSort]!) {
-              comparison = -1;
-            }
+        if (a[columnToSort] && b[columnToSort]) {
+          if (a[columnToSort]! > b[columnToSort]!) {
+            comparison = 1;
+          } else if (a[columnToSort]! < b[columnToSort]!) {
+            comparison = -1;
           }
+        }
 
-          return direction === "desc" ? comparison * -1 : comparison;
-        });
+        return direction === "desc" ? comparison * -1 : comparison;
+      });
     return [];
   };
 
@@ -109,16 +92,13 @@ export default function BasicTable() {
     if (current.has("direction")) current.delete("direction");
     if (current.has("fuel")) current.delete("fuel");
 
-    if (fuelType !== "All") {
-      current.set("fuel", fuelType);
-    }
     if (columnToSort !== property) direction = "asc";
 
     const nameOfDirection = "direction";
     current.set(nameOfDirection, direction);
     current.set("property", property);
 
-    setColumnToSort(property as keyof Car);
+    setColumnToSort(property as keyof Rental);
     setDirection(direction as "asc" | "desc");
 
     const search = current.toString();
@@ -127,20 +107,14 @@ export default function BasicTable() {
     router.push(`${pathname}${query}`);
   };
 
-  const getCars = async () => {
-    const allCars = await getAllCars();
-    setCars(allCars);
+  const getAllRentals = async () => {
+    const allRentals = await getRentalsByCarId(carId);
+    setRentals(allRentals);
   };
 
   useEffect(() => {
     handleParamsChange(columnToSort, direction);
-  }, [fuelType, columnToSort, direction]);
-
-  useEffect(() => {
-    socket.on("generatedCar", () => {
-      getCars().catch((err) => console.error(err));
-    });
-  }, [socket]);
+  }, [columnToSort, direction]);
 
   useEffect(() => {
     const checkOnlineStatus = async () => {
@@ -160,11 +134,11 @@ export default function BasicTable() {
 
     checkOnlineStatus().catch((err) => console.error(err));
 
-    getCars().catch((err) => console.error(err));
-  }, []);
+    getAllRentals().catch((err) => console.error(err));
+  }, [open]);
 
-  const deleteCars = async () => {
-    const res = await deleteCarsInDB(selectedIds);
+  const deleteRentals = async () => {
+    const res = await deleteRentalsInDB(selectedIds);
 
     if (res.status === 400) {
       const error = await res.json();
@@ -181,41 +155,43 @@ export default function BasicTable() {
       return;
     }
 
+    toast.success("Successfully deleted rentals", {
+      position: "bottom-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+
+    getAllRentals().catch((err) => console.error(err));
+
     setSelectedIds([]);
   };
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <AddCarModal open={open} setOpen={setOpen} />
+      <AddRentalModal open={open} setOpen={setOpen} carId={carId} />
       <div className="flex justify-end py-4">
-        <Select
-          value={fuelType}
-          onChange={handleFuelTypeChange}
-          className="h-10 my-auto"
-        >
-          {["All", "Gasoline", "Diesel", "Electric", "Hybrid"].map((type) => (
-            <MenuItem key={type} value={type}>
-              {type}
-            </MenuItem>
-          ))}
-        </Select>
         <Button
           className="px-4 py-2 m-2 bg-primary rounded-md text-white flex flex-row gap-1"
           onClick={() => setOpen(true)}
         >
           <AddIcon />
-          <Typography className="hidden sm:block">Add Car</Typography>
+          <Typography className="hidden sm:block">Add Rental</Typography>
         </Button>
 
         {selectedIds.length > 0 && (
           <Button
             className="px-4 py-2 m-2 bg-primary rounded-md text-white flex flex-row gap-1"
             onClick={() => {
-              deleteCars();
+              deleteRentals();
             }}
           >
             <DeleteIcon />
-            <Typography className="hidden sm:block">Delete Car</Typography>
+            <Typography className="hidden sm:block">Delete Rentals</Typography>
           </Button>
         )}
       </div>
@@ -226,63 +202,51 @@ export default function BasicTable() {
               <TableCell className="font-bold text-primary w-2">
                 <Checkbox
                   checked={
-                    cars &&
-                    selectedIds.length === cars.length &&
-                    cars.length > 0
+                    rentals &&
+                    selectedIds.length === rentals.length &&
+                    rentals.length > 0
                   }
                   onChange={(e) =>
                     setSelectedIds(
-                      e.target.checked ? cars.map((car) => car.id) : []
+                      e.target.checked ? rentals.map((rental) => rental.id) : []
                     )
                   }
                 />
               </TableCell>
               <TableCell className="font-bold text-primary">
                 <TableSortLabel
-                  active={columnToSort === "make"}
+                  active={columnToSort === "startDate"}
                   direction={direction}
                   onClick={() => {
-                    setDirection(changeDirectionBasedOnColumn("make"));
-                    setColumnToSort("make");
+                    setDirection(changeDirectionBasedOnColumn("startDate"));
+                    setColumnToSort("startDate");
                   }}
                 >
-                  Make
+                  Start Date
                 </TableSortLabel>
               </TableCell>
               <TableCell className="font-bold text-primary">
                 <TableSortLabel
-                  active={columnToSort === "model"}
+                  active={columnToSort === "endDate"}
                   direction={direction}
                   onClick={() => {
-                    setDirection(changeDirectionBasedOnColumn("model"));
-                    setColumnToSort("model");
+                    setDirection(changeDirectionBasedOnColumn("endDate"));
+                    setColumnToSort("endDate");
                   }}
                 >
-                  Model
+                  End date
                 </TableSortLabel>
               </TableCell>
               <TableCell className="font-bold text-primary">
                 <TableSortLabel
-                  active={columnToSort === "year"}
+                  active={columnToSort === "value"}
                   direction={direction}
                   onClick={() => {
                     setDirection(changeDirectionBasedOnColumn("year"));
-                    setColumnToSort("year");
+                    setColumnToSort("value");
                   }}
                 >
-                  Year
-                </TableSortLabel>
-              </TableCell>
-              <TableCell className="font-bold text-primary">
-                <TableSortLabel
-                  active={columnToSort === "color"}
-                  direction={direction}
-                  onClick={() => {
-                    setDirection(changeDirectionBasedOnColumn("color"));
-                    setColumnToSort("color");
-                  }}
-                >
-                  Color
+                  Rental Value
                 </TableSortLabel>
               </TableCell>
               <TableCell className="font-bold text-primary">Edit</TableCell>
@@ -291,27 +255,26 @@ export default function BasicTable() {
           <TableBody>
             {getFilteredAndSortedData()
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((car) => (
-                <TableRow key={car.id}>
+              .map((rental) => (
+                <TableRow key={rental.id}>
                   <TableCell>
                     <Checkbox
                       className="mx-auto4"
-                      checked={selectedIds.includes(car.id)}
+                      checked={selectedIds.includes(rental.id)}
                       onChange={(e) => {
                         e.target.checked
-                          ? setSelectedIds([...selectedIds, car.id])
+                          ? setSelectedIds([...selectedIds, rental.id])
                           : setSelectedIds(
-                              selectedIds.filter((id) => id !== car.id)
+                              selectedIds.filter((id) => id !== rental.id)
                             );
                       }}
                     ></Checkbox>
                   </TableCell>
-                  <TableCell>{car.make}</TableCell>
-                  <TableCell>{car.model}</TableCell>
-                  <TableCell>{car.year}</TableCell>
-                  <TableCell>{car.color}</TableCell>
+                  <TableCell>{rental.startDate}</TableCell>
+                  <TableCell>{rental.endDate}</TableCell>
+                  <TableCell>{rental.value}</TableCell>
                   <TableCell>
-                    <Link href={`/cars/${car.id}`}>
+                    <Link href={`/rentals/${rental.id}`}>
                       <Button>View Details</Button>
                     </Link>
                   </TableCell>

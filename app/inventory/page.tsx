@@ -13,7 +13,6 @@ const useData = () => {
       const data = await getAllCars();
       setCars(data);
     };
-
     fetchData();
   }, []);
 

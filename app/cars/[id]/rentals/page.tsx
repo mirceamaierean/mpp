@@ -1,30 +1,29 @@
 "use client";
 import { notFound } from "next/navigation";
-import UpdateCarModal from "@/components/UpdateCar";
-import { getCarById } from "@/service/CarsApi";
 import { useEffect, useState } from "react";
 import { Car } from "@/types/types";
+import { getCarById } from "@/service/CarsApi";
+import CarInfo from "@/components/CarInfo";
+import RentalsTable from "@/components/RentalsTable";
 
 export default function Page({ params }: { params: { id: number } }) {
   const [car, setCar] = useState<Car | null>(null);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     const getCar = async () => {
       const carWithId = await getCarById(params.id);
       setCar(carWithId);
       setLoading(false);
     };
-
     getCar();
   }, []);
 
   if (loading) return <div>Loading...</div>;
-  if (!car) return notFound();
-
+  if (!loading && !car) return notFound();
   return (
     <>
-      <UpdateCarModal car={car} />
+      <CarInfo car={car} />
+      <RentalsTable carId={params.id} />;
     </>
   );
 }

@@ -10,7 +10,7 @@ test("test-all", async ({ page }) => {
   await page.goto("http://localhost:3000/");
 
   // await for a button with text "view details" to appear
-  await page.waitForSelector('text="View Details"');
+  await page.waitForSelector('text="Edit Car"');
 
   let allData = await page.$$(".MuiTableRow-root");
 
@@ -35,7 +35,7 @@ test("test-all", async ({ page }) => {
   expect(allData.length).toBe(6);
 
   // // click on the first "View Details" button
-  const allLinkToDetails = await page.$$('text="View Details"');
+  const allLinkToDetails = await page.$$('text="Edit Car"');
   await allLinkToDetails[0].click();
 
   await page.waitForURL("**/cars/**");
@@ -58,7 +58,7 @@ test("test-all", async ({ page }) => {
   await page.click("svg");
 
   // wait until the page is loaded
-  await page.waitForSelector('text="View Details"');
+  await page.waitForSelector('text="Edit Car"');
   allData = await page.$$(".MuiCheckbox-root");
 
   for (let i = 1; i < 5; i++) {

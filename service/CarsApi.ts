@@ -9,14 +9,21 @@ export const getAllCars = async () => {
 };
 
 export const getCarById = async (id: number) => {
-  const res = await fetch("/api/cars", {
-    method: "POST",
-    body: JSON.stringify({ id }),
-  });
+  try {
+    const res = await fetch("http://localhost:3000/api/cars", {
+      method: "POST",
+      body: JSON.stringify({ id }),
+    });
 
-  const data = await res.json();
+    if (res.status === 404) return null;
 
-  return data;
+    const data = await res.json();
+
+    return data[0];
+  } catch (error) {
+    console.error("Error:", error);
+    return null;
+  }
 };
 
 export const addCarToDB = async (car: Omit<Car, "id">) => {

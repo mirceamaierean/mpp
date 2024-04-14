@@ -6,11 +6,11 @@ export async function POST(req: NextRequest) {
 
   const { data } = await req.json();
 
-  const res = await supabase.from("cars").insert(data).select();
+  const res = await supabase.from("rentals").insert(data).select();
 
   if (res.error) {
-    console.error("Failed to add car to DB", res.error.message);
-    return new NextResponse("Failed to add car to DB", { status: 500 });
+    console.error("Failed to add rental to DB", res.error.message);
+    return new NextResponse("Failed to add rental to DB", { status: 500 });
   }
 
   return new NextResponse(JSON.stringify(res.data[0].id), { status: 200 });

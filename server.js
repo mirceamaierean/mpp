@@ -36,7 +36,7 @@ app.prepare().then(async () => {
 
   emitData(); // Call initially when a client connects
 
-  const intervalId = setInterval(emitData, 10000); // Call every 2 seconds
+  const intervalId = setInterval(emitData, 2000); // Call every 2 seconds
 
   io.on("connection", (socket) => {
     console.log("Client connected");

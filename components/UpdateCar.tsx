@@ -19,11 +19,10 @@ import "react-toastify/dist/ReactToastify.css";
 import { getCarById, updateCarInDB } from "@/service/CarsApi";
 import { isColor } from "@/utils/functions";
 type Props = {
-  id: number;
+  car: Car;
 };
 
-function UpdateCarForm(car: Car) {
-  console.log(car);
+function UpdateCarForm({ car }: Props) {
   const [make, setMake] = useState(car.make);
   const [model, setModel] = useState(car.model);
   const [year, setYear] = useState(car.year);
@@ -198,20 +197,7 @@ function UpdateCarForm(car: Car) {
   );
 }
 
-export default function UpdateCarModal({ id }: Props) {
-  const [car, setCar] = useState<Car | null>(null);
-
-  useEffect(() => {
-    const getCar = async () => {
-      const carWithId = await getCarById(id);
-      setCar(carWithId[0]);
-    };
-
-    getCar().catch((err) => {
-      console.error(err);
-    });
-  }, []);
-
+export default function UpdateCarModal({ car }: Props) {
   return (
     <>
       <Box className="mx-auto transform w-96 sm:w-[700px] bg-white p-4 rounded-lg">
@@ -224,7 +210,7 @@ export default function UpdateCarModal({ id }: Props) {
           Update Car Information
         </Typography>
 
-        {car ? <UpdateCarForm {...car} /> : <Typography>Loading...</Typography>}
+        <UpdateCarForm car={car} />
       </Box>
       <ToastContainer />
     </>

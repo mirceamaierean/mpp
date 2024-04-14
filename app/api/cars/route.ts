@@ -18,5 +18,6 @@ export async function POST(req: NextRequest) {
 
   if (!car || car.length == 0) return new NextResponse(null, { status: 404 });
 
+
   return new NextResponse(JSON.stringify(car, null, 2));
 }

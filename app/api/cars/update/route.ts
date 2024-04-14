@@ -10,8 +10,6 @@ export async function PATCH(req: NextRequest) {
 
   delete data.id;
 
-  console.log(data);
-
   const res = await supabase.from("cars").update(data).match({ id: carId });
 
   if (res.error) {
@@ -19,6 +17,5 @@ export async function PATCH(req: NextRequest) {
     return new NextResponse("Failed to update car to DB", { status: 400 });
   }
 
-  console.log("Successfully updated car to DB");
   return new NextResponse("Successfully updated car to DB", { status: 200 });
 }
