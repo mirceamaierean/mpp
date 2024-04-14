@@ -33,7 +33,6 @@ export const getRentalsByCarId = async (carId: number) => {
       body: JSON.stringify({ carId }),
     });
 
-    console.log(res);
     if (res.status === 404) return null;
 
     const data = await res.json();

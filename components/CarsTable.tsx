@@ -40,7 +40,7 @@ export default function CarsTable() {
 
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const [fuelType, setFuelType] = useState<FuelType | "All">(
-    (searchParams.get("fuel") as FuelType) || "All"
+    (searchParams.get("fuel") as FuelType) || "All",
   );
   const columnToSortDefault: keyof Car = "make";
   const [cars, setCars] = useState<Car[]>([]);
@@ -49,10 +49,10 @@ export default function CarsTable() {
   const [openRentModal, setOpenRentModal] = useState(false);
 
   const [columnToSort, setColumnToSort] = useState<keyof Car>(
-    (searchParams.get("property") as keyof Car) || columnToSortDefault
+    (searchParams.get("property") as keyof Car) || columnToSortDefault,
   );
   const [direction, setDirection] = useState<"asc" | "desc">(
-    searchParams.get("direction") === "asc" ? "asc" : "desc"
+    searchParams.get("direction") === "asc" ? "asc" : "desc",
   );
 
   const [page, setPage] = useState(0);
@@ -71,7 +71,7 @@ export default function CarsTable() {
     if (cars)
       return [...cars]
         .filter((car) =>
-          fuelType !== "All" ? car.fuelType === fuelType : true
+          fuelType !== "All" ? car.fuelType === fuelType : true,
         )
         .sort((a: Car, b: Car) => {
           let comparison = 0;
@@ -90,7 +90,7 @@ export default function CarsTable() {
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
@@ -234,7 +234,7 @@ export default function CarsTable() {
                   }
                   onChange={(e) =>
                     setSelectedIds(
-                      e.target.checked ? cars.map((car) => car.id) : []
+                      e.target.checked ? cars.map((car) => car.id) : [],
                     )
                   }
                 />
@@ -306,7 +306,7 @@ export default function CarsTable() {
                         e.target.checked
                           ? setSelectedIds([...selectedIds, car.id])
                           : setSelectedIds(
-                              selectedIds.filter((id) => id !== car.id)
+                              selectedIds.filter((id) => id !== car.id),
                             );
                       }}
                     ></Checkbox>

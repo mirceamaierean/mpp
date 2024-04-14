@@ -10,7 +10,10 @@ export async function PATCH(req: NextRequest) {
 
   delete data.id;
 
-  const res = await supabase.from("rentals").update(data).match({ id: rentalId });
+  const res = await supabase
+    .from("rentals")
+    .update(data)
+    .match({ id: rentalId });
 
   if (res.error) {
     console.error("Failed to update rental to DB", res.error.message);

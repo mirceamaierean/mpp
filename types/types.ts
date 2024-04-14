@@ -38,4 +38,4 @@ export type Rental = {
   startDate: string;
   endDate: string;
   value: number;
-}
+};

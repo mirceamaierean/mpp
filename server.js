@@ -25,7 +25,7 @@ app.prepare().then(async () => {
   const emitData = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/cars/random"
+        "http://localhost:3000/api/cars/random",
       );
       const data = response.data;
       io.emit("generatedCar", data);

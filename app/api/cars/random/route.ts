@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/utils/supabase/server";
-import { faker } from '@faker-js/faker';
+import { faker } from "@faker-js/faker";
 
 export async function POST(req: NextRequest) {
   const randomMake = faker.vehicle.manufacturer();

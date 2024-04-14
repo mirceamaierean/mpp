@@ -39,10 +39,10 @@ export default function RentalsTable({ carId }: RentalsTableProps) {
   const [open, setOpen] = useState(false);
 
   const [columnToSort, setColumnToSort] = useState<keyof Rental>(
-    (searchParams.get("property") as keyof Rental) || columnToSortDefault
+    (searchParams.get("property") as keyof Rental) || columnToSortDefault,
   );
   const [direction, setDirection] = useState<"asc" | "desc">(
-    searchParams.get("direction") === "asc" ? "asc" : "desc"
+    searchParams.get("direction") === "asc" ? "asc" : "desc",
   );
 
   const [page, setPage] = useState(0);
@@ -71,7 +71,7 @@ export default function RentalsTable({ carId }: RentalsTableProps) {
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
@@ -208,7 +208,9 @@ export default function RentalsTable({ carId }: RentalsTableProps) {
                   }
                   onChange={(e) =>
                     setSelectedIds(
-                      e.target.checked ? rentals.map((rental) => rental.id) : []
+                      e.target.checked
+                        ? rentals.map((rental) => rental.id)
+                        : [],
                     )
                   }
                 />
@@ -265,7 +267,7 @@ export default function RentalsTable({ carId }: RentalsTableProps) {
                         e.target.checked
                           ? setSelectedIds([...selectedIds, rental.id])
                           : setSelectedIds(
-                              selectedIds.filter((id) => id !== rental.id)
+                              selectedIds.filter((id) => id !== rental.id),
                             );
                       }}
                     ></Checkbox>
