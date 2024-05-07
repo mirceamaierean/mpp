@@ -29,7 +29,7 @@ export const getCarsInInterval = async (
   skip: number,
   length: number,
   column: string,
-  direction: string
+  direction: string,
 ) => {
   try {
     const res = await fetch("/api/cars", {
