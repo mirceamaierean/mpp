@@ -16,7 +16,7 @@ import {
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getCarById, updateCarInDB } from "@/service/CarsApi";
+import { updateCarInDB } from "@/service/CarsApi";
 import { isColor } from "@/utils/functions";
 type Props = {
   car: Car;
@@ -32,10 +32,10 @@ function UpdateCarForm({ car }: Props) {
     car.transmission ? car.transmission : "Automatic",
   );
   const [driveType, setDriveType] = useState<DriveType>(
-    car.driveType ? car.driveType : "2WD",
+    car.drivetype ? car.drivetype : "2WD",
   );
   const [fuelType, setFuelType] = useState<FuelType>(
-    car.fuelType ? car.fuelType : "Gasoline",
+    car.fueltype ? car.fueltype : "Gasoline",
   );
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -86,8 +86,8 @@ function UpdateCarForm({ car }: Props) {
       color,
       body,
       transmission,
-      driveType,
-      fuelType,
+      drivetype: driveType,
+      fueltype: fuelType,
     } as Car);
 
     if (res.status === 400) {

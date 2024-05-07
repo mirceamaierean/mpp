@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/utils/supabase/server";
 import { faker } from "@faker-js/faker";
+import prisma from "@/lib/prisma";
+import { getRandomTransmissions } from "@/utils/functions";
+import { getRandomDriveTypes } from "@/utils/functions";
 
 export async function POST(req: NextRequest) {
   const randomMake = faker.vehicle.manufacturer();
@@ -9,8 +11,8 @@ export async function POST(req: NextRequest) {
   const randomColor = faker.vehicle.color();
   const randomFuel = faker.vehicle.fuel();
   const randomBodyType = faker.vehicle.type();
-
-  const supabase = createClient();
+  const randomTransmission = getRandomTransmissions();
+  const randomDriveType = getRandomDriveTypes();
 
   const data = {
     make: randomMake,
@@ -18,14 +20,17 @@ export async function POST(req: NextRequest) {
     year: randomYear,
     color: randomColor,
     body: randomBodyType,
-    fuelType: randomFuel,
+    fueltype: randomFuel,
+    transmission: randomTransmission,
+    drivetype: randomDriveType,
   };
 
-  const res = await supabase.from("cars").insert(data).select();
-
-  if (res.error) {
-    console.error("Failed to add car to DB", res.error.message);
-    return new NextResponse("Failed to add car to DB", { status: 500 });
+  try {
+    await prisma.cars.create({ data: data });
+  } catch (e) {
+    console.error("Error while creating response", e);
+    return new NextResponse("Error while creating response", { status: 500 });
   }
-  return new NextResponse(JSON.stringify(res.data[0].id), { status: 200 });
+
+  return new NextResponse(JSON.stringify(data), { status: 200 });
 }

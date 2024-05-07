@@ -1,22 +1,21 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/utils/supabase/server";
-
-export async function GET() {
-  const supabase = createClient();
-
-  const { data: cars } = await supabase.from("cars").select();
-
-  return new NextResponse(JSON.stringify(cars, null, 2));
-}
+import prisma from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
-  const supabase = createClient();
+  const { skip, length, column, direction } = await req.json();
 
-  const { id } = await req.json();
+  // get all the cars, knowing the index of the first car and the length of the page
+  const data = await prisma.cars.findMany({
+    skip: skip,
+    take: length,
+    orderBy: {
+      [column]: direction,
+    },
+  });
 
-  const { data: car } = await supabase.from("cars").select().eq("id", id);
+  if (!data) {
+    return new NextResponse(null, { status: 404 });
+  }
 
-  if (!car || car.length == 0) return new NextResponse(null, { status: 404 });
-
-  return new NextResponse(JSON.stringify(car, null, 2));
+  return new NextResponse(JSON.stringify(data, null, 2));
 }

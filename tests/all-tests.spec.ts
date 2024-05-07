@@ -9,7 +9,6 @@ export function delay(time: number) {
 test("test-all", async ({ page }) => {
   await page.goto("http://localhost:3000/");
 
-  // await for a button with text "view details" to appear
   await page.waitForSelector('text="Edit Car"');
 
   let allData = await page.$$(".MuiTableRow-root");

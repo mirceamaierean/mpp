@@ -1,23 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/utils/supabase/server";
-
-export async function GET() {
-  const supabase = createClient();
-
-  const { data: rentals } = await supabase.from("rentals").select();
-
-  return new NextResponse(JSON.stringify(rentals, null, 2));
-}
+import prisma from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
-  const supabase = createClient();
+  const { skip, length, column, direction } = await req.json();
 
-  const { id } = await req.json();
-
-  const { data: rental } = await supabase.from("rentals").select().eq("id", id);
-
-  if (!rental || rental.length == 0)
+  const data = await prisma.rentals.findMany({
+    skip: skip,
+    take: length,
+    orderBy: {
+      [column]: direction,
+    },
+  });
+  if (!data) {
     return new NextResponse(null, { status: 404 });
-
-  return new NextResponse(JSON.stringify(rental, null, 2));
+  }
+  return new NextResponse(JSON.stringify(data, null, 2));
 }

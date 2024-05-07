@@ -34,10 +34,10 @@ function AddRentalForm({
     e.preventDefault();
 
     const res = await addRentalToDB({
-      carId,
+      carid: carId,
       value,
-      startDate: startDate?.toISOString(),
-      endDate: endDate?.toISOString(),
+      startdate: startDate?.toISOString(),
+      enddate: endDate?.toISOString(),
     });
 
     if (res.status === 400) {

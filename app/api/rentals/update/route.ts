@@ -1,24 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/utils/supabase/server";
+import prisma from "@/lib/prisma";
 
 export async function PATCH(req: NextRequest) {
-  const supabase = createClient();
-
   const { data } = await req.json();
+  try {
+    const rental = await prisma.rentals.findUnique({
+      where: {
+        id: data.id,
+      },
+    });
 
-  const rentalId = data.id;
-
-  delete data.id;
-
-  const res = await supabase
-    .from("rentals")
-    .update(data)
-    .match({ id: rentalId });
-
-  if (res.error) {
-    console.error("Failed to update rental to DB", res.error.message);
-    return new NextResponse("Failed to update rental to DB", { status: 400 });
+    if (!rental) return new NextResponse(null, { status: 404 });
+  } catch (error) {
+    return new NextResponse(null, { status: 404 });
   }
+  const res = await prisma.rentals.update({
+    where: {
+      id: data.id,
+    },
+    data,
+  });
 
-  return new NextResponse("Successfully updated rental in DB", { status: 200 });
+  return new NextResponse(JSON.stringify(res, null, 2));
 }

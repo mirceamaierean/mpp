@@ -1,17 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/utils/supabase/server";
+import prisma from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
-  const supabase = createClient();
-
   const { data } = await req.json();
 
-  const res = await supabase.from("cars").insert(data).select();
+  const res = await prisma.cars.create({ data });
 
-  if (res.error) {
-    console.error("Failed to add car to DB", res.error.message);
-    return new NextResponse("Failed to add car to DB", { status: 500 });
-  }
-
-  return new NextResponse(JSON.stringify(res.data[0].id), { status: 200 });
+  return new NextResponse(JSON.stringify(res, null, 2));
 }

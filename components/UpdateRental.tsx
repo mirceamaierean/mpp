@@ -14,10 +14,10 @@ type Props = {
 };
 
 function UpdateRentalForm(rental: Rental) {
-  const carId = rental.carId;
+  const carId = rental.carid;
   const [value, setValue] = useState(rental.value);
-  const [startDate, setStartDate] = useState<Date>(new Date(rental.startDate));
-  const [endDate, setEndDate] = useState<Date>(new Date(rental.endDate));
+  const [startDate, setStartDate] = useState<Date>(new Date(rental.startdate));
+  const [endDate, setEndDate] = useState<Date>(new Date(rental.enddate));
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (value <= 0) {
@@ -47,8 +47,8 @@ function UpdateRentalForm(rental: Rental) {
     const res = await updateRentalInDB({
       id: rental.id,
       value,
-      startDate: startDate.toISOString(),
-      endDate: endDate.toISOString(),
+      startdate: startDate.toISOString(),
+      enddate: endDate.toISOString(),
     } as Rental);
 
     if (res.status === 400) {

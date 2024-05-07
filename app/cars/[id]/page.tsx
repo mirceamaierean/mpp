@@ -9,10 +9,12 @@ export default function Page({ params }: { params: { id: number } }) {
   const [car, setCar] = useState<Car | null>(null);
   const [loading, setLoading] = useState(true);
 
+  console.log(params.id);
+
   useEffect(() => {
     const getCar = async () => {
       const carWithId = await getCarById(params.id);
-      setCar(carWithId);
+      if (carWithId) setCar(carWithId);
       setLoading(false);
     };
 

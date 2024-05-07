@@ -1,16 +1,22 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/utils/supabase/server";
+import prisma from "@/lib/prisma";
 
 export async function DELETE(req: NextRequest) {
-  const supabase = createClient();
-
   const { data } = await req.json();
+  // delete all rentals that are have the id in data
 
-  for (const rentalId of data) {
-    const res = await supabase.from("rentals").delete().match({ id: rentalId });
-    if (res.error) {
-      console.error("Failed to delete with id: " + rentalId, res.error.message);
-    }
+  try {
+    await prisma.rentals.deleteMany({
+      where: {
+        id: data.id,
+      },
+    });
+  } catch (error) {
+    console.error(error);
+    return new NextResponse(null, { status: 404 });
   }
-  return new NextResponse("Successfully added rental to DB", { status: 200 });
+
+  return new NextResponse("Successfully removed rentals from db", {
+    status: 200,
+  });
 }

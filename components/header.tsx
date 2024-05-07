@@ -2,7 +2,7 @@ import Link from "next/link";
 import { SVGProps } from "react";
 
 function Package2Icon(
-  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>,
+  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
 ) {
   return (
     <svg
@@ -36,12 +36,6 @@ export default function Header() {
         </Link>
         <Link className="text-gray-500 text-sm" href="/inventory">
           Inventory
-        </Link>
-        <Link className="text-gray-500 text-sm" href="/cars">
-          Cars
-        </Link>
-        <Link className="text-gray-500 text-sm" href="/analytics">
-          Analytics
         </Link>
       </nav>
     </header>

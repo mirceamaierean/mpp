@@ -1,6 +1,5 @@
 "use client";
 import Link from "next/link";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "@mui/base";
 import AddRentalModal from "./AddRentalModal";
@@ -22,28 +21,27 @@ import {
 import { Rental } from "@/types/types";
 import isOnline from "is-online";
 import { ToastContainer, toast } from "react-toastify";
-import { deleteRentalsInDB, getRentalsByCarId } from "@/service/RentalsApi";
+import {
+  deleteRentalsInDB,
+  getRentalsInInterval,
+  getRentalsCountForCar,
+} from "@/service/RentalsApi";
 
 interface RentalsTableProps {
   carId: number;
 }
 
 export default function RentalsTable({ carId }: RentalsTableProps) {
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
-  const columnToSortDefault: keyof Rental = "startDate";
+  const columnToSortDefault: keyof Rental = "startdate";
   const [rentals, setRentals] = useState<Rental[]>([]);
+  const [rentalsCount, setRentalsCount] = useState<number>(0);
+
   const [open, setOpen] = useState(false);
 
-  const [columnToSort, setColumnToSort] = useState<keyof Rental>(
-    (searchParams.get("property") as keyof Rental) || columnToSortDefault,
-  );
-  const [direction, setDirection] = useState<"asc" | "desc">(
-    searchParams.get("direction") === "asc" ? "asc" : "desc",
-  );
+  const [columnToSort, setColumnToSort] =
+    useState<keyof Rental>(columnToSortDefault);
+  const [direction, setDirection] = useState<"asc" | "desc">("asc");
 
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
@@ -52,22 +50,20 @@ export default function RentalsTable({ carId }: RentalsTableProps) {
     setPage(newPage);
   };
 
-  const getFilteredAndSortedData = () => {
-    if (rentals)
-      return [...rentals].sort((a: Rental, b: Rental) => {
-        let comparison = 0;
-
-        if (a[columnToSort] && b[columnToSort]) {
-          if (a[columnToSort]! > b[columnToSort]!) {
-            comparison = 1;
-          } else if (a[columnToSort]! < b[columnToSort]!) {
-            comparison = -1;
-          }
-        }
-
-        return direction === "desc" ? comparison * -1 : comparison;
-      });
-    return [];
+  const fetchData = async (
+    skip: number,
+    length: number,
+    direction: string,
+    columnToSort: string,
+  ) => {
+    const data = await getRentalsInInterval(
+      skip,
+      length,
+      columnToSort,
+      direction,
+      carId,
+    );
+    setRentals(data);
   };
 
   const handleChangeRowsPerPage = (
@@ -84,37 +80,11 @@ export default function RentalsTable({ carId }: RentalsTableProps) {
     return "asc";
   };
 
-  const handleParamsChange = (property: string, direction: string) => {
-    const current = new URLSearchParams(Array.from(searchParams.entries())); // -> has to use this form
-
-    if (current.has("property")) current.delete("property");
-
-    if (current.has("direction")) current.delete("direction");
-    if (current.has("fuel")) current.delete("fuel");
-
-    if (columnToSort !== property) direction = "asc";
-
-    const nameOfDirection = "direction";
-    current.set(nameOfDirection, direction);
-    current.set("property", property);
-
-    setColumnToSort(property as keyof Rental);
-    setDirection(direction as "asc" | "desc");
-
-    const search = current.toString();
-    const query = search ? `?${search}` : "";
-
-    router.push(`${pathname}${query}`);
-  };
-
-  const getAllRentals = async () => {
-    const allRentals = await getRentalsByCarId(carId);
-    setRentals(allRentals);
-  };
-
   useEffect(() => {
-    handleParamsChange(columnToSort, direction);
-  }, [columnToSort, direction]);
+    fetchData(page * rowsPerPage, rowsPerPage, direction, columnToSort).catch(
+      (err: any) => console.error(err),
+    );
+  }, [page, rowsPerPage, columnToSort, direction]);
 
   useEffect(() => {
     const checkOnlineStatus = async () => {
@@ -132,10 +102,15 @@ export default function RentalsTable({ carId }: RentalsTableProps) {
       }
     };
 
+    const fetchData = async () => {
+      const data = await getRentalsCountForCar(carId);
+      setRentalsCount(data);
+    };
+
     checkOnlineStatus().catch((err) => console.error(err));
 
-    getAllRentals().catch((err) => console.error(err));
-  }, [open]);
+    fetchData().catch((err) => console.error(err));
+  }, []);
 
   const deleteRentals = async () => {
     const res = await deleteRentalsInDB(selectedIds);
@@ -166,9 +141,8 @@ export default function RentalsTable({ carId }: RentalsTableProps) {
       theme: "light",
     });
 
-    getAllRentals().catch((err) => console.error(err));
-
     setSelectedIds([]);
+    fetchData(page * rowsPerPage, rowsPerPage, direction, columnToSort);
   };
 
   return (
@@ -217,11 +191,11 @@ export default function RentalsTable({ carId }: RentalsTableProps) {
               </TableCell>
               <TableCell className="font-bold text-primary">
                 <TableSortLabel
-                  active={columnToSort === "startDate"}
+                  active={columnToSort === "startdate"}
                   direction={direction}
                   onClick={() => {
-                    setDirection(changeDirectionBasedOnColumn("startDate"));
-                    setColumnToSort("startDate");
+                    setDirection(changeDirectionBasedOnColumn("startdate"));
+                    setColumnToSort("startdate");
                   }}
                 >
                   Start Date
@@ -229,11 +203,11 @@ export default function RentalsTable({ carId }: RentalsTableProps) {
               </TableCell>
               <TableCell className="font-bold text-primary">
                 <TableSortLabel
-                  active={columnToSort === "endDate"}
+                  active={columnToSort === "enddate"}
                   direction={direction}
                   onClick={() => {
-                    setDirection(changeDirectionBasedOnColumn("endDate"));
-                    setColumnToSort("endDate");
+                    setDirection(changeDirectionBasedOnColumn("enddate"));
+                    setColumnToSort("enddate");
                   }}
                 >
                   End date
@@ -255,39 +229,37 @@ export default function RentalsTable({ carId }: RentalsTableProps) {
             </TableRow>
           </TableHead>
           <TableBody>
-            {getFilteredAndSortedData()
-              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              .map((rental) => (
-                <TableRow key={rental.id}>
-                  <TableCell>
-                    <Checkbox
-                      className="mx-auto4"
-                      checked={selectedIds.includes(rental.id)}
-                      onChange={(e) => {
-                        e.target.checked
-                          ? setSelectedIds([...selectedIds, rental.id])
-                          : setSelectedIds(
-                              selectedIds.filter((id) => id !== rental.id),
-                            );
-                      }}
-                    ></Checkbox>
-                  </TableCell>
-                  <TableCell>{rental.startDate}</TableCell>
-                  <TableCell>{rental.endDate}</TableCell>
-                  <TableCell>{rental.value}</TableCell>
-                  <TableCell>
-                    <Link href={`/rentals/${rental.id}`}>
-                      <Button>View Details</Button>
-                    </Link>
-                  </TableCell>
-                </TableRow>
-              ))}
+            {rentals.map((rental) => (
+              <TableRow key={rental.id}>
+                <TableCell>
+                  <Checkbox
+                    className="mx-auto4"
+                    checked={selectedIds.includes(rental.id)}
+                    onChange={(e) => {
+                      e.target.checked
+                        ? setSelectedIds([...selectedIds, rental.id])
+                        : setSelectedIds(
+                            selectedIds.filter((id) => id !== rental.id),
+                          );
+                    }}
+                  ></Checkbox>
+                </TableCell>
+                <TableCell>{rental.startdate}</TableCell>
+                <TableCell>{rental.enddate}</TableCell>
+                <TableCell>{rental.value}</TableCell>
+                <TableCell>
+                  <Link href={`/rentals/${rental.id}`}>
+                    <Button>View Details</Button>
+                  </Link>
+                </TableCell>
+              </TableRow>
+            ))}
           </TableBody>
         </Table>
         <TablePagination
           rowsPerPageOptions={[5, 10, 25]}
           component="div"
-          count={getFilteredAndSortedData().length}
+          count={rentalsCount}
           rowsPerPage={rowsPerPage}
           page={page}
           onPageChange={handleChangePage}

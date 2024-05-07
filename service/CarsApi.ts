@@ -1,25 +1,66 @@
 import { Car } from "@/types/types";
 
-export const getAllCars = async () => {
-  const res = await fetch("/api/cars", { method: "GET" });
+export const getCarsCount = async () => {
+  try {
+    const res = await fetch("/api/cars/count");
+    const data = await res.json();
+    return data as number;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+  return 0;
+};
 
-  const data = await res.json();
+export const getInventoryDataForCars = async (column: string) => {
+  try {
+    const res = await fetch("/api/cars/group", {
+      method: "POST",
+      body: JSON.stringify({ column: column }),
+    });
+    if (res.status === 500) return [];
+    const data = await res.json();
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+};
 
-  return data as Car[];
+export const getCarsInInterval = async (
+  skip: number,
+  length: number,
+  column: string,
+  direction: string
+) => {
+  try {
+    const res = await fetch("/api/cars", {
+      method: "POST",
+      body: JSON.stringify({
+        skip: skip,
+        length: length,
+        column: column,
+        direction: direction,
+      }),
+    });
+    if (res.status === 404) return [];
+    const data = await res.json();
+    return data as Car[];
+  } catch (error) {
+    console.error("Error:", error);
+  }
+  return [];
 };
 
 export const getCarById = async (id: number) => {
   try {
-    const res = await fetch("http://localhost:3000/api/cars", {
+    const res = await fetch("/api/cars/get-by-id", {
       method: "POST",
-      body: JSON.stringify({ id }),
+      body: JSON.stringify({
+        id: id,
+      }),
     });
-
     if (res.status === 404) return null;
-
     const data = await res.json();
-
-    return data[0];
+    return data as Car;
   } catch (error) {
     console.error("Error:", error);
     return null;
