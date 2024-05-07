@@ -28,6 +28,21 @@ export type Car = {
   color: string;
   body?: BodyType;
   transmission?: TransmissionType;
-  driveType?: DriveType;
-  fuelType?: FuelType;
+  drivetype?: DriveType;
+  fueltype?: FuelType;
+};
+
+export type Rental = {
+  id: number;
+  carid: number;
+  startdate: string;
+  enddate: string;
+  value: number;
+};
+
+export type PersonRecord = {
+  firstname: string;
+  lastname: string;
+  email: string;
+  numberOfRentals: number;
 };

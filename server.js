@@ -25,7 +25,7 @@ app.prepare().then(async () => {
   const emitData = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/cars/random"
+        "http://localhost:3000/api/cars/random",
       );
       const data = response.data;
       io.emit("generatedCar", data);
@@ -36,7 +36,7 @@ app.prepare().then(async () => {
 
   emitData(); // Call initially when a client connects
 
-  const intervalId = setInterval(emitData, 10000); // Call every 2 seconds
+  const intervalId = setInterval(emitData, 500); // Call every 2 seconds
 
   io.on("connection", (socket) => {
     console.log("Client connected");

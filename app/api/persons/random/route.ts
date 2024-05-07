@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { faker } from "@faker-js/faker";
 import prisma from "@/lib/prisma";
 import { getRandomTransmissions } from "@/utils/functions";
 import { getRandomDriveTypes } from "@/utils/functions";
 
-export async function POST(req: NextRequest) {
+export async function POST() {
   const randomMake = faker.vehicle.manufacturer();
   const randomModel = faker.vehicle.model();
   const randomYear = Math.floor(Math.random() * (2024 - 1950 + 1)) + 1950;
@@ -31,6 +31,5 @@ export async function POST(req: NextRequest) {
     console.error("Error while creating response", e);
     return new NextResponse("Error while creating response", { status: 500 });
   }
-
   return new NextResponse(JSON.stringify(data), { status: 200 });
 }

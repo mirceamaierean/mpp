@@ -16,27 +16,26 @@ import {
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getCarById, updateCarInDB } from "@/service/CarsApi";
+import { updateCarInDB } from "@/service/CarsApi";
 import { isColor } from "@/utils/functions";
 type Props = {
-  id: number;
+  car: Car;
 };
 
-function UpdateCarForm(car: Car) {
-  console.log(car);
+function UpdateCarForm({ car }: Props) {
   const [make, setMake] = useState(car.make);
   const [model, setModel] = useState(car.model);
   const [year, setYear] = useState(car.year);
   const [color, setColor] = useState(car.color);
   const [body, setBody] = useState<BodyType>(car.body ? car.body : "Sedan");
   const [transmission, setTransmission] = useState<TransmissionType>(
-    car.transmission ? car.transmission : "Automatic"
+    car.transmission ? car.transmission : "Automatic",
   );
   const [driveType, setDriveType] = useState<DriveType>(
-    car.driveType ? car.driveType : "2WD"
+    car.drivetype ? car.drivetype : "2WD",
   );
   const [fuelType, setFuelType] = useState<FuelType>(
-    car.fuelType ? car.fuelType : "Gasoline"
+    car.fueltype ? car.fueltype : "Gasoline",
   );
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -87,8 +86,8 @@ function UpdateCarForm(car: Car) {
       color,
       body,
       transmission,
-      driveType,
-      fuelType,
+      drivetype: driveType,
+      fueltype: fuelType,
     } as Car);
 
     if (res.status === 400) {
@@ -198,20 +197,7 @@ function UpdateCarForm(car: Car) {
   );
 }
 
-export default function UpdateCarModal({ id }: Props) {
-  const [car, setCar] = useState<Car | null>(null);
-
-  useEffect(() => {
-    const getCar = async () => {
-      const carWithId = await getCarById(id);
-      setCar(carWithId[0]);
-    };
-
-    getCar().catch((err) => {
-      console.error(err);
-    });
-  }, []);
-
+export default function UpdateCarModal({ car }: Props) {
   return (
     <>
       <Box className="mx-auto transform w-96 sm:w-[700px] bg-white p-4 rounded-lg">
@@ -224,7 +210,7 @@ export default function UpdateCarModal({ id }: Props) {
           Update Car Information
         </Typography>
 
-        {car ? <UpdateCarForm {...car} /> : <Typography>Loading...</Typography>}
+        <UpdateCarForm car={car} />
       </Box>
       <ToastContainer />
     </>

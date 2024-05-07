@@ -37,12 +37,6 @@ export default function Header() {
         <Link className="text-gray-500 text-sm" href="/inventory">
           Inventory
         </Link>
-        <Link className="text-gray-500 text-sm" href="/cars">
-          Cars
-        </Link>
-        <Link className="text-gray-500 text-sm" href="/analytics">
-          Analytics
-        </Link>
       </nav>
     </header>
   );

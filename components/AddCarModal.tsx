@@ -19,6 +19,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { addCarToDB } from "@/service/CarsApi";
 import { isColor } from "@/utils/functions";
+import isOnline from "is-online";
 
 type Props = {
   open: boolean;
@@ -43,7 +44,70 @@ function AddCarForm({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!isColor(color.trim() )) {
+    const addCar = async () => {
+      if (!(await isOnline())) {
+        toast.warn("You are offline", {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+        const cars = JSON.parse(localStorage.getItem("carData") || "[]");
+
+        // Add the new car to the array
+        cars.push({
+          make,
+          model,
+          year,
+          body,
+          transmission,
+          drivetype: driveType,
+          fueltype: fuelType,
+        });
+
+        const stringOfCars = JSON.stringify(cars);
+        localStorage.setItem("carData", stringOfCars);
+      } else {
+        const res = await addCarToDB({
+          make,
+          model,
+          year,
+          color,
+          body,
+          transmission,
+          drivetype: driveType,
+          fueltype: fuelType,
+        });
+        if (res.status === 400) {
+          toast.warn("Failed to add car", {
+            position: "bottom-center",
+            autoClose: 5000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+          return;
+        }
+
+        toast.success("Car has been added!", {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+      }
+      setOpen(false);
+    };
+
+    if (!isColor(color.trim())) {
       toast.error("Invalid Color", {
         position: "bottom-center",
         autoClose: 5000,
@@ -80,38 +144,7 @@ function AddCarForm({
       return;
     }
 
-    const res = await addCarToDB({
-      make,
-      model,
-      year,
-      color,
-      body,
-      transmission,
-      driveType,
-      fuelType,
-    });
-    if (res.status === 400) {
-      toast.warn("Failed to add car", {
-        position: "bottom-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
-      return;
-    }
-
-    toast.success("Car has been added!", {
-      position: "bottom-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-    });
-
-    setOpen(false);
+    addCar();
   };
 
   const handleBodyChange = (e: SelectChangeEvent) => {
@@ -129,7 +162,6 @@ function AddCarForm({
   const handleFuelTypeChange = (e: SelectChangeEvent) => {
     setFuelType(e.target.value as FuelType);
   };
-
   return (
     <FormControl onSubmit={handleSubmit}>
       <div className="flex flex-col sm:grid sm:grid-cols-2 gap-4">
