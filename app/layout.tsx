@@ -3,8 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/header";
 
-// jmeter -n -t load-test/lots_of_rentals.jmx -l load-test/results/demo_results.jtl -e -o load-test/results/demo_results_temp
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
