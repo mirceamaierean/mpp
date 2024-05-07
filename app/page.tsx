@@ -1,10 +1,9 @@
-import CarsTable from "@/components/CarsTable";
-import { Suspense } from "react";
+import SignInForm from "@/components/SignInComponent";
 
-export default function Home() {
+export default async function Home() {
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <CarsTable />
-    </Suspense>
+    <div className="flex flex-col-reverse sm:flex-row">
+      <SignInForm />
+    </div>
   );
 }

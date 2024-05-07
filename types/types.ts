@@ -46,3 +46,10 @@ export type PersonRecord = {
   email: string;
   numberOfRentals: number;
 };
+
+export type User = {
+  id: string;
+  name: string;
+  email: string;
+  picture: string;
+};
