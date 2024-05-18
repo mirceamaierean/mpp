@@ -54,20 +54,20 @@ export default function RentalsTable({ carId }: RentalsTableProps) {
     skip: number,
     length: number,
     direction: string,
-    columnToSort: string
+    columnToSort: string,
   ) => {
     const data = await getRentalsInInterval(
       skip,
       length,
       columnToSort,
       direction,
-      carId
+      carId,
     );
     setRentals(data);
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
@@ -82,7 +82,7 @@ export default function RentalsTable({ carId }: RentalsTableProps) {
 
   useEffect(() => {
     fetchData(page * rowsPerPage, rowsPerPage, direction, columnToSort).catch(
-      (err: any) => console.error(err)
+      (err: any) => console.error(err),
     );
   }, [page, rowsPerPage, columnToSort, direction]);
 
@@ -182,7 +182,9 @@ export default function RentalsTable({ carId }: RentalsTableProps) {
                   }
                   onChange={(e) =>
                     setSelectedIds(
-                      e.target.checked ? rentals.map((rental) => rental.id) : []
+                      e.target.checked
+                        ? rentals.map((rental) => rental.id)
+                        : [],
                     )
                   }
                 />
@@ -237,7 +239,7 @@ export default function RentalsTable({ carId }: RentalsTableProps) {
                       e.target.checked
                         ? setSelectedIds([...selectedIds, rental.id])
                         : setSelectedIds(
-                            selectedIds.filter((id) => id !== rental.id)
+                            selectedIds.filter((id) => id !== rental.id),
                           );
                     }}
                   ></Checkbox>

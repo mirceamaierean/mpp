@@ -48,7 +48,7 @@ export default function CarsTable() {
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
@@ -65,7 +65,7 @@ export default function CarsTable() {
     skip: number,
     length: number,
     direction: string,
-    columnToSort: string
+    columnToSort: string,
   ) => {
     const data = await getCarsInInterval(skip, length, columnToSort, direction);
     setCars(data);
@@ -110,7 +110,7 @@ export default function CarsTable() {
 
   useEffect(() => {
     fetchData(page * rowsPerPage, rowsPerPage, direction, columnToSort).catch(
-      (err: any) => console.error(err)
+      (err: any) => console.error(err),
     );
   }, [page, rowsPerPage, columnToSort, direction]);
 
@@ -189,7 +189,7 @@ export default function CarsTable() {
                   }
                   onChange={(e) =>
                     setSelectedIds(
-                      e.target.checked ? cars.map((car) => car.id) : []
+                      e.target.checked ? cars.map((car) => car.id) : [],
                     )
                   }
                 />
@@ -259,7 +259,7 @@ export default function CarsTable() {
                       e.target.checked
                         ? setSelectedIds([...selectedIds, car.id])
                         : setSelectedIds(
-                            selectedIds.filter((id) => id !== car.id)
+                            selectedIds.filter((id) => id !== car.id),
                           );
                     }}
                   ></Checkbox>

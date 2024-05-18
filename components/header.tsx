@@ -8,7 +8,7 @@ import { getCurrentUser } from "@/lib/session";
 import UserProfile from "./UserProfile";
 
 function Package2Icon(
-  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>
+  props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>,
 ) {
   return (
     <svg
