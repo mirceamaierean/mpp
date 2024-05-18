@@ -22,7 +22,7 @@ export default function CarInfo({ car }: CarInfoProps) {
             Year: {car.year}
           </Typography>
           <Typography variant="body2" color="text.secondary">
-            Fuel Type: {car.fuelType}
+            Fuel Type: {car.fueltype}
           </Typography>
           <Typography variant="body2" color="text.secondary">
             Color: {car.color}

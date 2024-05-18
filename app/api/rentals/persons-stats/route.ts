@@ -21,7 +21,7 @@ export async function POST(req: NextRequest) {
   const persons = await prisma.persons.findMany({
     where: {
       id: {
-        in: data.map((group) => group.personid),
+        in: data.map((group) => group.personid) as number[],
       },
     },
   });
