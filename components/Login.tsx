@@ -46,7 +46,7 @@ export default function Login() {
               />
             </svg>
           }
-          onClick={() => signIn("google", { callbackUrl: "/cars" })}
+          onClick={() => signIn("google", { callbackUrl: "/dashboard/cars" })}
         >
           Log in with Gmail
         </Button>
