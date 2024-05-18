@@ -6,7 +6,8 @@ import { getRandomDriveTypes } from "@/utils/functions";
 
 export async function POST() {
   console.log("POST /api/cars/random/batch");
-  for (let i = 0; i < 100000; ++i) {
+  for (let i = 0; i < 1000; ++i) {
+    console.log("Creating car", i);
     const randomMake = faker.vehicle.manufacturer();
     const randomModel = faker.vehicle.model();
     const randomYear = Math.floor(Math.random() * (2024 - 1950 + 1)) + 1950;
