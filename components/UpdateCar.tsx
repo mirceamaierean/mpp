@@ -1,7 +1,7 @@
 "use client";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, FormControl } from "@mui/base";
 import MenuItem from "@mui/material/MenuItem";
 import Input from "@mui/material/Input";
@@ -29,13 +29,13 @@ function UpdateCarForm({ car }: Props) {
   const [color, setColor] = useState(car.color);
   const [body, setBody] = useState<BodyType>(car.body ? car.body : "Sedan");
   const [transmission, setTransmission] = useState<TransmissionType>(
-    car.transmission ? car.transmission : "Automatic",
+    car.transmission ? car.transmission : "Automatic"
   );
   const [driveType, setDriveType] = useState<DriveType>(
-    car.drivetype ? car.drivetype : "2WD",
+    car.drivetype ? car.drivetype : "2WD"
   );
   const [fuelType, setFuelType] = useState<FuelType>(
-    car.fueltype ? car.fueltype : "Gasoline",
+    car.fueltype ? car.fueltype : "Gasoline"
   );
 
   const handleSubmit = async (e: React.FormEvent) => {
