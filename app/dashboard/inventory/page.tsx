@@ -34,7 +34,7 @@ export default function Inventory() {
       setData(newData);
     };
     fetchDataForKey();
-  }, [key]);
+  }, [key, getDataForKey]);
 
   const handleKeyChange = (e: SelectChangeEvent) => {
     setKey(e.target.value as keyof Car);

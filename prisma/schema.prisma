@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("NEXT_PUBLIC_DATABASE_URL")
+  url      = env("DATABASE_URL")
 }
 
 model cars {
@@ -17,7 +17,7 @@ model cars {
   transmission String?
   drivetype    String?
   fueltype     String?
-  rentals      rentals[]
+  rentals      Rentals[]
 }
 
 model persons {
@@ -28,10 +28,10 @@ model persons {
   phone     String?
   address   String?
   city      String?
-  rentals   rentals[]
+  rentals   Rentals[]
 }
 
-model rentals {
+model Rentals {
   id        Int       @id @default(autoincrement())
   carid     Int?
   startdate DateTime? @db.Date
@@ -40,4 +40,54 @@ model rentals {
   personid  Int?
   cars      cars?     @relation(fields: [carid], references: [id])
   persons   persons?  @relation(fields: [personid], references: [id])
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  score         Int       @default(0)
+
+  accounts Account[]
+  sessions Session[]
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
 }

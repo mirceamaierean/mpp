@@ -128,7 +128,7 @@ export default function CarsTable() {
     };
 
     fetchData().catch((err) => console.error(err));
-  }, []);
+  }, [setRowsPerPage]);
 
   const deleteCars = async () => {
     const res = await deleteCarsInDB(selectedIds);
@@ -276,9 +276,9 @@ export default function CarsTable() {
                   </Link>
                 </TableCell>
                 <TableCell>
-                  <Link href={`/cars/${car.id}/rentals`}>
+                  <Link href={`cars/${car.id}/rentals`}>
                     <Button className="bg-primary text-white px-2 py-3 rounded-md">
-                      View Rentals
+                      View Your Rentals
                     </Button>
                   </Link>
                 </TableCell>

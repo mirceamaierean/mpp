@@ -110,7 +110,7 @@ export default function RentalsTable({ carId }: RentalsTableProps) {
     checkOnlineStatus().catch((err) => console.error(err));
 
     fetchData().catch((err) => console.error(err));
-  }, []);
+  }, [fetchData]);
 
   const deleteRentals = async () => {
     const res = await deleteRentalsInDB(selectedIds);

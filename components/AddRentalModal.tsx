@@ -9,7 +9,6 @@ import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { addCarToDB } from "@/service/CarsApi";
 import { addRentalToDB } from "@/service/RentalsApi";
 
 type Props = {

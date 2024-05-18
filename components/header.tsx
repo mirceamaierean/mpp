@@ -1,6 +1,12 @@
 import Link from "next/link";
 import { SVGProps } from "react";
 
+import { redirect } from "next/navigation";
+
+import { getCurrentUser } from "@/lib/session";
+
+import UserProfile from "./UserProfile";
+
 function Package2Icon(
   props: JSX.IntrinsicAttributes & SVGProps<SVGSVGElement>,
 ) {
@@ -24,7 +30,13 @@ function Package2Icon(
   );
 }
 
-export default function Header() {
+export default async function Header() {
+  const user = await getCurrentUser();
+
+  if (!user) {
+    return redirect("/");
+  }
+
   return (
     <header className="flex items-center h-16 px-4 border-b shrink-0 md:px-6">
       <nav className="gap-6 text-lg font-medium flex flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
@@ -38,6 +50,9 @@ export default function Header() {
           Inventory
         </Link>
       </nav>
+      <div className="flex w-full justify-end">
+        <UserProfile name={user.name!} image={user.image!} />
+      </div>
     </header>
   );
 }

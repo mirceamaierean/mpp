@@ -1,14 +1,14 @@
 "use client";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Button, FormControl } from "@mui/base";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import { Rental } from "@/types/types";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getRentalById, updateRentalInDB } from "@/service/RentalsApi";
+import { updateRentalInDB } from "@/service/RentalsApi";
 type Props = {
   rental: Rental;
 };
