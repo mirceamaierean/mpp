@@ -9,11 +9,17 @@ export async function POST(req: NextRequest) {
   }
 
   // get the id of the user from db
-  const { id } = await prisma.user.findUnique({
+  const userWithId = await prisma.user.findUnique({
     where: {
-      email: user.email,
+      email: user.email as string,
     },
   });
+
+  if (!userWithId) {
+    return new NextResponse(null, { status: 404 });
+  }
+
+  const id = userWithId.id;
 
   const { data } = await req.json();
 
