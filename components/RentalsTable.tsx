@@ -23,15 +23,16 @@ import isOnline from "is-online";
 import { ToastContainer, toast } from "react-toastify";
 import {
   deleteRentalsInDB,
-  getRentalsInInterval,
+  getRentalsByUserInInterval,
   getRentalsCountForCar,
 } from "@/service/RentalsApi";
 
 interface RentalsTableProps {
   carId: number;
+  userEmail: string;
 }
 
-export default function RentalsTable({ carId }: RentalsTableProps) {
+export default function RentalsTable({ carId, userEmail }: RentalsTableProps) {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const columnToSortDefault: keyof Rental = "startdate";
   const [rentals, setRentals] = useState<Rental[]>([]);
@@ -56,12 +57,13 @@ export default function RentalsTable({ carId }: RentalsTableProps) {
     direction: string,
     columnToSort: string,
   ) => {
-    const data = await getRentalsInInterval(
+    const data = await getRentalsByUserInInterval(
       skip,
       length,
       columnToSort,
       direction,
       carId,
+      userEmail,
     );
     setRentals(data);
   };
@@ -248,7 +250,7 @@ export default function RentalsTable({ carId }: RentalsTableProps) {
                 <TableCell>{rental.enddate}</TableCell>
                 <TableCell>{rental.value}</TableCell>
                 <TableCell>
-                  <Link href={`/rentals/${rental.id}`}>
+                  <Link href={`/dashboard/rentals/${rental.id}`}>
                     <Button>View Details</Button>
                   </Link>
                 </TableCell>

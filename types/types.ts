@@ -41,8 +41,7 @@ export type Rental = {
 };
 
 export type PersonRecord = {
-  firstname: string;
-  lastname: string;
+  name: string;
   email: string;
   numberOfRentals: number;
 };

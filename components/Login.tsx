@@ -15,7 +15,7 @@ export default function Login() {
         gap={2}
       >
         <Typography variant="h4" component="h1" gutterBottom>
-          Welcome to Our App
+          Welcome!
         </Typography>
         <Button
           variant="contained"

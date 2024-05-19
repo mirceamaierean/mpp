@@ -4,7 +4,7 @@ import prisma from "@/lib/prisma";
 export async function POST(req: NextRequest) {
   const { skip, length } = await req.json();
   const data = await prisma.rentals.groupBy({
-    by: ["personid"],
+    by: ["userid"],
     _count: {
       _all: true,
     },
@@ -12,23 +12,23 @@ export async function POST(req: NextRequest) {
     take: length,
     orderBy: {
       _count: {
-        personid: "desc",
+        userid: "desc",
       },
     },
   });
 
   // Fetch the persons for each group
-  const persons = await prisma.persons.findMany({
+  const users = await prisma.user.findMany({
     where: {
       id: {
-        in: data.map((group) => group.personid) as number[],
+        in: data.map((group) => group.userid) as string[],
       },
     },
   });
 
   const result = data.map((group) => ({
     ...group,
-    person: persons.find((person) => person.id === group.personid),
+    user: users.find((user) => user.id === group.userid),
   }));
 
   return new NextResponse(JSON.stringify(result, null, 2));

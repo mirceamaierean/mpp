@@ -18,12 +18,13 @@ export const getRentalsCountForCar = async (carId: number) => {
   return null;
 };
 
-export const getRentalsInInterval = async (
+export const getRentalsByUserInInterval = async (
   skip: number,
   length: number,
   column: string,
   direction: string,
   carId: number,
+  userEmail: string,
 ) => {
   try {
     const res = await fetch("/api/rentals/car", {
@@ -34,6 +35,7 @@ export const getRentalsInInterval = async (
         column: column,
         direction: direction,
         carId: carId,
+        userEmail: userEmail,
       }),
     });
     if (res.status === 404) return [];

@@ -42,11 +42,11 @@ export default async function Header() {
       <nav className="gap-6 text-lg font-medium flex flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
         <Link
           className="flex items-center gap-2 text-sm font-semibold md:text-base "
-          href="/"
+          href="/dashboard/cars"
         >
           <Package2Icon className="w-4 h-4 sm:w-6 sm:h-6" />
         </Link>
-        <Link className="text-gray-500 text-sm" href="/inventory">
+        <Link className="text-gray-500 text-sm" href="/dashboard/inventory">
           Inventory
         </Link>
       </nav>

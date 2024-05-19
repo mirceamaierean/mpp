@@ -2,13 +2,11 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 
 export async function POST(req: NextRequest) {
-  const { skip, length, column, direction } = await req.json();
+  const { id } = await req.json();
 
-  const data = await prisma.rentals.findMany({
-    skip: skip,
-    take: length,
-    orderBy: {
-      [column]: direction,
+  const data = await prisma.rentals.findUnique({
+    where: {
+      id: parseInt(id),
     },
   });
   if (!data) {

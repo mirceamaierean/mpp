@@ -111,7 +111,7 @@ function UpdateRentalForm(rental: Rental) {
         onClick={handleSubmit}
         className="bg-primary text-white w-full py-2 rounded-md mt-4"
       >
-        Update Car
+        Update Rental
       </Button>
     </FormControl>
   );

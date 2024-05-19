@@ -20,26 +20,15 @@ model cars {
   rentals      Rentals[]
 }
 
-model persons {
-  id        Int       @id @default(autoincrement())
-  firstname String?
-  lastname  String?
-  email     String?
-  phone     String?
-  address   String?
-  city      String?
-  rentals   Rentals[]
-}
-
 model Rentals {
   id        Int       @id @default(autoincrement())
   carid     Int?
   startdate DateTime? @db.Date
   enddate   DateTime? @db.Date
   value     Int?
-  personid  Int?
+  userid    String?
   cars      cars?     @relation(fields: [carid], references: [id])
-  persons   persons?  @relation(fields: [personid], references: [id])
+  User      User?     @relation(fields: [userid], references: [id])
 }
 
 model Account {
@@ -78,10 +67,10 @@ model User {
   email         String?   @unique
   emailVerified DateTime?
   image         String?
-  score         Int       @default(0)
 
   accounts Account[]
   sessions Session[]
+  Rentals  Rentals[]
 }
 
 model VerificationToken {

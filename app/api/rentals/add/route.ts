@@ -1,12 +1,44 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { getCurrentUser } from "@/lib/session";
 
 export async function POST(req: NextRequest) {
+  const user = await getCurrentUser();
+  if (!user) {
+    return new NextResponse(null, { status: 401 });
+  }
+
+  // get the id of the user from db
+  const { id } = await prisma.user.findUnique({
+    where: {
+      email: user.email,
+    },
+  });
+
   const { data } = await req.json();
+
+  // Add the user id to the rental data
+  data.carid = parseInt(data.carid);
+
+  console.log(data);
 
   try {
     await prisma.rentals.create({
-      data,
+      data: {
+        value: data.value,
+        startdate: data.startdate,
+        enddate: data.enddate,
+        User: {
+          connect: {
+            id: id,
+          },
+        },
+        cars: {
+          connect: {
+            id: data.carid,
+          },
+        },
+      },
     });
   } catch (error) {
     console.error(error);

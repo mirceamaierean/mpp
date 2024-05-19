@@ -269,14 +269,14 @@ export default function CarsTable() {
                 <TableCell>{car.year}</TableCell>
                 <TableCell>{car.color}</TableCell>
                 <TableCell>
-                  <Link href={`/cars/${car.id}`}>
+                  <Link href={`/dashboard/cars/${car.id}`}>
                     <Button className="bg-primary text-white px-2 py-3 rounded-md">
                       Edit Car
                     </Button>
                   </Link>
                 </TableCell>
                 <TableCell>
-                  <Link href={`cars/${car.id}/rentals`}>
+                  <Link href={`/dashboard/cars/${car.id}/rentals`}>
                     <Button className="bg-primary text-white px-2 py-3 rounded-md">
                       View Your Rentals
                     </Button>

@@ -45,12 +45,11 @@ export default function AggregationsTable() {
 
       const data = await res.json();
 
-      const filteredData = data.map((person: any) => {
+      const filteredData = data.map((user: any) => {
         return {
-          firstname: person.person.firstname,
-          lastname: person.person.lastname,
-          email: person.person.email,
-          numberOfRentals: person._count._all,
+          name: user.user.name,
+          email: user.user.email,
+          numberOfRentals: user._count._all,
         };
       });
       setPersonRecords(filteredData as PersonRecord[]);
@@ -76,10 +75,7 @@ export default function AggregationsTable() {
           <TableHead>
             <TableRow>
               <TableCell className="font-bold text-primary">
-                <TableSortLabel>First Name</TableSortLabel>
-              </TableCell>
-              <TableCell className="font-bold text-primary">
-                <TableSortLabel>Last Name</TableSortLabel>
+                <TableSortLabel>Name</TableSortLabel>
               </TableCell>
               <TableCell className="font-bold text-primary">
                 <TableSortLabel>Email</TableSortLabel>
@@ -92,8 +88,7 @@ export default function AggregationsTable() {
           <TableBody>
             {personRecords.map((personRecord) => (
               <TableRow key={personRecord.email}>
-                <TableCell>{personRecord.firstname}</TableCell>
-                <TableCell>{personRecord.lastname}</TableCell>
+                <TableCell>{personRecord.name}</TableCell>
                 <TableCell>{personRecord.email}</TableCell>
                 <TableCell>{personRecord.numberOfRentals}</TableCell>
               </TableRow>

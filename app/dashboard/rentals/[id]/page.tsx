@@ -17,7 +17,7 @@ export default function Page({ params }: { params: { id: number } }) {
     };
 
     getRental();
-  });
+  }, []);
 
   if (loading) return <div>Loading...</div>;
   if (!rental) return notFound();
