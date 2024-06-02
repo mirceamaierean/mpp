@@ -22,6 +22,5 @@ export async function isUserAdmin() {
     },
   });
 
-
   return isAdmin?.role === "admin";
 }

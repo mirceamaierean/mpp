@@ -7,7 +7,7 @@ export async function DELETE(req: NextRequest) {
   if (!isAdmin) {
     return new NextResponse(null, { status: 401 });
   }
-  
+
   const { data } = await req.json();
 
   try {
