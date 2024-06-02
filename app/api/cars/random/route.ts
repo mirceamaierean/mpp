@@ -3,8 +3,13 @@ import { faker } from "@faker-js/faker";
 import prisma from "@/lib/prisma";
 import { getRandomTransmissions } from "@/utils/functions";
 import { getRandomDriveTypes } from "@/utils/functions";
+import { isUserAdmin } from "@/lib/session";
 
 export async function POST(req: NextRequest) {
+  const isAdmin = await isUserAdmin();
+  if (!isAdmin) {
+    return new NextResponse(null, { status: 401 });
+  }
   const randomMake = faker.vehicle.manufacturer();
   const randomModel = faker.vehicle.model();
   const randomYear = Math.floor(Math.random() * (2024 - 1950 + 1)) + 1950;
