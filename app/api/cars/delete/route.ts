@@ -1,8 +1,13 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
+import { isUserAdmin } from "@/lib/session";
 
 export async function DELETE(req: NextRequest) {
-  console.log("DELETE");
+  const isAdmin = await isUserAdmin();
+  if (!isAdmin) {
+    return new NextResponse(null, { status: 401 });
+  }
+
   const { data } = await req.json();
 
   try {

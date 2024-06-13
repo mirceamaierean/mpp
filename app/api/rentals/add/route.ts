@@ -26,8 +26,6 @@ export async function POST(req: NextRequest) {
   // Add the user id to the rental data
   data.carid = parseInt(data.carid);
 
-  console.log(data);
-
   try {
     await prisma.rentals.create({
       data: {

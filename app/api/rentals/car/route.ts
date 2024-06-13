@@ -38,7 +38,5 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  console.log("rentals");
-
   return new NextResponse(JSON.stringify(rentals, null, 2));
 }

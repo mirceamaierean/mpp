@@ -3,11 +3,14 @@ import { faker } from "@faker-js/faker";
 import prisma from "@/lib/prisma";
 import { getRandomTransmissions } from "@/utils/functions";
 import { getRandomDriveTypes } from "@/utils/functions";
+import { isUserAdmin } from "@/lib/session";
 
 export async function POST() {
-  console.log("POST /api/cars/random/batch");
+  const isAdmin = await isUserAdmin();
+  if (!isAdmin) {
+    return new NextResponse(null, { status: 401 });
+  }
   for (let i = 0; i < 1000; ++i) {
-    console.log("Creating car", i);
     const randomMake = faker.vehicle.manufacturer();
     const randomModel = faker.vehicle.model();
     const randomYear = Math.floor(Math.random() * (2024 - 1950 + 1)) + 1950;
