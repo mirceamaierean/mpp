@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { signOut } from "next-auth/react";
+import Link from "next/link";
 
 import {
   DropdownMenu,
@@ -33,6 +34,9 @@ export default function UserProfile({ name, image }: IUser) {
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>{name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
+        <DropdownMenuItem>
+          <Link href="/profile">Profile</Link>
+        </DropdownMenuItem>
         <DropdownMenuItem
           onSelect={(e) => {
             e.preventDefault();

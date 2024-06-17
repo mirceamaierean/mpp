@@ -17,6 +17,8 @@ model cars {
   transmission String?
   drivetype    String?
   fueltype     String?
+  latitude     Float?
+  longitude    Float?
   rentals      Rentals[]
 }
 
@@ -62,12 +64,14 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  name          String?
-  email         String?   @unique
-  emailVerified DateTime?
-  image         String?
-  role          String?   @default("user")
+  id                    String    @id @default(cuid())
+  name                  String?
+  email                 String?   @unique
+  emailVerified         DateTime?
+  image                 String?
+  role                  String?   @default("user")
+  driversLicenseEmitted DateTime?
+  driversLicenseExpires DateTime?
 
   accounts Account[]
   sessions Session[]

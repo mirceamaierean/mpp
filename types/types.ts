@@ -51,4 +51,7 @@ export type User = {
   name: string;
   email: string;
   picture: string;
+  isAdmin: boolean;
+  driversLicenseEmitted: string;
+  driversLicenseExpires: string;
 };

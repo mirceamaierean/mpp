@@ -25,7 +25,7 @@ import {
   deleteRentalsInDB,
   getRentalsByUserInInterval,
   getRentalsCountForCar,
-} from "@/service/RentalsApi";
+} from "@/service/RentalsService";
 
 interface RentalsTableProps {
   carId: number;

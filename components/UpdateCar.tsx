@@ -16,7 +16,7 @@ import {
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { updateCarInDB } from "@/service/CarsApi";
+import { updateCarInDB } from "@/service/CarsService";
 import { isColor } from "@/utils/functions";
 type Props = {
   car: Car;

@@ -9,7 +9,7 @@ import {
   getCarsInInterval,
   getCarsCount,
   addCarToDB,
-} from "@/service/CarsApi";
+} from "@/service/CarsService";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Table,

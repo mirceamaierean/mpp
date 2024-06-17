@@ -3,17 +3,12 @@ import BasicPie from "@/components/Chart";
 import { useEffect, useState } from "react";
 import { Box, MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { Car } from "@/types/types";
-import { getInventoryDataForCars } from "@/service/CarsApi";
+import { getInventoryDataForCars } from "@/service/CarsService";
 import { Data } from "@/components/Chart";
 
 export default function Inventory() {
   const fetchData = async (column: string) => {
     const data = await getInventoryDataForCars(column);
-    return data;
-  };
-
-  const getDataForKey = async (key: keyof Car) => {
-    const data = await fetchData(key);
     return data;
   };
 
@@ -29,12 +24,17 @@ export default function Inventory() {
     "fueltype",
   ];
   useEffect(() => {
+    const getDataForKey = async (key: keyof Car) => {
+      const data = await fetchData(key);
+      return data;
+    };
+
     const fetchDataForKey = async () => {
       const newData = await getDataForKey(key);
       setData(newData);
     };
     fetchDataForKey();
-  }, [key, getDataForKey]);
+  }, [key]);
 
   const handleKeyChange = (e: SelectChangeEvent) => {
     setKey(e.target.value as keyof Car);

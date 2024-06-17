@@ -9,7 +9,7 @@ import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { addRentalToDB } from "@/service/RentalsApi";
+import { addRentalToDB } from "@/service/RentalsService";
 
 type Props = {
   carId: number;

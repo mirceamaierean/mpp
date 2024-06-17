@@ -8,7 +8,7 @@ import InputLabel from "@mui/material/InputLabel";
 import { Rental } from "@/types/types";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { updateRentalInDB } from "@/service/RentalsApi";
+import { updateRentalInDB } from "@/service/RentalsService";
 type Props = {
   rental: Rental;
 };

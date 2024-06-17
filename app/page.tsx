@@ -1,5 +1,9 @@
-import SignInForm from "@/components/SignInComponent";
+import HeroSection from "@/components/HeroSection";
 
 export default async function Home() {
-  return <SignInForm />;
+  return (
+    <>
+      <HeroSection />
+    </>
+  );
 }
