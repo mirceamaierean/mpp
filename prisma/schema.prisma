@@ -20,6 +20,7 @@ model cars {
   latitude     Float?
   price        Int?
   longitude    Float?
+  warranty     Int?
   rentals      Rentals[]
 }
 

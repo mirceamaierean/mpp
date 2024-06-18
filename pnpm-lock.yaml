@@ -21,7 +21,7 @@ importers:
         version: 1.0.6(react@18.3.1)
       "@mantine/carousel":
         specifier: ^7.10.2
-        version: 7.10.2(@mantine/core@7.10.2(@mantine/hooks@7.10.2(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.10.2(react@18.3.1))(embla-carousel-react@7.1.0(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+        version: 7.10.2(@mantine/core@7.10.2(@mantine/hooks@7.10.2(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.10.2(react@18.3.1))(embla-carousel-react@8.1.5(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       "@mantine/core":
         specifier: ^7.10.2
         version: 7.10.2(@mantine/hooks@7.10.2(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -85,6 +85,9 @@ importers:
       class-variance-authority:
         specifier: ^0.7.0
         version: 0.7.0
+      cloudinary:
+        specifier: ^2.2.0
+        version: 2.2.0
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
@@ -100,9 +103,15 @@ importers:
       drizzle-orm:
         specifier: ^0.30.10
         version: 0.30.10(@neondatabase/serverless@0.7.2)(@types/pg@8.6.6)(@types/react@18.3.3)(@vercel/postgres@0.8.0)(pg@8.12.0)(postgres@3.4.4)(react@18.3.1)
+      embla-carousel:
+        specifier: ^8.1.5
+        version: 8.1.5
+      embla-carousel-autoplay:
+        specifier: ^8.1.5
+        version: 8.1.5(embla-carousel@8.1.5)
       embla-carousel-react:
-        specifier: ^7.1.0
-        version: 7.1.0(react@18.3.1)
+        specifier: ^8.1.5
+        version: 8.1.5(react@18.3.1)
       express:
         specifier: ^4.19.2
         version: 4.19.2
@@ -127,6 +136,9 @@ importers:
       next-auth:
         specifier: ^4.24.7
         version: 4.24.7(next@14.1.1(@babel/core@7.24.7)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      next-cloudinary:
+        specifier: ^6.6.2
+        version: 6.6.2(next@14.1.1(@babel/core@7.24.7)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       outline:
         specifier: link:@heroicons/react/outline
         version: link:@heroicons/react/outline
@@ -585,6 +597,36 @@ packages:
     resolution:
       {
         integrity: sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==,
+      }
+
+  "@cloudinary-util/types@1.0.5":
+    resolution:
+      {
+        integrity: sha512-QySi6Q138yg/qrD7f6yscH9T+/8VwUfF9AiwFPMS89uI5wnSG9nhC+93a/8iUpgk9ujTDVqE8+TqYAbxvF0BMA==,
+      }
+
+  "@cloudinary-util/url-loader@5.3.1":
+    resolution:
+      {
+        integrity: sha512-cYgnazu7cLjRaajGmhyVfMxjrOz4EaSQsWK1/utV4K5kknUUhu8vUovGunDQJbEGmBWB/TUt7zmwpdUAQ+pe4g==,
+      }
+
+  "@cloudinary-util/util@3.0.2":
+    resolution:
+      {
+        integrity: sha512-EMmspJLVFn9hX92DaK/yuSzSUXF/BJ88crzN8vT1qCaJMMWKapGNo2HZ6YNgG69PP/Jngdk0mTINDU+GP3A1CA==,
+      }
+
+  "@cloudinary/transformation-builder-sdk@1.13.3":
+    resolution:
+      {
+        integrity: sha512-tBMpjcwBjUgINGm2lKodb1fe32yBeq2KTSD7TrrFPm2/dQOb7lKmVuDaDe89IPcV+QZbb1JY/ZWL9pZjUV4aKw==,
+      }
+
+  "@cloudinary/url-gen@1.15.0":
+    resolution:
+      {
+        integrity: sha512-bjU67eZxLUgoRy/Plli4TQio7q6P31OYqnEgXxeN9TKXrzr6h0DeEdIUhKI9gy3HkEBWXWWJIPh7j7gkOJPnyA==,
       }
 
   "@emnapi/runtime@1.2.0":
@@ -2722,6 +2764,12 @@ packages:
       }
     engines: { node: ">= 10" }
 
+  "@tsconfig/recommended@1.0.6":
+    resolution:
+      {
+        integrity: sha512-0IKu9GHYF1NGTJiYgfWwqnOQSlnE9V9R7YohHNNf0/fj/SyOZWzdd06JFr0fLpg1Mqw0kGbYg8w5xdkSqLKM9g==,
+      }
+
   "@types/aria-query@5.0.4":
     resolution:
       {
@@ -3748,6 +3796,13 @@ packages:
       }
     engines: { node: ">=12" }
 
+  cloudinary@2.2.0:
+    resolution:
+      {
+        integrity: sha512-akbLTZcNegGSkl07Frnt9fyiK9KZ2zPS+a+j7uLrjNYxVhDpDdIBz9G6snPCYqgk+WLVMRPfXTObalLr5L6g0Q==,
+      }
+    engines: { node: ">=9" }
+
   clsx@2.0.0:
     resolution:
       {
@@ -4594,18 +4649,34 @@ packages:
         integrity: sha512-61H9mLzGOCLLVsnLiRzCbc63uldP0AniRYPV3hbGVtONA1pI7qSGILdbofR7A8TMbOypDocEAjH/e+9k1QIe3g==,
       }
 
-  embla-carousel-react@7.1.0:
+  embla-carousel-autoplay@8.1.5:
     resolution:
       {
-        integrity: sha512-tbYRPRZSDNd2QLNqYDcArAakGIxtUbhS7tkP0dGXktXHGgcX+3ji3VrOUTOftBiujZrMV8kRxtrRUe/1soloIQ==,
+        integrity: sha512-9pHIezRqiO9yism7wRFwmM1j/W9c9hBNX4hq3F4aTPbK84M0M57ryG8QUwhbsTGJbDoBBVTm//YEd0T6i/5YgA==,
+      }
+    peerDependencies:
+      embla-carousel: 8.1.5
+
+  embla-carousel-react@8.1.5:
+    resolution:
+      {
+        integrity: sha512-xFmfxgJd7mpWDHQ4iyK1Qs+5BTTwu4bkn+mSROKiUH9nKpPHTeilQ+rpeQDCHRrAPeshD67aBk0/p6FxWxXsng==,
       }
     peerDependencies:
       react: ^16.8.0 || ^17.0.1 || ^18.0.0
 
-  embla-carousel@7.1.0:
+  embla-carousel-reactive-utils@8.1.5:
     resolution:
       {
-        integrity: sha512-Bh8Pa8NWzgugLkf8sAGexQlBCNDFaej5BXiKgQdRJ1mUC9NWBrw9Z23YVPVGkguWoz5LMjZXXFVGCobl3UPt/Q==,
+        integrity: sha512-76uZTrSaEGGta+qpiGkMFlLK0I7N04TdjZ2obrBhyggYIFDWlxk1CriIEmt2lisLNsa1IYXM85kr863JoCMSyg==,
+      }
+    peerDependencies:
+      embla-carousel: 8.1.5
+
+  embla-carousel@8.1.5:
+    resolution:
+      {
+        integrity: sha512-R6xTf7cNdR2UTNM6/yUPZlJFRmZSogMiRjJ5vXHO65II5MoUlrVYUAP0fHQei/py82Vf15lj+WI+QdhnzBxA2g==,
       }
 
   emittery@0.13.1:
@@ -6812,6 +6883,15 @@ packages:
       nodemailer:
         optional: true
 
+  next-cloudinary@6.6.2:
+    resolution:
+      {
+        integrity: sha512-MbI5WpSk4dj9YnRgDp1C7vjtMivqOdkoR/jcmjIGR2Zth5RqGgiTpi7ee87d9pEdrfuJxdDzv27KA4s8tAVQkQ==,
+      }
+    peerDependencies:
+      next: ^12 || ^13 || ^14
+      react: ^17 || ^18
+
   next-tick@1.1.0:
     resolution:
       {
@@ -7527,6 +7607,17 @@ packages:
       {
         integrity: sha512-bVWawvoZoBYpp6yIoQtQXHZjmz35RSVHnUOTefl8Vcjr8snTPY1wnpSPMWekcFwbxI6gtmT7rSYPFvz71ldiOA==,
       }
+
+  q@1.5.1:
+    resolution:
+      {
+        integrity: sha512-kV/CThkXo6xyFEZUugw/+pIOywXcDbFYgSct5cT3gqlbkBE1SJdwy6UQoZvodiWF/ckQLZyDE/Bu1M6gVu5lVw==,
+      }
+    engines: { node: ">=0.6.0", teleport: ">=0.2.0" }
+    deprecated: |-
+      You or someone you depend on is using Q, the JavaScript Promise library that gave JavaScript developers strong feelings about promises. They can almost certainly migrate to the native JavaScript promise now. Thank you literally everyone for joining me in this bet against the odds. Be excellent to each other.
+
+      (For a CapTP with native promises, see @endo/eventual-send and @endo/captp)
 
   qs@6.11.0:
     resolution:
@@ -9340,6 +9431,25 @@ snapshots:
 
   "@bcoe/v8-coverage@0.2.3": {}
 
+  "@cloudinary-util/types@1.0.5": {}
+
+  "@cloudinary-util/url-loader@5.3.1":
+    dependencies:
+      "@cloudinary-util/types": 1.0.5
+      "@cloudinary-util/util": 3.0.2
+      "@cloudinary/url-gen": 1.15.0
+      zod: 3.23.8
+
+  "@cloudinary-util/util@3.0.2": {}
+
+  "@cloudinary/transformation-builder-sdk@1.13.3":
+    dependencies:
+      "@cloudinary/url-gen": 1.15.0
+
+  "@cloudinary/url-gen@1.15.0":
+    dependencies:
+      "@cloudinary/transformation-builder-sdk": 1.13.3
+
   "@emnapi/runtime@1.2.0":
     dependencies:
       tslib: 2.6.3
@@ -9925,11 +10035,11 @@ snapshots:
 
   "@leichtgewicht/ip-codec@2.0.5": {}
 
-  "@mantine/carousel@7.10.2(@mantine/core@7.10.2(@mantine/hooks@7.10.2(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.10.2(react@18.3.1))(embla-carousel-react@7.1.0(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)":
+  "@mantine/carousel@7.10.2(@mantine/core@7.10.2(@mantine/hooks@7.10.2(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(@mantine/hooks@7.10.2(react@18.3.1))(embla-carousel-react@8.1.5(react@18.3.1))(react-dom@18.3.1(react@18.3.1))(react@18.3.1)":
     dependencies:
       "@mantine/core": 7.10.2(@mantine/hooks@7.10.2(react@18.3.1))(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       "@mantine/hooks": 7.10.2(react@18.3.1)
-      embla-carousel-react: 7.1.0(react@18.3.1)
+      embla-carousel-react: 8.1.5(react@18.3.1)
       react: 18.3.1
       react-dom: 18.3.1(react@18.3.1)
 
@@ -10760,6 +10870,8 @@ snapshots:
 
   "@tootallnate/once@2.0.0": {}
 
+  "@tsconfig/recommended@1.0.6": {}
+
   "@types/aria-query@5.0.4": {}
 
   "@types/babel__core@7.20.5":
@@ -11439,6 +11551,11 @@ snapshots:
       strip-ansi: 6.0.1
       wrap-ansi: 7.0.0
 
+  cloudinary@2.2.0:
+    dependencies:
+      lodash: 4.17.21
+      q: 1.5.1
+
   clsx@2.0.0: {}
 
   clsx@2.1.1: {}
@@ -11877,12 +11994,21 @@ snapshots:
 
   electron-to-chromium@1.4.803: {}
 
-  embla-carousel-react@7.1.0(react@18.3.1):
+  embla-carousel-autoplay@8.1.5(embla-carousel@8.1.5):
     dependencies:
-      embla-carousel: 7.1.0
+      embla-carousel: 8.1.5
+
+  embla-carousel-react@8.1.5(react@18.3.1):
+    dependencies:
+      embla-carousel: 8.1.5
+      embla-carousel-reactive-utils: 8.1.5(embla-carousel@8.1.5)
       react: 18.3.1
 
-  embla-carousel@7.1.0: {}
+  embla-carousel-reactive-utils@8.1.5(embla-carousel@8.1.5):
+    dependencies:
+      embla-carousel: 8.1.5
+
+  embla-carousel@8.1.5: {}
 
   emittery@0.13.1: {}
 
@@ -13629,6 +13755,15 @@ snapshots:
       react-dom: 18.3.1(react@18.3.1)
       uuid: 8.3.2
 
+  next-cloudinary@6.6.2(next@14.1.1(@babel/core@7.24.7)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1):
+    dependencies:
+      "@cloudinary-util/types": 1.0.5
+      "@cloudinary-util/url-loader": 5.3.1
+      "@cloudinary-util/util": 3.0.2
+      "@tsconfig/recommended": 1.0.6
+      next: 14.1.1(@babel/core@7.24.7)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      react: 18.3.1
+
   next-tick@1.1.0: {}
 
   next@14.1.1(@babel/core@7.24.7)(babel-plugin-macros@3.1.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
@@ -14017,6 +14152,8 @@ snapshots:
   punycode@2.3.1: {}
 
   pure-rand@6.1.0: {}
+
+  q@1.5.1: {}
 
   qs@6.11.0:
     dependencies:

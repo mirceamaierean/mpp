@@ -123,3 +123,17 @@ export const getCarsThatAreNotInRent = async (
 
   return data as Car[];
 };
+
+export const getCarsPhotos = async (id: number) => {
+  try {
+    const res = await fetch(
+      process.env.NEXT_PUBLIC_APP_URL + "/api/cars/photos?id=" + id,
+    );
+    if (res.status === 404) return [];
+    const data = await res.json();
+    return data as string[];
+  } catch (error) {
+    console.error("Error:", error);
+  }
+  return [];
+};

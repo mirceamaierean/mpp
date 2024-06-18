@@ -25,9 +25,10 @@ export async function GET(req: NextRequest) {
     `
     SELECT * FROM cars
     WHERE id NOT IN (
-      SELECT carid FROM "Rentals"
+      SELECT distinct carid FROM "Rentals"
       WHERE startdate <= $1 AND enddate >= $1
       OR startdate <= $2 AND enddate >= $2
+      OR $1 <= startdate AND $2 >= enddate
     )
   `,
     [startDate, endDate],

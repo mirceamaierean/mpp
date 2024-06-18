@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth/next";
 
 import { authOptions } from "@/lib/auth";
 import prisma from "./prisma";
+import { User } from "@prisma/client";
 
 export async function getCurrentUser() {
   const session = await getServerSession(authOptions);
@@ -19,7 +20,7 @@ export async function getUser() {
     },
   });
 
-  return user;
+  return user as User;
 }
 
 export async function isUserAdmin() {

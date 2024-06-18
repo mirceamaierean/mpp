@@ -1,17 +1,13 @@
 "use client";
-import React, { useState, ReactNode, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import CarCard from "./CarCard";
 import { getCarsThatAreNotInRent } from "@/service/CarsService";
 import { Car } from "@/types/types";
 
-interface DateRangeFormProps {
-  children?: ReactNode;
-}
-
-const DateRangeForm: React.FC<DateRangeFormProps> = ({ children }) => {
-  const [cars, setCars] = useState<Car[]>([]); // [1
-  const [startDate, setStartDate] = useState("2025-12-20");
-  const [endDate, setEndDate] = useState("2025-12-30");
+const DateRangeForm: React.FC = () => {
+  const [cars, setCars] = useState<Car[]>([]);
+  const [startDate, setStartDate] = useState("2030-12-20");
+  const [endDate, setEndDate] = useState("2030-12-30");
 
   const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setStartDate(e.target.value);
@@ -37,7 +33,7 @@ const DateRangeForm: React.FC<DateRangeFormProps> = ({ children }) => {
     };
 
     fetchCars();
-  }, []);
+  }, [endDate, startDate]);
 
   return (
     <>
@@ -88,10 +84,8 @@ const DateRangeForm: React.FC<DateRangeFormProps> = ({ children }) => {
         {cars.map((car, index) => (
           <CarCard
             key={index}
-            make={car.make}
-            model={car.model}
+            car={car}
             link={`/cars/${car.id}?start=${startDate}&end=${endDate}`}
-            price={car.price as number}
           />
         ))}
       </div>

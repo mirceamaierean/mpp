@@ -24,7 +24,6 @@ export async function POST(req: NextRequest) {
     } finally {
       writeStream.end();
 
-      // wait for the file to be written
       await new Promise((resolve) => writeStream.on("finish", resolve));
 
       const mindeeClient = new mindee.Client({

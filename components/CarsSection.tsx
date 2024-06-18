@@ -13,10 +13,7 @@ const CarsSection: React.FC = () => {
             Here you can see the cars we have available in our company. Select
             the period you want to rent the car, and we will automatically
             calculate the required cost.{" "}
-            <strong>The price varies depending on the rental period.</strong> To
-            rent a car, you will leave a sum of money as a warranty, and at the
-            end of the rental period, if there are no damages, you will receive
-            the amount back.
+            <strong>The price varies depending on the rental period.</strong>
           </p>
         </div>
         <DateRangeForm />

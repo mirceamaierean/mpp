@@ -5,6 +5,7 @@ import { CameraIcon, XIcon } from "@heroicons/react/outline";
 import { updateUserInformation } from "@/service/UsersService";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { processPhoto, uploadPhoto } from "@/service/LicenseService";
 
 const PhotoUploadForm: React.FC = () => {
   const [image, setImage] = useState<File | null>(null);
@@ -46,7 +47,7 @@ const PhotoUploadForm: React.FC = () => {
         0,
         0,
         canvasRef.current.width,
-        canvasRef.current.height,
+        canvasRef.current.height
       );
       canvasRef.current.toBlob((blob) => {
         if (blob) {
@@ -89,15 +90,8 @@ const PhotoUploadForm: React.FC = () => {
     formData.append("photo", image);
 
     try {
-      const response = await fetch(
-        process.env.NEXT_PUBLIC_APP_URL + "/api/driver-license/process-photo",
-        {
-          method: "POST",
-          body: formData,
-        },
-      );
-
-      if (response.status != 200) {
+      const response = await processPhoto(formData);
+      if (response === null || response.status != 200) {
         toast.error("Failed to upload photo", {
           position: "bottom-center",
           autoClose: 5000,
@@ -109,9 +103,7 @@ const PhotoUploadForm: React.FC = () => {
         setIsLoading(false);
         return;
       }
-
       const data = await response.json();
-
       if (
         data.issueDate.value === undefined &&
         data.expiryDate.value === undefined
@@ -125,7 +117,7 @@ const PhotoUploadForm: React.FC = () => {
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
-          },
+          }
         );
         setIsLoading(false);
         return;
@@ -142,9 +134,7 @@ const PhotoUploadForm: React.FC = () => {
         issueDate: data.issueDate.value,
         expiryDate: data.expiryDate.value,
       };
-
       const res = await updateUserInformation(licenseData);
-
       if (res !== null) {
         toast.success("Driver's license information has been updated", {
           position: "bottom-center",
@@ -154,6 +144,7 @@ const PhotoUploadForm: React.FC = () => {
           pauseOnHover: true,
           draggable: true,
         });
+        await uploadPhoto(formData);
       } else {
         console.error("Failed to update driver's license information");
         toast.error("Failed to update driver's license information", {
@@ -269,6 +260,7 @@ const PhotoUploadForm: React.FC = () => {
         <button
           type="submit"
           className="px-4 py-2 bg-primary text-white rounded-full flex items-center"
+          disabled={isLoading}
         >
           {(isLoading && (
             <>
