@@ -69,8 +69,6 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  console.log("User updated", user);
-
   return new NextResponse(JSON.stringify(user), {
     status: 200,
   });

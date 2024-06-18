@@ -18,19 +18,22 @@ model cars {
   drivetype    String?
   fueltype     String?
   latitude     Float?
+  price        Int?
   longitude    Float?
   rentals      Rentals[]
 }
 
 model Rentals {
-  id        Int       @id @default(autoincrement())
-  carid     Int?
-  startdate DateTime? @db.Date
-  enddate   DateTime? @db.Date
-  value     Int?
-  userid    String?
-  cars      cars?     @relation(fields: [carid], references: [id])
-  User      User?     @relation(fields: [userid], references: [id])
+  id         Int       @id @default(autoincrement())
+  carid      Int?
+  startdate  DateTime? @db.Date
+  enddate    DateTime? @db.Date
+  value      Int?
+  userid     String?
+  paymentid  String?
+  receiptUrl String?
+  cars       cars?     @relation(fields: [carid], references: [id])
+  User       User?     @relation(fields: [userid], references: [id])
 }
 
 model Account {

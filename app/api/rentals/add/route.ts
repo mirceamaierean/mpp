@@ -8,23 +8,11 @@ export async function POST(req: NextRequest) {
     return new NextResponse(null, { status: 401 });
   }
 
-  // get the id of the user from db
-  const userWithId = await prisma.user.findUnique({
-    where: {
-      email: user.email as string,
-    },
-  });
-
-  if (!userWithId) {
-    return new NextResponse(null, { status: 404 });
-  }
-
-  const id = userWithId.id;
-
   const { data } = await req.json();
 
-  // Add the user id to the rental data
   data.carid = parseInt(data.carid);
+  data.startdate = new Date(data.startdate);
+  data.enddate = new Date(data.enddate);
 
   try {
     await prisma.rentals.create({
@@ -32,9 +20,11 @@ export async function POST(req: NextRequest) {
         value: data.value,
         startdate: data.startdate,
         enddate: data.enddate,
+        paymentid: data.paymentid,
+        receiptUrl: data.receiptUrl,
         User: {
           connect: {
-            id: id,
+            email: user.email as string,
           },
         },
         cars: {

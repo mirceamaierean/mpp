@@ -37,6 +37,7 @@ function AddRentalForm({
       value,
       startdate: startDate?.toISOString(),
       enddate: endDate?.toISOString(),
+      paymentid: "added later",
     });
 
     if (res.status === 400) {

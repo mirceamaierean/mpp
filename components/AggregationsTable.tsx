@@ -35,13 +35,16 @@ export default function AggregationsTable() {
   const fetchData = async (skip: number, length: number) => {
     try {
       setLoading(true);
-      const res = await fetch("/api/rentals/persons-stats", {
-        method: "POST",
-        body: JSON.stringify({
-          skip: skip,
-          length: length,
-        }),
-      });
+      const res = await fetch(
+        process.env.NEXT_PUBLIC_APP_URL + "/api/rentals/persons-stats",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            skip: skip,
+            length: length,
+          }),
+        },
+      );
 
       const data = await res.json();
 

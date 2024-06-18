@@ -5,6 +5,7 @@ const nextConfig = {
   },
   images: {
     formats: ["image/avif", "image/webp"],
+    domains: ["moarentacar.com", "d1gymyavdvyjgt.cloudfront.net"],
     remotePatterns: [
       {
         protocol: "https",

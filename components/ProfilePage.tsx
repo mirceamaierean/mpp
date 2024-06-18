@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { getUser } from "@/lib/session";
 import { format } from "date-fns";
 import dynamic from "next/dynamic";
@@ -32,20 +33,20 @@ export default async function ProfilePage() {
         <nav className="mt-6">
           <ul>
             <li className="mb-2">
-              <a
+              <Link
                 href="#"
                 className="text-gray-700 hover:text-gray-900 block py-2 px-6"
               >
                 Profile
-              </a>
+              </Link>
             </li>
             <li className="mb-2">
-              <a
+              <Link
                 href="#"
                 className="text-gray-700 hover:text-gray-900 block py-2 px-6"
               >
                 Rentals
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>

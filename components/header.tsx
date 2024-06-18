@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { getCurrentUser } from "@/lib/session";
 import Image from "next/image";
-import logo from "@/assets/images/logomoa.webp";
+import logo from "@/assets/images/logompp.webp";
 import UserProfile from "./UserProfile";
 import LoginButton from "./LoginButton";
 

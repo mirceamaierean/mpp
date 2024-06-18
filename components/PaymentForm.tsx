@@ -2,8 +2,13 @@
 
 import React from "react";
 import { CardElement, useElements, useStripe } from "@stripe/react-stripe-js";
-import { createPaymentIntent } from "@/service/PaymentsService";
+import {
+  createPaymentIntent,
+  getLatestCharge,
+} from "@/service/PaymentsService";
 import Button from "@mui/material/Button";
+import { PaymentFormProps } from "./ElementsWrapperStripe";
+import { addRentalToDB } from "@/service/RentalsService";
 
 const CARD_ELEMENT_OPTIONS = {
   style: {
@@ -22,7 +27,12 @@ const CARD_ELEMENT_OPTIONS = {
   hidePostalCode: true, // Add this line to hide the postal code field
 };
 
-export default function PaymentForm() {
+export default function PaymentForm({
+  amount,
+  startDate,
+  endDate,
+  carId,
+}: PaymentFormProps) {
   const stripe = useStripe();
   const elements = useElements();
 
@@ -34,7 +44,7 @@ export default function PaymentForm() {
       return;
     }
 
-    const data = await createPaymentIntent(1000);
+    const data = await createPaymentIntent(amount);
     const clientSecret = data.clientSecret;
 
     try {
@@ -44,7 +54,7 @@ export default function PaymentForm() {
           payment_method: {
             card: cardElement,
             billing_details: {
-              name: "Mihai Costel",
+              name: "mirciu",
             },
           },
         },
@@ -53,7 +63,21 @@ export default function PaymentForm() {
       if (error) {
         console.error(error);
       } else if (paymentIntent) {
-        console.log(paymentIntent);
+        const { receipt_url } = await getLatestCharge(paymentIntent.id);
+
+        const res = await addRentalToDB({
+          carid: carId,
+          value: amount,
+          startdate: startDate,
+          enddate: endDate,
+          paymentid: paymentIntent.id,
+          receiptUrl: receipt_url,
+        });
+
+        if (res.status === 400) {
+          console.error("Failed to add rental");
+          return;
+        }
       }
     } catch (error) {
       console.error(error);

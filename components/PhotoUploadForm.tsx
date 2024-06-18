@@ -89,10 +89,13 @@ const PhotoUploadForm: React.FC = () => {
     formData.append("photo", image);
 
     try {
-      const response = await fetch("/api/driver-license/process-photo", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        process.env.NEXT_PUBLIC_APP_URL + "/api/driver-license/process-photo",
+        {
+          method: "POST",
+          body: formData,
+        },
+      );
 
       if (response.status != 200) {
         toast.error("Failed to upload photo", {
