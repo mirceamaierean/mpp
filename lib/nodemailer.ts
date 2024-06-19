@@ -29,6 +29,7 @@ export function compileRentalConfirmationTemplate(
   startDate: string,
   endDate: string,
   car: string,
+  city: string,
 ) {
   const template = handlebars.compile(rentalConfirmationTemplate);
 
@@ -38,6 +39,7 @@ export function compileRentalConfirmationTemplate(
     startDate: startDate,
     endDate: endDate,
     car: car,
+    city: city,
   });
   return htmlBody;
 }

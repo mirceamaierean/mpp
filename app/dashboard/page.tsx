@@ -7,7 +7,6 @@ export default async function Home() {
   }
 
   if (user.role !== "admin") {
-    // TODO: Display a message that the user is not authorized. Style it nicely.
     return null;
   }
   return <AdminDashboard user={user} />;

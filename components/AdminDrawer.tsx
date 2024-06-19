@@ -7,9 +7,32 @@ export default function AdminDrawer({
   setCarsTable,
   setRentalsTable,
   setStatsTable,
+  carsTable,
+  rentalsTable,
+  statsTable,
 }: AdminProps) {
+  const handleDrawerChange = (value: string) => {
+    switch (value) {
+      case "cars":
+        setCarsTable && setCarsTable(true);
+        setRentalsTable && setRentalsTable(false);
+        setStatsTable && setStatsTable(false);
+        break;
+      case "rentals":
+        setCarsTable && setCarsTable(false);
+        setRentalsTable && setRentalsTable(true);
+        setStatsTable && setStatsTable(false);
+        break;
+      case "stats":
+        setCarsTable && setCarsTable(false);
+        setRentalsTable && setRentalsTable(false);
+        setStatsTable && setStatsTable(true);
+        break;
+    }
+  };
+
   return (
-    <aside className="w-64 bg-white shadow-lg pt-20">
+    <aside className="w-64 bg-white pt-20 z-40">
       <div className="p-6">
         <div className="flex flex-col items-center space-x-4">
           <Image
@@ -30,22 +53,32 @@ export default function AdminDrawer({
           {/* render 2 buttons, to mark what component is rendered */}
           <li>
             <button
-            //   onClick={() => setProfileSelected(true)}
-            //   className={`w-full p-4 block text-left ${
-            //     isProfileSelected ? "bg-gray-200" : ""
-            //   }`}
+              onClick={() => handleDrawerChange("cars")}
+              className={`w-full p-4 block text-left ${
+                carsTable ? "bg-gray-200" : ""
+              }`}
             >
-              Profile
+              Cars
             </button>
           </li>
           <li>
             <button
-            //   onClick={() => setProfileSelected(false)}
-            //   className={`w-full p-4 block text-left ${
-            //     !isProfileSelected ? "bg-gray-200" : ""
-            //   }`}
+              onClick={() => handleDrawerChange("rentals")}
+              className={`w-full p-4 block text-left ${
+                rentalsTable ? "bg-gray-200" : ""
+              }`}
             >
               Rentals
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => handleDrawerChange("stats")}
+              className={`w-full p-4 block text-left ${
+                statsTable ? "bg-gray-200" : ""
+              }`}
+            >
+              Stats
             </button>
           </li>
         </ul>

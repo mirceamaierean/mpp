@@ -18,7 +18,7 @@ const Footer: React.FC<Props> = ({
               {" "}
               MPP Rent
             </a>
-            . Toate drepturile rezervate.
+            . All rights reserved.
           </span>
           <div className="flex mt-4 space-x-6 sm:justify-center sm:mt-0">
             <a

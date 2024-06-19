@@ -7,17 +7,20 @@ import { Car } from "@/types/types";
 const DateRangeForm: React.FC = () => {
   const [cars, setCars] = useState<Car[]>([]);
   const [startDate, setStartDate] = useState(
-    new Date().toISOString().split("T")[0]
+    new Date().toISOString().split("T")[0],
   );
-  const [endDate, setEndDate] = useState(
-    new Date().toISOString().split("T")[0]
-  );
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const [endDate, setEndDate] = useState(tomorrow.toISOString().split("T")[0]);
 
   const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const startDateAsDate = new Date(e.target.value);
     const endDateAsDate = new Date(endDate);
-    if (startDateAsDate > endDateAsDate) {
-      setEndDate(e.target.value);
+    if (startDateAsDate >= endDateAsDate) {
+      // set end date to the next day
+      const nextDay = new Date(startDateAsDate);
+      nextDay.setDate(nextDay.getDate() + 1);
+      setEndDate(nextDay.toISOString().split("T")[0]);
     }
     setStartDate(e.target.value);
   };
@@ -25,9 +28,11 @@ const DateRangeForm: React.FC = () => {
   const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const startDateAsDate = new Date(startDate);
     const endDateAsDate = new Date(e.target.value);
-    if (startDateAsDate > endDateAsDate) {
-      // make automatically the end date the same as the start date
-      setEndDate(startDate);
+    if (startDateAsDate >= endDateAsDate) {
+      // set start date to the previous day
+      const previousDay = new Date(endDateAsDate);
+      previousDay.setDate(previousDay.getDate() - 1);
+      setStartDate(previousDay.toISOString().split("T")[0]);
     } else {
       setEndDate(e.target.value);
     }

@@ -27,7 +27,7 @@ export default async function Page({
 
   const user = await getUser();
   let invalidUserMessage = "";
-  if (!user) {
+  if (user === null) {
     invalidUserMessage = "You need to be logged in to rent a car";
   } else if (user.driversLicenseEmitted === null) {
     invalidUserMessage =

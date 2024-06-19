@@ -28,10 +28,10 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function CarsTable() {
+  const [open, setOpen] = useState(false);
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const columnToSortDefault: keyof cars = "make";
   const [cars, setCars] = useState<cars[]>([]);
-  const [open, setOpen] = useState(false);
   const [carsCount, setCarsCount] = useState<number>(0);
 
   const [columnToSort, setColumnToSort] =
@@ -106,7 +106,7 @@ export default function CarsTable() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14">
       <AddCarModal open={open} setOpen={setOpen} />
       <div className="flex justify-end py-4">
         <Button
@@ -155,9 +155,8 @@ export default function CarsTable() {
                     setDirection(changeDirectionBasedOnColumn("make"));
                     setColumnToSort("make");
                   }}
-                >
-                  Make
-                </TableSortLabel>
+                ></TableSortLabel>
+                Make
               </TableCell>
               <TableCell className="font-bold text-primary">
                 <TableSortLabel
@@ -167,9 +166,8 @@ export default function CarsTable() {
                     setDirection(changeDirectionBasedOnColumn("model"));
                     setColumnToSort("model");
                   }}
-                >
-                  Model
-                </TableSortLabel>
+                ></TableSortLabel>
+                Model
               </TableCell>
               <TableCell className="font-bold text-primary">
                 <TableSortLabel
@@ -179,9 +177,8 @@ export default function CarsTable() {
                     setDirection(changeDirectionBasedOnColumn("year"));
                     setColumnToSort("year");
                   }}
-                >
-                  Year
-                </TableSortLabel>
+                ></TableSortLabel>
+                Year
               </TableCell>
               <TableCell className="font-bold text-primary">
                 <TableSortLabel
@@ -191,14 +188,10 @@ export default function CarsTable() {
                     setDirection(changeDirectionBasedOnColumn("color"));
                     setColumnToSort("color");
                   }}
-                >
-                  Color
-                </TableSortLabel>
+                ></TableSortLabel>
+                Color
               </TableCell>
               <TableCell className="font-bold text-primary">Details</TableCell>
-              <TableCell className="font-bold text-primary">
-                View Rentals
-              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -225,13 +218,6 @@ export default function CarsTable() {
                   <Link href={`/dashboard/cars/${car.id}`}>
                     <Button className="bg-primary text-white px-2 py-3 rounded-md">
                       Manage Car
-                    </Button>
-                  </Link>
-                </TableCell>
-                <TableCell>
-                  <Link href={`/dashboard/cars/${car.id}/rentals`}>
-                    <Button className="bg-primary text-white px-2 py-3 rounded-md">
-                      View Your Rentals
                     </Button>
                   </Link>
                 </TableCell>

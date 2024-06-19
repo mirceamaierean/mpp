@@ -1,9 +1,49 @@
 import { Rental } from "@/types/types";
 
-export const getRentalsCountForCar = async (carId: number) => {
+export const getAllRentals = async (
+  skip: number,
+  length: number,
+  column: string,
+  direction: string,
+) => {
   try {
     const res = await fetch(
-      process.env.NEXT_PUBLIC_APP_URL + "/api/rentals/car/count?carId=" + carId,
+      process.env.NEXT_PUBLIC_APP_URL +
+        "/api/rentals?skip=" +
+        skip +
+        "&length=" +
+        length +
+        "&column=" +
+        column +
+        "&direction=" +
+        direction,
+    );
+
+    const data = await res.json();
+
+    return data;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+  return [];
+};
+
+export const getRentalsRelativeToDate = async (upcoming: boolean) => {
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_APP_URL +
+      "/api/rentals/relative-to-date?upcoming=" +
+      upcoming,
+  );
+
+  const data = await res.json();
+
+  return data;
+};
+
+export const getRentalsCount = async () => {
+  try {
+    const res = await fetch(
+      process.env.NEXT_PUBLIC_APP_URL + "/api/rentals/count",
     );
 
     if (res.status === 404) return null;

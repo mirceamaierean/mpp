@@ -34,6 +34,7 @@ model Rentals {
   receiptUrl String?
   cars       cars?     @relation(fields: [carid], references: [id])
   User       User?     @relation(fields: [userid], references: [id])
+  city       String?
 }
 
 model Account {

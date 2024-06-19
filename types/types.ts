@@ -41,6 +41,7 @@ export type Rental = {
   value: number;
   paymentid: string;
   receiptUrl: string;
+  city: string;
 };
 
 export type PersonRecord = {

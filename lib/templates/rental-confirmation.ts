@@ -219,6 +219,7 @@ export const rentalConfirmationTemplate = `<!DOCTYPE html>
 																	<p style="margin: 0; word-break: break-word;"><span>{{startDate}}</span></p>
 																	<p style="margin: 0; word-break: break-word;">{{endDate}}</p>
 																	<p style="margin: 0; word-break: break-word;">{{car}}</p>
+																	<p style="margin: 0; word-break: break-word;">{{city}}</p>
 																</div>
 															</td>
 														</tr>

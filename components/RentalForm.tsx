@@ -23,7 +23,7 @@ export default function RentalForm({
   const [startDate, setStartDate] = useState<string>(startDateSearch);
   const [endDate, setEndDate] = useState<string>(endDateSearch);
   const [amount, setAmount] = useState<number>(0);
-
+  const [location, setLocation] = useState<string>("Beclean");
   const price = car.price || 0;
 
   useEffect(() => {
@@ -39,13 +39,15 @@ export default function RentalForm({
         setError("");
       }
     };
-    const start = new Date(startDate);
-    const end = new Date(endDate);
-    checkAvailability(startDate, endDate);
-    const diff = end.getTime() - start.getTime();
-    const days = diff / (1000 * 60 * 60 * 24);
-    setAmount(days * price);
-  }, [startDate, endDate, price, car.id]);
+    if (error !== "You need to be logged in to rent a car") {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      checkAvailability(startDate, endDate);
+      const diff = end.getTime() - start.getTime();
+      const days = diff / (1000 * 60 * 60 * 24);
+      setAmount(days * price);
+    }
+  }, [startDate, endDate, price, car.id, error]);
 
   return (
     <div>
@@ -54,12 +56,15 @@ export default function RentalForm({
         setStartDate={setStartDate}
         endDate={endDate}
         setEndDate={setEndDate}
+        location={location}
+        setLocation={setLocation}
       />
       {error !== "" ? (
         <div className="text-red-500 text-center">{error}</div>
       ) : (
         <ElementsWrapperStripe
           amount={amount}
+          location={location}
           startDate={startDate}
           endDate={endDate}
           car={car}

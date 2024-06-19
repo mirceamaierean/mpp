@@ -32,6 +32,7 @@ export default function PaymentForm({
   startDate,
   endDate,
   car,
+  location,
 }: PaymentFormProps) {
   const stripe = useStripe();
   const elements = useElements();
@@ -82,6 +83,7 @@ export default function PaymentForm({
           enddate: endDate,
           paymentid: paymentIntent.id,
           receiptUrl: receipt_url,
+          city: location,
         });
 
         if (res.status === 400) {

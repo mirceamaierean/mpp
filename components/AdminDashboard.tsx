@@ -1,11 +1,9 @@
 "use client";
 import React from "react";
 import { useState } from "react";
-import { Box, CssBaseline, Toolbar, Typography } from "@mui/material";
 import AdminDrawer from "./AdminDrawer";
 import { User } from "@prisma/client";
-
-const drawerWidth = 240;
+import AdminTables from "./AdminTables";
 
 export interface AdminProps {
   user: User;
@@ -23,24 +21,22 @@ function AdminDashboard({ user }: AdminProps) {
   const [statsTable, setStatsTable] = useState<boolean>(false);
 
   return (
-    <>
-      <Box sx={{ display: "flex" }}>
-        <CssBaseline />
-        <AdminDrawer
-          user={user}
-          setCarsTable={setCarsTable}
-          setRentalsTable={setRentalsTable}
-          setStatsTable={setStatsTable}
-        />
-        <Box
-          component="main"
-          sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
-        >
-          <Toolbar />
-          <Typography paragraph>Content goes here.</Typography>
-        </Box>
-      </Box>
-    </>
+    <div className="flex min-h-screen bg-gray-100">
+      <AdminDrawer
+        user={user}
+        carsTable={carsTable}
+        setCarsTable={setCarsTable}
+        rentalsTable={rentalsTable}
+        setRentalsTable={setRentalsTable}
+        statsTable={statsTable}
+        setStatsTable={setStatsTable}
+      />
+      <AdminTables
+        carsTable={carsTable}
+        rentalsTable={rentalsTable}
+        statsTable={statsTable}
+      />
+    </div>
   );
 }
 

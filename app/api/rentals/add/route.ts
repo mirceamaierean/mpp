@@ -26,6 +26,7 @@ export async function POST(req: NextRequest) {
         enddate: data.enddate,
         paymentid: data.paymentid,
         receiptUrl: data.receiptUrl,
+        city: data.city,
         User: {
           connect: {
             email: user.email as string,
@@ -58,7 +59,8 @@ export async function POST(req: NextRequest) {
     data.value,
     data.startdate.toDateString(),
     data.enddate.toDateString(),
-    car.make + " " + car.model
+    car.make + " " + car.model,
+    data.city,
   );
 
   await sendMail(user.email as string, "Rental Confirmation", body);
@@ -68,8 +70,6 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error("Failed to add rental to calendar", error);
   }
-
-  console.log("Rental added successfully");
 
   return new NextResponse(JSON.stringify(data, null, 2));
 }

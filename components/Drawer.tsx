@@ -14,7 +14,7 @@ export default function Drawer({
   setProfileSelected,
 }: DrawerProps) {
   return (
-    <aside className="w-64 bg-white shadow-lg">
+    <aside className="w-64 bg-white shadow-lg z-40">
       <div className="p-6">
         <div className="flex flex-col items-center space-x-4">
           <Image
