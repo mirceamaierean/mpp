@@ -1,5 +1,6 @@
 import React from "react";
 import DateRangeForm from "./DateRangeForm";
+import Link from "next/link";
 
 const CarsSection: React.FC = () => {
   return (
@@ -14,6 +15,12 @@ const CarsSection: React.FC = () => {
             the period you want to rent the car, and we will automatically
             calculate the required cost.{" "}
             <strong>The price varies depending on the rental period.</strong>
+          </p>
+          <p className="text-gray-900 sm:text-xl">
+            For seeing all the rents, you can click{" "}
+            <Link href="/calendar" className="text-primary">
+              view our calendar!
+            </Link>
           </p>
         </div>
         <DateRangeForm />

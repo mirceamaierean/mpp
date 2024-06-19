@@ -6,15 +6,31 @@ import { Car } from "@/types/types";
 
 const DateRangeForm: React.FC = () => {
   const [cars, setCars] = useState<Car[]>([]);
-  const [startDate, setStartDate] = useState("2030-12-20");
-  const [endDate, setEndDate] = useState("2030-12-30");
+  const [startDate, setStartDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
+  const [endDate, setEndDate] = useState(
+    new Date().toISOString().split("T")[0]
+  );
 
   const handleStartDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const startDateAsDate = new Date(e.target.value);
+    const endDateAsDate = new Date(endDate);
+    if (startDateAsDate > endDateAsDate) {
+      setEndDate(e.target.value);
+    }
     setStartDate(e.target.value);
   };
 
   const handleEndDateChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEndDate(e.target.value);
+    const startDateAsDate = new Date(startDate);
+    const endDateAsDate = new Date(e.target.value);
+    if (startDateAsDate > endDateAsDate) {
+      // make automatically the end date the same as the start date
+      setEndDate(startDate);
+    } else {
+      setEndDate(e.target.value);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
 import { compileRentalConfirmationTemplate, sendMail } from "@/lib/nodemailer";
+import { addRentalToCalendar } from "@/lib/calendar";
 
 export async function POST(req: NextRequest) {
   const user = await getCurrentUser();
@@ -15,8 +16,10 @@ export async function POST(req: NextRequest) {
   data.startdate = new Date(data.startdate);
   data.enddate = new Date(data.enddate);
 
+  let rental;
+
   try {
-    await prisma.rentals.create({
+    rental = await prisma.rentals.create({
       data: {
         value: data.value,
         startdate: data.startdate,
@@ -55,10 +58,16 @@ export async function POST(req: NextRequest) {
     data.value,
     data.startdate.toDateString(),
     data.enddate.toDateString(),
-    car.make + " " + car.model,
+    car.make + " " + car.model
   );
 
   await sendMail(user.email as string, "Rental Confirmation", body);
+
+  try {
+    await addRentalToCalendar(rental, car);
+  } catch (error) {
+    console.error("Failed to add rental to calendar", error);
+  }
 
   console.log("Rental added successfully");
 

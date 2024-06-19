@@ -12,7 +12,6 @@ import {
 export default function RentalsComponent({ rentals }: { rentals: any[] }) {
   const downloadInvoice = async (url: string) => {
     const res = await fetch(`/api/invoices?url=${url}`);
-    // // res returns a pdf file
     const blob = await res.blob();
     const windowUrl = window.URL.createObjectURL(blob);
 
