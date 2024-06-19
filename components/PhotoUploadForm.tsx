@@ -47,7 +47,7 @@ const PhotoUploadForm: React.FC = () => {
         0,
         0,
         canvasRef.current.width,
-        canvasRef.current.height
+        canvasRef.current.height,
       );
       canvasRef.current.toBlob((blob) => {
         if (blob) {
@@ -117,7 +117,7 @@ const PhotoUploadForm: React.FC = () => {
             closeOnClick: true,
             pauseOnHover: true,
             draggable: true,
-          }
+          },
         );
         setIsLoading(false);
         return;

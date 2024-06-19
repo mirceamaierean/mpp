@@ -11,7 +11,7 @@ export async function GET(req: NextRequest) {
     // get the image from cloudinary
     const result = await cloudinary.v2.api.resources({
       type: "upload",
-      prefix: `license/${fileName}`,
+      prefix: `licenses/${fileName}`,
     });
 
     // Extract URLs from the response
@@ -24,7 +24,7 @@ export async function GET(req: NextRequest) {
       });
     }
 
-    return new Response(JSON.stringify(urls[0], null, 2), {
+    return new Response(JSON.stringify({ imagePath: urls[0] }), {
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {

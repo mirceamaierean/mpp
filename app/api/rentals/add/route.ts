@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
+import { compileRentalConfirmationTemplate, sendMail } from "@/lib/nodemailer";
 
 export async function POST(req: NextRequest) {
   const user = await getCurrentUser();
@@ -38,6 +39,28 @@ export async function POST(req: NextRequest) {
     console.error(error);
     return new NextResponse(null, { status: 404 });
   }
+
+  const car = await prisma.cars.findUnique({
+    where: {
+      id: data.carid,
+    },
+  });
+
+  if (!car) {
+    return new NextResponse(null, { status: 404 });
+  }
+
+  const body = compileRentalConfirmationTemplate(
+    user.name as string,
+    data.value,
+    data.startdate.toDateString(),
+    data.enddate.toDateString(),
+    car.make + " " + car.model
+  );
+
+  await sendMail(user.email as string, "Rental Confirmation", body);
+
+  console.log("Rental added successfully");
 
   return new NextResponse(JSON.stringify(data, null, 2));
 }

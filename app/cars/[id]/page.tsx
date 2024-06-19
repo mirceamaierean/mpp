@@ -6,6 +6,7 @@ import "../../embla.css";
 import { EmblaOptionsType } from "embla-carousel";
 import EmblaCarousel from "@/components/EmblaCarousel";
 import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { getCarsPhotos } from "@/service/CarsService";
 
 const OPTIONS: EmblaOptionsType = { dragFree: true, loop: true };

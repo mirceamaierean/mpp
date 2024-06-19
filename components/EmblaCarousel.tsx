@@ -38,6 +38,8 @@ const EmblaCarousel: React.FC<PropType> = (props) => {
     onNextButtonClick,
   } = usePrevNextButtons(emblaApi, onNavButtonClick);
 
+  if (!slides) return null;
+
   return (
     <section className="embla w-full mx-auto my-auto">
       <div className="embla__viewport" ref={emblaRef}>

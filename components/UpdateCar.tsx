@@ -1,7 +1,7 @@
 "use client";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button, FormControl } from "@mui/base";
 import MenuItem from "@mui/material/MenuItem";
 import Input from "@mui/material/Input";
@@ -18,24 +18,26 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { updateCarInDB } from "@/service/CarsService";
 import { isColor } from "@/utils/functions";
+import { getCarLocation } from "@/service/CarsService";
 type Props = {
   car: Car;
+  children?: React.ReactNode;
 };
 
-function UpdateCarForm({ car }: Props) {
+function UpdateCarForm({ car, children }: Props) {
   const [make, setMake] = useState(car.make);
   const [model, setModel] = useState(car.model);
   const [year, setYear] = useState(car.year);
   const [color, setColor] = useState(car.color);
   const [body, setBody] = useState<BodyType>(car.body ? car.body : "Sedan");
   const [transmission, setTransmission] = useState<TransmissionType>(
-    car.transmission ? car.transmission : "Automatic",
+    car.transmission ? car.transmission : "Automatic"
   );
   const [driveType, setDriveType] = useState<DriveType>(
-    car.drivetype ? car.drivetype : "2WD",
+    car.drivetype ? car.drivetype : "2WD"
   );
   const [fuelType, setFuelType] = useState<FuelType>(
-    car.fueltype ? car.fueltype : "Gasoline",
+    car.fueltype ? car.fueltype : "Gasoline"
   );
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -186,6 +188,7 @@ function UpdateCarForm({ car }: Props) {
           ))}
         </Select>
       </div>
+      {children}
       <Button
         type="submit"
         onClick={handleSubmit}
@@ -198,19 +201,44 @@ function UpdateCarForm({ car }: Props) {
 }
 
 export default function UpdateCarModal({ car }: Props) {
+  const [lastKnownLocation, setLastKnownLocation] = useState<string>("");
+  useEffect(() => {
+    const getLocation = async () => {
+      const res = await getCarLocation(car.id);
+      if (!res) {
+        toast.error("No location data found", {
+          position: "bottom-center",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        return;
+      }
+      setLastKnownLocation(res.formattedAddress);
+    };
+    getLocation();
+  }, [car.id]);
   return (
     <>
-      <Box className="mx-auto transform w-96 sm:w-[700px] bg-white p-4 rounded-lg">
+      <Box className="mx-auto transform w-96 sm:w-[700px] bg-white p-4 rounded-lg pt-20">
         <Typography
           id="modal-modal-title"
-          variant="h6"
+          variant="h4"
           component="h2"
           className="pb-4"
         >
-          Update Car Information
+          Car Information
         </Typography>
 
-        <UpdateCarForm car={car} />
+        <UpdateCarForm car={car}>
+          {lastKnownLocation && (
+            <Typography className="text-primary pt-4" variant="h6">
+              Last known location: {lastKnownLocation}
+            </Typography>
+          )}
+        </UpdateCarForm>
       </Box>
       <ToastContainer />
     </>

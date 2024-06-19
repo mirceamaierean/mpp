@@ -31,3 +31,17 @@ export const uploadPhoto = async (formData: FormData) => {
   }
   return null;
 };
+
+export const getDriverLicenseImage = async (fileName: string) => {
+  try {
+    const response = await fetch(
+      process.env.NEXT_PUBLIC_APP_URL +
+        `/api/driver-license?fileName=${fileName}`,
+    );
+
+    return response;
+  } catch (error) {
+    console.error("Error:", error);
+  }
+  return null;
+};
