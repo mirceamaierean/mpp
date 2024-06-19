@@ -28,7 +28,7 @@ export function compileRentalConfirmationTemplate(
   value: string,
   startDate: string,
   endDate: string,
-  car: string
+  car: string,
 ) {
   const template = handlebars.compile(rentalConfirmationTemplate);
 

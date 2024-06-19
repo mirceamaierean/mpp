@@ -27,7 +27,7 @@ export default function AggregationsTable() {
   };
 
   const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
@@ -44,7 +44,7 @@ export default function AggregationsTable() {
             skip: skip,
             length: length,
           }),
-        }
+        },
       );
 
       const data = await res.json();
@@ -66,7 +66,7 @@ export default function AggregationsTable() {
 
   useEffect(() => {
     fetchData(page * rowsPerPage, rowsPerPage).catch((err: any) =>
-      console.error(err)
+      console.error(err),
     );
   }, [page, rowsPerPage]);
 

@@ -3,7 +3,7 @@ import { Rental } from "@/types/types";
 export const getRentalsCountForCar = async (carId: number) => {
   try {
     const res = await fetch(
-      process.env.NEXT_PUBLIC_APP_URL + "/api/rentals/car/count?carId=" + carId
+      process.env.NEXT_PUBLIC_APP_URL + "/api/rentals/car/count?carId=" + carId,
     );
 
     if (res.status === 404) return null;
@@ -23,7 +23,7 @@ export const getRentalsByUserInInterval = async (
   column: string,
   direction: string,
   carId: number,
-  userEmail: string
+  userEmail: string,
 ) => {
   try {
     const res = await fetch(
@@ -38,7 +38,7 @@ export const getRentalsByUserInInterval = async (
           carId: carId,
           userEmail: userEmail,
         }),
-      }
+      },
     );
     if (res.status === 404) return [];
     const data = await res.json();
@@ -74,7 +74,7 @@ export const getRentalsByCarId = async (carId: number) => {
       {
         method: "POST",
         body: JSON.stringify({ carId }),
-      }
+      },
     );
 
     if (res.status === 404) return null;
@@ -97,7 +97,7 @@ export const addRentalToDB = async (rental: Omit<Rental, "id">) => {
       headers: {
         return: "representation",
       },
-    }
+    },
   );
 
   return res;
@@ -109,7 +109,7 @@ export const updateRentalInDB = async (rental: Rental) => {
     {
       method: "PATCH",
       body: JSON.stringify({ data: rental }),
-    }
+    },
   );
 
   return res;
@@ -121,7 +121,7 @@ export const deleteRentalsInDB = async (rentalIds: number[]) => {
     {
       method: "DELETE",
       body: JSON.stringify({ data: rentalIds }),
-    }
+    },
   );
 
   return res;
@@ -129,7 +129,27 @@ export const deleteRentalsInDB = async (rentalIds: number[]) => {
 
 export const getRentalsByUserWithCar = async (userId: string) => {
   const res = await fetch(
-    process.env.NEXT_PUBLIC_APP_URL + "/api/rentals/user-rentals?id=" + userId
+    process.env.NEXT_PUBLIC_APP_URL + "/api/rentals/user-rentals?id=" + userId,
+  );
+
+  const data = await res.json();
+
+  return data;
+};
+
+export const checkIfCarIsAvailable = async (
+  carId: number,
+  startDate: string,
+  endDate: string,
+) => {
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_APP_URL +
+      "/api/rentals/car/available?carId=" +
+      carId +
+      "&startDate=" +
+      startDate +
+      "&endDate=" +
+      endDate,
   );
 
   const data = await res.json();

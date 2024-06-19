@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
     SELECT COUNT(*) FROM "Rentals"
     WHERE carid = $1
   `,
-    [carId]
+    [carId],
   );
   return new NextResponse(JSON.stringify(rentals[0]), {
     headers: {

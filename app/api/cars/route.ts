@@ -19,7 +19,7 @@ export async function GET(req: NextRequest) {
     OFFSET $1
     LIMIT $2
   `,
-    [skip, length]
+    [skip, length],
   );
 
   return new NextResponse(JSON.stringify(cars), {

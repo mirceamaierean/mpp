@@ -22,14 +22,14 @@ export async function GET(req: NextRequest) {
       JSON.stringify({ error: "No location data found" }),
       {
         status: 404,
-      }
+      },
     );
   }
 
   const latlng = `${car.latitude},${car.longitude}`;
 
   const res = await fetch(
-    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=${key}`
+    `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latlng}&key=${key}`,
   );
 
   if (res.status === 400) {

@@ -55,7 +55,7 @@ export async function POST(req: NextRequest) {
     data.value,
     data.startdate.toDateString(),
     data.enddate.toDateString(),
-    car.make + " " + car.model
+    car.make + " " + car.model,
   );
 
   await sendMail(user.email as string, "Rental Confirmation", body);

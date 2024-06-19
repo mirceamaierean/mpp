@@ -20,13 +20,15 @@ export default function ProfileComponent({
           driversLicenseEmitted={user.driversLicenseEmitted as Date}
           driversLicenseExpires={user.driversLicenseExpires as Date}
         />
-        <CloudinaryImage
-          imageSource={imagePath as string}
-          alt="Driver's License"
-          width={500}
-          height={300}
-          className="rounded-lg mx-auto w-fit-content"
-        />
+        {imagePath && (
+          <CloudinaryImage
+            imageSource={imagePath as string}
+            alt="Driver's License"
+            width={500}
+            height={300}
+            className="rounded-lg mx-auto w-fit-content"
+          />
+        )}
       </div>
       <PhotoUploadForm />
     </div>

@@ -8,6 +8,7 @@ import EmblaCarousel from "@/components/EmblaCarousel";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { getCarsPhotos } from "@/service/CarsService";
+import { getUser } from "@/lib/session";
 
 const OPTIONS: EmblaOptionsType = { dragFree: true, loop: true };
 
@@ -22,6 +23,18 @@ export default async function Page({
 
   if (!car) {
     return notFound();
+  }
+
+  const user = await getUser();
+  let invalidUserMessage = "";
+  if (!user) {
+    invalidUserMessage = "You need to be logged in to rent a car";
+  } else if (user.driversLicenseEmitted === null) {
+    invalidUserMessage =
+      "You need to upload a driver's license to rent a car! Go to the profile section to upload it.";
+  } else if (new Date(user.driversLicenseExpires as Date) < new Date()) {
+    invalidUserMessage =
+      "Your driver's license has expired! Go to the profile section to upload a new one.";
   }
 
   const photosPaths = await getCarsPhotos(car.id);
@@ -46,6 +59,7 @@ export default async function Page({
           car={car}
           startDateSearch={startDate}
           endDateSearch={endDate}
+          errorMessage={invalidUserMessage}
         />
       </div>
       <ToastContainer />
