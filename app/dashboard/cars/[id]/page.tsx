@@ -1,7 +1,7 @@
 "use client";
 import { notFound } from "next/navigation";
 import UpdateCarModal from "@/components/UpdateCar";
-import { getCarById } from "@/service/CarsApi";
+import { getCarById } from "@/service/CarsService";
 import { useEffect, useState } from "react";
 import { Car } from "@/types/types";
 

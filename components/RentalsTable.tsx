@@ -2,8 +2,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Button } from "@mui/base";
-import AddRentalModal from "./AddRentalModal";
-import AddIcon from "@mui/icons-material/Add";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Table,
@@ -19,33 +17,27 @@ import {
   TableSortLabel,
 } from "@mui/material";
 import { Rental } from "@/types/types";
-import isOnline from "is-online";
 import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import {
   deleteRentalsInDB,
-  getRentalsByUserInInterval,
-  getRentalsCountForCar,
-} from "@/service/RentalsApi";
+  getAllRentals,
+  getRentalsCount,
+  getRentalsRelativeToDate,
+} from "@/service/RentalsService";
 
-interface RentalsTableProps {
-  carId: number;
-  userEmail: string;
-}
-
-export default function RentalsTable({ carId, userEmail }: RentalsTableProps) {
+export default function RentalsTable() {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const columnToSortDefault: keyof Rental = "startdate";
-  const [rentals, setRentals] = useState<Rental[]>([]);
+  const [rentals, setRentals] = useState<any[]>([]);
   const [rentalsCount, setRentalsCount] = useState<number>(0);
-
-  const [open, setOpen] = useState(false);
 
   const [columnToSort, setColumnToSort] =
     useState<keyof Rental>(columnToSortDefault);
   const [direction, setDirection] = useState<"asc" | "desc">("asc");
 
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
 
   const handleChangePage = (e: unknown, newPage: number) => {
     setPage(newPage);
@@ -57,16 +49,23 @@ export default function RentalsTable({ carId, userEmail }: RentalsTableProps) {
     direction: string,
     columnToSort: string,
   ) => {
-    const data = await getRentalsByUserInInterval(
-      skip,
-      length,
-      columnToSort,
-      direction,
-      carId,
-      userEmail,
-    );
+    const data = await getAllRentals(skip, length, columnToSort, direction);
     setRentals(data);
   };
+
+  const getRelativeRentals = async (upcoming: boolean) => {
+    const data = await getRentalsRelativeToDate(upcoming);
+    setRentals(data);
+  };
+
+  const getCount = async () => {
+    const count = await getRentalsCount();
+    setRentalsCount(count);
+  };
+
+  useEffect(() => {
+    getCount();
+  }, []);
 
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>,
@@ -75,11 +74,10 @@ export default function RentalsTable({ carId, userEmail }: RentalsTableProps) {
     setRowsPerPage(parseInt(event.target.value, 10));
   };
 
-  const changeDirectionBasedOnColumn = (column: string) => {
-    if (column === columnToSort) {
-      return direction === "asc" ? "desc" : "asc";
-    }
-    return "asc";
+  const handleSortRequest = (column: keyof Rental) => {
+    const isAsc = columnToSort === column && direction === "asc";
+    setDirection(isAsc ? "desc" : "asc");
+    setColumnToSort(column);
   };
 
   useEffect(() => {
@@ -87,32 +85,6 @@ export default function RentalsTable({ carId, userEmail }: RentalsTableProps) {
       (err: any) => console.error(err),
     );
   }, [page, rowsPerPage, columnToSort, direction]);
-
-  useEffect(() => {
-    const checkOnlineStatus = async () => {
-      if (!(await isOnline())) {
-        toast.warn("You are offline", {
-          position: "bottom-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });
-      }
-    };
-
-    const fetchData = async () => {
-      const data = await getRentalsCountForCar(carId);
-      setRentalsCount(data);
-    };
-
-    checkOnlineStatus().catch((err) => console.error(err));
-
-    fetchData().catch((err) => console.error(err));
-  }, [fetchData]);
 
   const deleteRentals = async () => {
     const res = await deleteRentalsInDB(selectedIds);
@@ -148,17 +120,8 @@ export default function RentalsTable({ carId, userEmail }: RentalsTableProps) {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <AddRentalModal open={open} setOpen={setOpen} carId={carId} />
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-12">
       <div className="flex justify-end py-4">
-        <Button
-          className="px-4 py-2 m-2 bg-primary rounded-md text-white flex flex-row gap-1"
-          onClick={() => setOpen(true)}
-        >
-          <AddIcon />
-          <Typography className="hidden sm:block">Add Rental</Typography>
-        </Button>
-
         {selectedIds.length > 0 && (
           <Button
             className="px-4 py-2 m-2 bg-primary rounded-md text-white flex flex-row gap-1"
@@ -170,6 +133,22 @@ export default function RentalsTable({ carId, userEmail }: RentalsTableProps) {
             <Typography className="hidden sm:block">Delete Rentals</Typography>
           </Button>
         )}
+        <Button
+          className="px-4 py-2 m-2 bg-primary rounded-md text-white flex flex-row gap-1"
+          onClick={() => {
+            getRelativeRentals(true);
+          }}
+        >
+          <Typography className="hidden sm:block">Upcoming Rentals</Typography>
+        </Button>
+        <Button
+          className="px-4 py-2 m-2 bg-primary rounded-md text-white flex flex-row gap-1"
+          onClick={() => {
+            getRelativeRentals(false);
+          }}
+        >
+          <Typography className="hidden sm:block">Past Rentals</Typography>
+        </Button>
       </div>
       <TableContainer component={Paper} sx={{ mt: 2, mb: 2 }}>
         <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -195,10 +174,7 @@ export default function RentalsTable({ carId, userEmail }: RentalsTableProps) {
                 <TableSortLabel
                   active={columnToSort === "startdate"}
                   direction={direction}
-                  onClick={() => {
-                    setDirection(changeDirectionBasedOnColumn("startdate"));
-                    setColumnToSort("startdate");
-                  }}
+                  onClick={() => handleSortRequest("startdate")}
                 >
                   Start Date
                 </TableSortLabel>
@@ -207,22 +183,18 @@ export default function RentalsTable({ carId, userEmail }: RentalsTableProps) {
                 <TableSortLabel
                   active={columnToSort === "enddate"}
                   direction={direction}
-                  onClick={() => {
-                    setDirection(changeDirectionBasedOnColumn("enddate"));
-                    setColumnToSort("enddate");
-                  }}
+                  onClick={() => handleSortRequest("enddate")}
                 >
                   End date
                 </TableSortLabel>
               </TableCell>
+              <TableCell className="font-bold text-primary">Car</TableCell>
+              <TableCell className="font-bold text-primary">City</TableCell>
               <TableCell className="font-bold text-primary">
                 <TableSortLabel
                   active={columnToSort === "value"}
                   direction={direction}
-                  onClick={() => {
-                    setDirection(changeDirectionBasedOnColumn("year"));
-                    setColumnToSort("value");
-                  }}
+                  onClick={() => handleSortRequest("value")}
                 >
                   Rental Value
                 </TableSortLabel>
@@ -246,8 +218,14 @@ export default function RentalsTable({ carId, userEmail }: RentalsTableProps) {
                     }}
                   ></Checkbox>
                 </TableCell>
-                <TableCell>{rental.startdate}</TableCell>
-                <TableCell>{rental.enddate}</TableCell>
+                <TableCell>
+                  {new Date(rental.startdate).toDateString()}
+                </TableCell>
+                <TableCell>{new Date(rental.enddate).toDateString()}</TableCell>
+                <TableCell>
+                  {rental.make} {rental.model}
+                </TableCell>
+                <TableCell>{rental.city}</TableCell>
                 <TableCell>{rental.value}</TableCell>
                 <TableCell>
                   <Link href={`/dashboard/rentals/${rental.id}`}>
@@ -259,7 +237,7 @@ export default function RentalsTable({ carId, userEmail }: RentalsTableProps) {
           </TableBody>
         </Table>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[5, 10, 25, 50, 100]}
           component="div"
           count={rentalsCount}
           rowsPerPage={rowsPerPage}

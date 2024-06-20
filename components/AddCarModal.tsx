@@ -17,7 +17,7 @@ import {
 import Select, { SelectChangeEvent } from "@mui/material/Select";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { addCarToDB } from "@/service/CarsApi";
+import { addCarToDB } from "@/service/CarsService";
 import { isColor } from "@/utils/functions";
 import isOnline from "is-online";
 

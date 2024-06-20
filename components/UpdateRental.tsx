@@ -1,14 +1,15 @@
 "use client";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, FormControl } from "@mui/base";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
 import { Rental } from "@/types/types";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { updateRentalInDB } from "@/service/RentalsApi";
+import { updateRentalInDB } from "@/service/RentalsService";
+import { getCheapestCarburantInCity } from "@/service/PriceService";
 type Props = {
   rental: Rental;
 };
@@ -64,7 +65,7 @@ function UpdateRentalForm(rental: Rental) {
       });
       return;
     }
-    toast.success("Car has been updated!", {
+    toast.success("Rental has been updated!", {
       position: "bottom-center",
       autoClose: 5000,
       hideProgressBar: false,
@@ -81,6 +82,8 @@ function UpdateRentalForm(rental: Rental) {
       <div className="flex flex-col sm:grid sm:grid-cols-2 gap-4">
         <InputLabel>Car ID</InputLabel>
         <Input value={carId} disabled />
+        <InputLabel>Location</InputLabel>
+        <Input value={rental.city} disabled />
         <InputLabel>Value</InputLabel>
         <Input
           placeholder="Value"
@@ -118,9 +121,23 @@ function UpdateRentalForm(rental: Rental) {
 }
 
 export default function UpdateRentalModal({ rental }: Props) {
+  const [price, setPrice] = useState<number>(0);
+  const [provider, setProvider] = useState<string>("");
+  const [location, setLocation] = useState<string>("");
+  useEffect(() => {
+    const fetchGasStation = async () => {
+      if (rental.city) {
+        const gasStation = await getCheapestCarburantInCity(rental.city);
+        setPrice(gasStation.price);
+        setProvider(gasStation.provider);
+        setLocation(gasStation.location);
+      }
+    };
+    fetchGasStation();
+  }, []);
   return (
     <>
-      <Box className="mx-auto transform w-96 sm:w-[700px] bg-white p-4 rounded-lg">
+      <Box className="mx-auto transform w-96 sm:w-[700px] bg-white p-4 rounded-lg pt-20">
         <Typography
           id="modal-modal-title"
           variant="h6"
@@ -129,6 +146,12 @@ export default function UpdateRentalModal({ rental }: Props) {
         >
           Update Rental Information
         </Typography>
+        {price > 0 && (
+          <Typography variant="body1" component="p" className="pb-4">
+            Carburant in {location} is provided by {provider} at the price of{" "}
+            {price} lei/L, which is the cheapest in the city.
+          </Typography>
+        )}
         <UpdateRentalForm {...rental} />
       </Box>
       <ToastContainer />

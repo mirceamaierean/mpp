@@ -1,5 +1,5 @@
 "use client";
-import { getCarById } from "@/service/CarsApi";
+import { getCarById } from "@/service/CarsService";
 import { Car } from "@/types/types";
 import { Card, CardContent, Typography } from "@mui/material";
 import { useEffect, useState } from "react";

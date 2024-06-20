@@ -1,7 +1,7 @@
 "use client";
 import { notFound } from "next/navigation";
 import UpdateRentalModal from "@/components/UpdateRental";
-import { getRentalById } from "@/service/RentalsApi";
+import { getRentalById } from "@/service/RentalsService";
 import { useEffect, useState } from "react";
 import { Rental } from "@/types/types";
 

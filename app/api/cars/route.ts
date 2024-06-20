@@ -1,21 +1,31 @@
 import { NextRequest, NextResponse } from "next/server";
-import prisma from "@/lib/prisma";
+// import prisma from "@/lib/prisma";
+import { createPool } from "@vercel/postgres";
 
-export async function POST(req: NextRequest) {
-  const { skip, length, column, direction } = await req.json();
+const pool = createPool({
+  connectionString: process.env.DATABASE_URL,
+});
 
-  // get all the cars, knowing the index of the first car and the length of the page
-  const data = await prisma.cars.findMany({
-    skip: skip,
-    take: length,
-    orderBy: {
-      [column]: direction,
+export async function GET(req: NextRequest) {
+  const skip = req.nextUrl.searchParams.get("skip");
+  const length = req.nextUrl.searchParams.get("length");
+  const column = req.nextUrl.searchParams.get("column");
+  const direction = req.nextUrl.searchParams.get("direction");
+
+  const { rows: cars } = await pool.query(
+    `
+    SELECT * FROM cars
+    ORDER BY ${column} ${direction}
+    OFFSET $1
+    LIMIT $2
+  `,
+    [skip, length],
+  );
+
+  return new NextResponse(JSON.stringify(cars), {
+    headers: {
+      "content-type": "application/json",
     },
+    status: 200,
   });
-
-  if (!data) {
-    return new NextResponse(null, { status: 404 });
-  }
-
-  return new NextResponse(JSON.stringify(data, null, 2));
 }

@@ -30,6 +30,7 @@ export type Car = {
   transmission?: TransmissionType;
   drivetype?: DriveType;
   fueltype?: FuelType;
+  price?: number;
 };
 
 export type Rental = {
@@ -38,6 +39,9 @@ export type Rental = {
   startdate: string;
   enddate: string;
   value: number;
+  paymentid: string;
+  receiptUrl: string;
+  city: string;
 };
 
 export type PersonRecord = {
@@ -51,4 +55,7 @@ export type User = {
   name: string;
   email: string;
   picture: string;
+  isAdmin: boolean;
+  driversLicenseEmitted: string;
+  driversLicenseExpires: string;
 };

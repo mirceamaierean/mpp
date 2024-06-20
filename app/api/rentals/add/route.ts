@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import prisma from "@/lib/prisma";
 import { getCurrentUser } from "@/lib/session";
+import { compileRentalConfirmationTemplate, sendMail } from "@/lib/nodemailer";
+import { addRentalToCalendar } from "@/lib/calendar";
 
 export async function POST(req: NextRequest) {
   const user = await getCurrentUser();
@@ -8,33 +10,26 @@ export async function POST(req: NextRequest) {
     return new NextResponse(null, { status: 401 });
   }
 
-  // get the id of the user from db
-  const userWithId = await prisma.user.findUnique({
-    where: {
-      email: user.email as string,
-    },
-  });
-
-  if (!userWithId) {
-    return new NextResponse(null, { status: 404 });
-  }
-
-  const id = userWithId.id;
-
   const { data } = await req.json();
 
-  // Add the user id to the rental data
   data.carid = parseInt(data.carid);
+  data.startdate = new Date(data.startdate);
+  data.enddate = new Date(data.enddate);
+
+  let rental;
 
   try {
-    await prisma.rentals.create({
+    rental = await prisma.rentals.create({
       data: {
         value: data.value,
         startdate: data.startdate,
         enddate: data.enddate,
+        paymentid: data.paymentid,
+        receiptUrl: data.receiptUrl,
+        city: data.city,
         User: {
           connect: {
-            id: id,
+            email: user.email as string,
           },
         },
         cars: {
@@ -47,6 +42,33 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error(error);
     return new NextResponse(null, { status: 404 });
+  }
+
+  const car = await prisma.cars.findUnique({
+    where: {
+      id: data.carid,
+    },
+  });
+
+  if (!car) {
+    return new NextResponse(null, { status: 404 });
+  }
+
+  const body = compileRentalConfirmationTemplate(
+    user.name as string,
+    data.value,
+    data.startdate.toDateString(),
+    data.enddate.toDateString(),
+    car.make + " " + car.model,
+    data.city,
+  );
+
+  await sendMail(user.email as string, "Rental Confirmation", body);
+
+  try {
+    await addRentalToCalendar(rental, car);
+  } catch (error) {
+    console.error("Failed to add rental to calendar", error);
   }
 
   return new NextResponse(JSON.stringify(data, null, 2));

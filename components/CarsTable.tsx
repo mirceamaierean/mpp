@@ -8,8 +8,7 @@ import {
   deleteCarsInDB,
   getCarsInInterval,
   getCarsCount,
-  addCarToDB,
-} from "@/service/CarsApi";
+} from "@/service/CarsService";
 import DeleteIcon from "@mui/icons-material/Delete";
 import {
   Table,
@@ -24,21 +23,19 @@ import {
   TablePagination,
   TableSortLabel,
 } from "@mui/material";
-import { Car } from "@/types/types";
+import { cars } from "@prisma/client";
 import { ToastContainer, toast } from "react-toastify";
-import isOnline from "is-online";
-import { useInView } from "react-intersection-observer";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function CarsTable() {
-  const { ref, inView } = useInView();
-  const [selectedIds, setSelectedIds] = useState<number[]>([]);
-  const columnToSortDefault: keyof Car = "make";
-  const [cars, setCars] = useState<Car[]>([]);
   const [open, setOpen] = useState(false);
+  const [selectedIds, setSelectedIds] = useState<number[]>([]);
+  const columnToSortDefault: keyof cars = "make";
+  const [cars, setCars] = useState<cars[]>([]);
   const [carsCount, setCarsCount] = useState<number>(0);
 
   const [columnToSort, setColumnToSort] =
-    useState<keyof Car>(columnToSortDefault);
+    useState<keyof cars>(columnToSortDefault);
   const [direction, setDirection] = useState<"asc" | "desc">("asc");
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(50);
@@ -71,55 +68,11 @@ export default function CarsTable() {
     setCars(data);
   };
 
-  const checkOnlineStatus = async () => {
-    if (!(await isOnline())) {
-      toast.warn("You are offline", {
-        position: "bottom-center",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    } else {
-      // add every car from localstorage to db
-      const cars = JSON.parse(localStorage.getItem("carData") || "[]");
-
-      for (const car of cars) {
-        const res = await addCarToDB(car);
-        if (res.status === 400) {
-          const error = await res.json();
-          toast.warn(error, {
-            position: "bottom-center",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-          });
-        }
-      }
-      // clear everything in localstorage
-      localStorage.setItem("carData", "[]");
-    }
-  };
-
   useEffect(() => {
     fetchData(page * rowsPerPage, rowsPerPage, direction, columnToSort).catch(
       (err: any) => console.error(err),
     );
   }, [page, rowsPerPage, columnToSort, direction]);
-
-  useEffect(() => {
-    if (inView) {
-      setRowsPerPage(rowsPerPage + 50);
-    }
-    checkOnlineStatus().catch((err) => console.error(err));
-  }, [inView]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -153,7 +106,7 @@ export default function CarsTable() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-14">
       <AddCarModal open={open} setOpen={setOpen} />
       <div className="flex justify-end py-4">
         <Button
@@ -202,9 +155,8 @@ export default function CarsTable() {
                     setDirection(changeDirectionBasedOnColumn("make"));
                     setColumnToSort("make");
                   }}
-                >
-                  Make
-                </TableSortLabel>
+                ></TableSortLabel>
+                Make
               </TableCell>
               <TableCell className="font-bold text-primary">
                 <TableSortLabel
@@ -214,9 +166,8 @@ export default function CarsTable() {
                     setDirection(changeDirectionBasedOnColumn("model"));
                     setColumnToSort("model");
                   }}
-                >
-                  Model
-                </TableSortLabel>
+                ></TableSortLabel>
+                Model
               </TableCell>
               <TableCell className="font-bold text-primary">
                 <TableSortLabel
@@ -226,9 +177,8 @@ export default function CarsTable() {
                     setDirection(changeDirectionBasedOnColumn("year"));
                     setColumnToSort("year");
                   }}
-                >
-                  Year
-                </TableSortLabel>
+                ></TableSortLabel>
+                Year
               </TableCell>
               <TableCell className="font-bold text-primary">
                 <TableSortLabel
@@ -238,14 +188,10 @@ export default function CarsTable() {
                     setDirection(changeDirectionBasedOnColumn("color"));
                     setColumnToSort("color");
                   }}
-                >
-                  Color
-                </TableSortLabel>
+                ></TableSortLabel>
+                Color
               </TableCell>
-              <TableCell className="font-bold text-primary">Edit</TableCell>
-              <TableCell className="font-bold text-primary">
-                View Rentals
-              </TableCell>
+              <TableCell className="font-bold text-primary">Details</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -271,14 +217,7 @@ export default function CarsTable() {
                 <TableCell>
                   <Link href={`/dashboard/cars/${car.id}`}>
                     <Button className="bg-primary text-white px-2 py-3 rounded-md">
-                      Edit Car
-                    </Button>
-                  </Link>
-                </TableCell>
-                <TableCell>
-                  <Link href={`/dashboard/cars/${car.id}/rentals`}>
-                    <Button className="bg-primary text-white px-2 py-3 rounded-md">
-                      View Your Rentals
+                      Manage Car
                     </Button>
                   </Link>
                 </TableCell>
@@ -297,9 +236,6 @@ export default function CarsTable() {
         />
       </TableContainer>
       <ToastContainer />
-      <div ref={ref}>
-        <Typography className="text-center text-primary">Loading...</Typography>
-      </div>
     </div>
   );
 }

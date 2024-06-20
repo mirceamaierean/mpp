@@ -1,0 +1,171 @@
+import { Car } from "@/types/types";
+import { cars } from "@prisma/client";
+import cache from "@/lib/cache";
+
+export const getCarsCount = async () => {
+  if (cache.has("cars-count")) {
+    return cache.get("cars-count") as number;
+  }
+  try {
+    const res = await fetch("/api/cars/count");
+    if (res) {
+      const data = await res.json();
+      cache.set("cars-count", data);
+      return data as number;
+    }
+  } catch (error) {
+    console.error("Error:", error);
+  }
+  return 0;
+};
+
+export const getCarsInInterval = async (
+  skip: number,
+  length: number,
+  column: string,
+  direction: string,
+) => {
+  const key = `cars-${skip}-${length}-${column}-${direction}`;
+
+  if (cache.has(key)) {
+    return cache.get(key) as cars[];
+  }
+
+  try {
+    const res = await fetch(
+      process.env.NEXT_PUBLIC_APP_URL +
+        `/api/cars?skip=${skip}&length=${length}&column=${column}&direction=${direction}`,
+    );
+
+    if (res.status === 404) return [];
+    const data = await res.json();
+    cache.set(key, data);
+    return data as cars[];
+  } catch (error) {
+    console.error("Error:", error);
+  }
+  return [];
+};
+
+export const getCarById = async (id: number) => {
+  try {
+    const res = await fetch(
+      process.env.NEXT_PUBLIC_APP_URL + "/api/cars/get-by-id",
+      {
+        method: "POST",
+        body: JSON.stringify({
+          id: id,
+        }),
+      },
+    );
+    if (res.status === 404) return null;
+    const data = await res.json();
+    return data as Car;
+  } catch (error) {
+    console.error("Error:", error);
+    return null;
+  }
+};
+
+export const addCarToDB = async (car: Omit<Car, "id">) => {
+  const res = await fetch(process.env.NEXT_PUBLIC_APP_URL + "/api/cars/add", {
+    method: "POST",
+    body: JSON.stringify({ data: car }),
+    headers: {
+      return: "representation",
+    },
+  });
+
+  return res;
+};
+
+export const updateCarInDB = async (car: Car) => {
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_APP_URL + "/api/cars/update",
+    {
+      method: "PATCH",
+      body: JSON.stringify({ data: car }),
+    },
+  );
+
+  return res;
+};
+
+export const deleteCarsInDB = async (carIds: number[]) => {
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_APP_URL + "/api/cars/delete",
+    {
+      method: "DELETE",
+      body: JSON.stringify({ data: carIds }),
+    },
+  );
+
+  return res;
+};
+
+export const getCarsThatAreNotInRent = async (
+  startDate: string,
+  endDate: string,
+) => {
+  const key = `cars-available-${startDate}-${endDate}`;
+  if (cache.has(key)) {
+    return cache.get(key);
+  }
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_APP_URL +
+      `/api/rentals/available-cars?startDate=${startDate}&endDate=${endDate}`,
+  );
+
+  const data = await res.json();
+
+  cache.set(key, data);
+
+  return data as Car[];
+};
+
+export const getCarsPhotos = async (id: number) => {
+  try {
+    const res = await fetch(
+      process.env.NEXT_PUBLIC_APP_URL + "/api/cars/photos?id=" + id,
+    );
+    if (res.status === 404) return [];
+    const data = await res.json();
+    return data as string[];
+  } catch (error) {
+    console.error("Error:", error);
+  }
+  return [];
+};
+
+export const getCarLocation = async (id: number) => {
+  try {
+    const res = await fetch(
+      process.env.NEXT_PUBLIC_APP_URL + "/api/cars/location?id=" + id,
+    );
+    if (res.status === 404) return null;
+    const data = await res.json();
+    return data as { formattedAddress: string };
+  } catch (error) {
+    console.error("Error:", error);
+  }
+  return null;
+};
+
+export const getCoordinatesForCars = async () => {
+  const key = "cars-coordinates";
+  if (cache.has(key)) {
+    return cache.get(key);
+  }
+
+  try {
+    const res = await fetch(
+      process.env.NEXT_PUBLIC_APP_URL + "/api/cars/coordinates",
+    );
+    const data = await res.json();
+    cache.set(key, data);
+    return data as cars[];
+  } catch (error) {
+    console.error("Error:", error);
+  }
+  return [];
+};

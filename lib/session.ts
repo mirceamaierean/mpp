@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth/next";
 
 import { authOptions } from "@/lib/auth";
 import prisma from "./prisma";
+import { User } from "@prisma/client";
 
 export async function getCurrentUser() {
   const session = await getServerSession(authOptions);
@@ -9,18 +10,20 @@ export async function getCurrentUser() {
   return session?.user;
 }
 
-export async function isUserAdmin() {
-  const session = await getServerSession(authOptions);
+export async function getUser() {
+  const userInSession = await getCurrentUser();
+  if (!userInSession) return null;
 
-  if (!session) {
-    return false;
-  }
-
-  const isAdmin = await prisma.user.findUnique({
+  const user = await prisma.user.findUnique({
     where: {
-      email: session.user?.email as string,
+      email: userInSession.email as string,
     },
   });
 
-  return isAdmin?.role === "admin";
+  return user as User;
+}
+
+export async function isUserAdmin() {
+  const user = await getUser();
+  return user?.role === "admin";
 }
