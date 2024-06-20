@@ -37,7 +37,7 @@ export default function RentalsTable() {
   const [direction, setDirection] = useState<"asc" | "desc">("asc");
 
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(25);
 
   const handleChangePage = (e: unknown, newPage: number) => {
     setPage(newPage);
@@ -237,7 +237,7 @@ export default function RentalsTable() {
           </TableBody>
         </Table>
         <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
+          rowsPerPageOptions={[5, 10, 25, 50, 100]}
           component="div"
           count={rentalsCount}
           rowsPerPage={rowsPerPage}

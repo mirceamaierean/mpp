@@ -29,7 +29,7 @@ export default async function Page({
   let invalidUserMessage = "";
   if (user === null) {
     invalidUserMessage = "You need to be logged in to rent a car";
-  } else if (user.driversLicenseEmitted === null) {
+  } else if (!user.driversLicenseEmitted) {
     invalidUserMessage =
       "You need to upload a driver's license to rent a car! Go to the profile section to upload it.";
   } else if (new Date(user.driversLicenseExpires as Date) < new Date()) {
