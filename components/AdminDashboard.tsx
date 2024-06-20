@@ -13,12 +13,15 @@ export interface AdminProps {
   setRentalsTable?: React.Dispatch<React.SetStateAction<boolean>>;
   statsTable?: boolean;
   setStatsTable?: React.Dispatch<React.SetStateAction<boolean>>;
+  map?: boolean;
+  setMap?: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function AdminDashboard({ user }: AdminProps) {
   const [carsTable, setCarsTable] = useState<boolean>(true);
   const [rentalsTable, setRentalsTable] = useState<boolean>(false);
   const [statsTable, setStatsTable] = useState<boolean>(false);
+  const [map, setMap] = useState<boolean>(false);
 
   return (
     <div className="flex min-h-screen bg-gray-100">
@@ -30,11 +33,14 @@ function AdminDashboard({ user }: AdminProps) {
         setRentalsTable={setRentalsTable}
         statsTable={statsTable}
         setStatsTable={setStatsTable}
+        map={map}
+        setMap={setMap}
       />
       <AdminTables
         carsTable={carsTable}
         rentalsTable={rentalsTable}
         statsTable={statsTable}
+        map={map}
       />
     </div>
   );

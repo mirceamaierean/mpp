@@ -148,3 +148,16 @@ export const getCarLocation = async (id: number) => {
   }
   return null;
 };
+
+export const getCoordinatesForCars = async () => {
+  try {
+    const res = await fetch(
+      process.env.NEXT_PUBLIC_APP_URL + "/api/cars/coordinates",
+    );
+    const data = await res.json();
+    return data as cars[];
+  } catch (error) {
+    console.error("Error:", error);
+  }
+  return [];
+};

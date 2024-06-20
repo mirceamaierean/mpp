@@ -12,7 +12,7 @@ export default function GoogleCalendar() {
   return (
     <div className="max-w-7xl mx-auto pt-20">
       <Calendar
-        apiKey={process.env.NEXT_PUBLIC_GOOGLE_CALENDAR_API}
+        apiKey={process.env.NEXT_PUBLIC_GOOGLE_API}
         calendars={calendars}
         showArrow={true}
       />

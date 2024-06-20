@@ -67,6 +67,9 @@ importers:
       "@radix-ui/react-slot":
         specifier: ^1.0.2
         version: 1.0.2(@types/react@18.3.3)(react@18.3.1)
+      "@react-google-maps/api":
+        specifier: ^2.19.3
+        version: 2.19.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       "@stripe/react-stripe-js":
         specifier: ^2.7.1
         version: 2.7.1(@stripe/stripe-js@3.5.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -1270,6 +1273,18 @@ packages:
         integrity: sha512-NfHmolp7HHgbuurIgjiKbTvQAJLuAJJ1p+8YX90uxuUG3lrF2fbMI7yG9hhVfJnfWuzwHrnjyg2RO8e9K4VO3g==,
       }
     engines: { node: ">=12.0.0" }
+
+  "@googlemaps/js-api-loader@1.16.2":
+    resolution:
+      {
+        integrity: sha512-psGw5u0QM6humao48Hn4lrChOM2/rA43ZCm3tKK9qQsEj1/VzqkCqnvGfEOshDbBQflydfaRovbKwZMF4AyqbA==,
+      }
+
+  "@googlemaps/markerclusterer@2.5.3":
+    resolution:
+      {
+        integrity: sha512-x7lX0R5yYOoiNectr10wLgCBasNcXFHiADIBdmn7jQllF2B5ENQw5XtZK+hIw4xnV0Df0xhN4LN98XqA5jaiOw==,
+      }
 
   "@heroicons/react@1.0.6":
     resolution:
@@ -2564,6 +2579,27 @@ packages:
         integrity: sha512-fyrgCaedtvMg9NK3en0pnOYJdtfwxUcNolezkNPUsoX57X8oQk+NkqcvzHXD2uKNij6GXmWU9NDru2IWjrO4BQ==,
       }
 
+  "@react-google-maps/api@2.19.3":
+    resolution:
+      {
+        integrity: sha512-jiLqvuOt5lOowkLeq7d077AByTyJp+s6hZVlLhlq7SBacBD37aUNpXBz2OsazfeR6Aw4a+9RRhAEjEFvrR1f5A==,
+      }
+    peerDependencies:
+      react: ^16.8 || ^17 || ^18
+      react-dom: ^16.8 || ^17 || ^18
+
+  "@react-google-maps/infobox@2.19.2":
+    resolution:
+      {
+        integrity: sha512-6wvBqeJsQ/eFSvoxg+9VoncQvNoVCdmxzxRpLvmjPD+nNC6mHM0vJH1xSqaKijkMrfLJT0nfkTGpovrF896jwg==,
+      }
+
+  "@react-google-maps/marker-clusterer@2.19.2":
+    resolution:
+      {
+        integrity: sha512-x9ibmsP0ZVqzyCo1Pitbw+4b6iEXRw/r1TCy3vOUR3eKrzWLnHYZMR325BkZW2r8fnuWE/V3Fp4QZOP9qYORCw==,
+      }
+
   "@react-spring/animated@9.7.3":
     resolution:
       {
@@ -3001,6 +3037,12 @@ packages:
     resolution:
       {
         integrity: sha512-s7YPsNVfnsng5L8sKnG/Gbb2tiwwJTY1conOkJzTMRvJAlLFW1nEua+ADsJQu8N1c0oTHx9+d5nqg10WuT9gHQ==,
+      }
+
+  "@types/google.maps@3.55.2":
+    resolution:
+      {
+        integrity: sha512-JcTwzkxskR8DN/nnX96Pie3gGN3WHiPpuxzuQ9z3516o1bB243d8w8DHUJ8BohuzoT1o3HUFta2ns/mkZC8KRw==,
       }
 
   "@types/graceful-fs@4.1.9":
@@ -6708,6 +6750,12 @@ packages:
         integrity: sha512-KDncfTmOZoOMTFG4mBlG0qUIOlc03fmzH+ru6RgYVZhPkyiy/92Owlt/8UEN+a4TXR1FQetfIpJE8ApdvdVxTg==,
       }
 
+  kdbush@4.0.2:
+    resolution:
+      {
+        integrity: sha512-WbCVYJ27Sz8zi9Q7Q0xHC+05iwkm3Znipc2XTlrnJbsHMYktW4hPhXUE8Ys1engBrvffoSCqbil1JQAa7clRpA==,
+      }
+
   keyv@4.5.4:
     resolution:
       {
@@ -8750,6 +8798,12 @@ packages:
     engines: { node: ">=16 || 14 >=14.17" }
     hasBin: true
 
+  supercluster@8.0.1:
+    resolution:
+      {
+        integrity: sha512-IiOea5kJ9iqzD2t7QJq/cREyLHTtSmUT6gQsweojg9WH2sYJqZK9SswTu6jrscO6D1G5v5vYZ9ru/eq85lXeZQ==,
+      }
+
   superjson@2.2.1:
     resolution:
       {
@@ -10098,6 +10152,15 @@ snapshots:
       - encoding
       - supports-color
 
+  "@googlemaps/js-api-loader@1.16.2":
+    dependencies:
+      fast-deep-equal: 3.1.3
+
+  "@googlemaps/markerclusterer@2.5.3":
+    dependencies:
+      fast-deep-equal: 3.1.3
+      supercluster: 8.0.1
+
   "@heroicons/react@1.0.6(react@18.3.1)":
     dependencies:
       react: 18.3.1
@@ -11069,6 +11132,21 @@ snapshots:
     dependencies:
       "@babel/runtime": 7.24.7
 
+  "@react-google-maps/api@2.19.3(react-dom@18.3.1(react@18.3.1))(react@18.3.1)":
+    dependencies:
+      "@googlemaps/js-api-loader": 1.16.2
+      "@googlemaps/markerclusterer": 2.5.3
+      "@react-google-maps/infobox": 2.19.2
+      "@react-google-maps/marker-clusterer": 2.19.2
+      "@types/google.maps": 3.55.2
+      invariant: 2.2.4
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+
+  "@react-google-maps/infobox@2.19.2": {}
+
+  "@react-google-maps/marker-clusterer@2.19.2": {}
+
   "@react-spring/animated@9.7.3(react@18.3.1)":
     dependencies:
       "@react-spring/shared": 9.7.3(react@18.3.1)
@@ -11338,6 +11416,8 @@ snapshots:
   "@types/formidable@3.4.5":
     dependencies:
       "@types/node": 20.14.2
+
+  "@types/google.maps@3.55.2": {}
 
   "@types/graceful-fs@4.1.9":
     dependencies:
@@ -14052,6 +14132,8 @@ snapshots:
       jwa: 2.0.0
       safe-buffer: 5.2.1
 
+  kdbush@4.0.2: {}
+
   keyv@4.5.4:
     dependencies:
       json-buffer: 3.0.1
@@ -15292,6 +15374,10 @@ snapshots:
       mz: 2.7.0
       pirates: 4.0.6
       ts-interface-checker: 0.1.13
+
+  supercluster@8.0.1:
+    dependencies:
+      kdbush: 4.0.2
 
   superjson@2.2.1:
     dependencies:

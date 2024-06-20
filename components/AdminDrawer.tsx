@@ -10,6 +10,8 @@ export default function AdminDrawer({
   carsTable,
   rentalsTable,
   statsTable,
+  map,
+  setMap,
 }: AdminProps) {
   const handleDrawerChange = (value: string) => {
     switch (value) {
@@ -17,16 +19,25 @@ export default function AdminDrawer({
         setCarsTable && setCarsTable(true);
         setRentalsTable && setRentalsTable(false);
         setStatsTable && setStatsTable(false);
+        setMap && setMap(false);
         break;
       case "rentals":
         setCarsTable && setCarsTable(false);
         setRentalsTable && setRentalsTable(true);
         setStatsTable && setStatsTable(false);
+        setMap && setMap(false);
         break;
       case "stats":
         setCarsTable && setCarsTable(false);
         setRentalsTable && setRentalsTable(false);
         setStatsTable && setStatsTable(true);
+        setMap && setMap(false);
+        break;
+      case "map":
+        setCarsTable && setCarsTable(false);
+        setRentalsTable && setRentalsTable(false);
+        setStatsTable && setStatsTable(false);
+        setMap && setMap(true);
         break;
     }
   };
@@ -79,6 +90,14 @@ export default function AdminDrawer({
               }`}
             >
               Revenue
+            </button>
+          </li>
+          <li>
+            <button
+              onClick={() => handleDrawerChange("map")}
+              className={`w-full p-4 block text-left ${map ? "bg-gray-200" : ""}`}
+            >
+              Map
             </button>
           </li>
         </ul>
