@@ -1,4 +1,5 @@
 import { Rental } from "@/types/types";
+import cache from "@/lib/cache";
 
 export const getAllRentals = async (
   skip: number,
@@ -6,6 +7,10 @@ export const getAllRentals = async (
   column: string,
   direction: string,
 ) => {
+  const key = `rentals-${skip}-${length}-${column}-${direction}`;
+  if (cache.has(key)) {
+    return cache.get(key);
+  }
   try {
     const res = await fetch(
       process.env.NEXT_PUBLIC_APP_URL +
@@ -19,9 +24,11 @@ export const getAllRentals = async (
         direction,
     );
 
-    const data = await res.json();
-
-    return data;
+    if (res) {
+      const data = await res.json();
+      cache.set(key, data);
+      return data;
+    }
   } catch (error) {
     console.error("Error:", error);
   }
@@ -41,6 +48,10 @@ export const getRentalsRelativeToDate = async (upcoming: boolean) => {
 };
 
 export const getRentalsCount = async () => {
+  const key = "rentals-count";
+  if (cache.has(key)) {
+    return cache.get(key);
+  }
   try {
     const res = await fetch(
       process.env.NEXT_PUBLIC_APP_URL + "/api/rentals/count",
@@ -49,6 +60,8 @@ export const getRentalsCount = async () => {
     if (res.status === 404) return null;
 
     const data = await res.json();
+
+    cache.set(key, data);
 
     return data;
   } catch (error) {
@@ -182,6 +195,9 @@ export const checkIfCarIsAvailable = async (
   startDate: string,
   endDate: string,
 ) => {
+  if (startDate === "" || endDate === "") {
+    return { available: false };
+  }
   const res = await fetch(
     process.env.NEXT_PUBLIC_APP_URL +
       "/api/rentals/car/available?carId=" +

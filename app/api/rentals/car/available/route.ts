@@ -10,7 +10,11 @@ export async function GET(req: NextRequest) {
   const endDateString = req.nextUrl.searchParams.get("endDate");
   const carId = req.nextUrl.searchParams.get("carId");
 
-  if (!startDateString || !endDateString || !carId) {
+  if (
+    startDateString === undefined ||
+    endDateString === undefined ||
+    carId === undefined
+  ) {
     return new NextResponse(
       JSON.stringify({
         message: "Please provide a start and end date and a carId",

@@ -29,6 +29,7 @@ function UpdateCarForm({ car, children }: Props) {
   const [model, setModel] = useState(car.model);
   const [year, setYear] = useState(car.year);
   const [color, setColor] = useState(car.color);
+  const [price, setPrice] = useState<number>(car.price as number);
   const [body, setBody] = useState<BodyType>(car.body ? car.body : "Sedan");
   const [transmission, setTransmission] = useState<TransmissionType>(
     car.transmission ? car.transmission : "Automatic",
@@ -80,12 +81,25 @@ function UpdateCarForm({ car, children }: Props) {
       return;
     }
 
+    if (price <= 0) {
+      toast.error("Price must be greater than zero", {
+        position: "bottom-center",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      return;
+    }
+
     const res = await updateCarInDB({
       id: car.id,
       make,
       model,
       year,
       color,
+      price,
       body,
       transmission,
       drivetype: driveType,
@@ -135,58 +149,77 @@ function UpdateCarForm({ car, children }: Props) {
   };
 
   return (
-    <FormControl onSubmit={handleSubmit}>
-      <div className="flex flex-col sm:grid sm:grid-cols-2 gap-4">
+    <FormControl onSubmit={handleSubmit} className="space-y-4">
+      <div className="flex flex-col">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Input
+            placeholder="Make"
+            value={make}
+            onChange={(e) => setMake(e.target.value)}
+            fullWidth
+          />
+          <Input
+            placeholder="Model"
+            value={model}
+            onChange={(e) => setModel(e.target.value)}
+            fullWidth
+          />
+          <Input
+            type="number"
+            placeholder="Year"
+            value={year}
+            onChange={(e) => setYear(Number(e.target.value))}
+            fullWidth
+          />
+          <Input
+            placeholder="Color"
+            value={color}
+            onChange={(e) => setColor(e.target.value)}
+            fullWidth
+          />
+        </div>
         <Input
-          placeholder="Make"
-          value={make}
-          onChange={(e) => setMake(e.target.value)}
-        />
-        <Input
-          placeholder="Model"
-          value={model}
-          onChange={(e) => setModel(e.target.value)}
-        />
-        <Input
+          className="w-full py-2 my-2 "
           type="number"
-          placeholder="Year"
-          value={year}
-          onChange={(e) => setYear(Number(e.target.value))}
+          placeholder="Price"
+          value={price}
+          onChange={(e) => setPrice(Number(e.target.value))}
+          fullWidth
         />
-        <Input
-          placeholder="Color"
-          value={color}
-          onChange={(e) => setColor(e.target.value)}
-        />
-        <Select value={body} onChange={handleBodyChange}>
-          {/* get all the possible types for BodyType */}
-          {BodyTypes.map((type) => (
-            <MenuItem key={type} value={type}>
-              {type}
-            </MenuItem>
-          ))}
-        </Select>
-        <Select value={transmission} onChange={handleTransmissionChange}>
-          {["Automatic", "Manual"].map((type) => (
-            <MenuItem key={type} value={type}>
-              {type}
-            </MenuItem>
-          ))}
-        </Select>
-        <Select value={driveType} onChange={handleDriveTypeChange}>
-          {["2WD", "4WD"].map((type) => (
-            <MenuItem key={type} value={type}>
-              {type}
-            </MenuItem>
-          ))}
-        </Select>
-        <Select value={fuelType} onChange={handleFuelTypeChange}>
-          {["Gasoline", "Diesel", "Electric", "Hybrid"].map((type) => (
-            <MenuItem key={type} value={type}>
-              {type}
-            </MenuItem>
-          ))}
-        </Select>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <Select value={body} onChange={handleBodyChange} fullWidth>
+            {BodyTypes.map((type) => (
+              <MenuItem key={type} value={type}>
+                {type}
+              </MenuItem>
+            ))}
+          </Select>
+          <Select
+            value={transmission}
+            onChange={handleTransmissionChange}
+            fullWidth
+          >
+            {["Automatic", "Manual"].map((type) => (
+              <MenuItem key={type} value={type}>
+                {type}
+              </MenuItem>
+            ))}
+          </Select>
+          <Select value={driveType} onChange={handleDriveTypeChange} fullWidth>
+            {["2WD", "4WD"].map((type) => (
+              <MenuItem key={type} value={type}>
+                {type}
+              </MenuItem>
+            ))}
+          </Select>
+          <Select value={fuelType} onChange={handleFuelTypeChange} fullWidth>
+            {["Gasoline", "Diesel", "Electric", "Hybrid"].map((type) => (
+              <MenuItem key={type} value={type}>
+                {type}
+              </MenuItem>
+            ))}
+          </Select>
+        </div>
       </div>
       {children}
       <Button
@@ -206,14 +239,6 @@ export default function UpdateCarModal({ car }: Props) {
     const getLocation = async () => {
       const res = await getCarLocation(car.id);
       if (!res) {
-        toast.error("No location data found", {
-          position: "bottom-center",
-          autoClose: 5000,
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
         return;
       }
       setLastKnownLocation(res.formattedAddress);

@@ -29,7 +29,7 @@ import {
 export default function RentalsTable() {
   const [selectedIds, setSelectedIds] = useState<number[]>([]);
   const columnToSortDefault: keyof Rental = "startdate";
-  const [rentals, setRentals] = useState<Rental[]>([]);
+  const [rentals, setRentals] = useState<any[]>([]);
   const [rentalsCount, setRentalsCount] = useState<number>(0);
 
   const [columnToSort, setColumnToSort] =
@@ -74,11 +74,10 @@ export default function RentalsTable() {
     setRowsPerPage(parseInt(event.target.value, 10));
   };
 
-  const changeDirectionBasedOnColumn = (column: string) => {
-    if (column === columnToSort) {
-      return direction === "asc" ? "desc" : "asc";
-    }
-    return "asc";
+  const handleSortRequest = (column: keyof Rental) => {
+    const isAsc = columnToSort === column && direction === "asc";
+    setDirection(isAsc ? "desc" : "asc");
+    setColumnToSort(column);
   };
 
   useEffect(() => {
@@ -175,10 +174,7 @@ export default function RentalsTable() {
                 <TableSortLabel
                   active={columnToSort === "startdate"}
                   direction={direction}
-                  onClick={() => {
-                    setDirection(changeDirectionBasedOnColumn("startdate"));
-                    setColumnToSort("startdate");
-                  }}
+                  onClick={() => handleSortRequest("startdate")}
                 >
                   Start Date
                 </TableSortLabel>
@@ -187,23 +183,18 @@ export default function RentalsTable() {
                 <TableSortLabel
                   active={columnToSort === "enddate"}
                   direction={direction}
-                  onClick={() => {
-                    setDirection(changeDirectionBasedOnColumn("enddate"));
-                    setColumnToSort("enddate");
-                  }}
+                  onClick={() => handleSortRequest("enddate")}
                 >
                   End date
                 </TableSortLabel>
               </TableCell>
               <TableCell className="font-bold text-primary">Car</TableCell>
+              <TableCell className="font-bold text-primary">City</TableCell>
               <TableCell className="font-bold text-primary">
                 <TableSortLabel
                   active={columnToSort === "value"}
                   direction={direction}
-                  onClick={() => {
-                    setDirection(changeDirectionBasedOnColumn("year"));
-                    setColumnToSort("value");
-                  }}
+                  onClick={() => handleSortRequest("value")}
                 >
                   Rental Value
                 </TableSortLabel>
@@ -234,6 +225,7 @@ export default function RentalsTable() {
                 <TableCell>
                   {rental.make} {rental.model}
                 </TableCell>
+                <TableCell>{rental.city}</TableCell>
                 <TableCell>{rental.value}</TableCell>
                 <TableCell>
                   <Link href={`/dashboard/rentals/${rental.id}`}>

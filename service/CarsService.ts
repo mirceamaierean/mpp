@@ -1,32 +1,22 @@
 import { Car } from "@/types/types";
 import { cars } from "@prisma/client";
+import cache from "@/lib/cache";
 
 export const getCarsCount = async () => {
+  if (cache.has("cars-count")) {
+    return cache.get("cars-count") as number;
+  }
   try {
     const res = await fetch("/api/cars/count");
-    const data = await res.json();
-    return data as number;
+    if (res) {
+      const data = await res.json();
+      cache.set("cars-count", data);
+      return data as number;
+    }
   } catch (error) {
     console.error("Error:", error);
   }
   return 0;
-};
-
-export const getInventoryDataForCars = async (column: string) => {
-  try {
-    const res = await fetch(
-      process.env.NEXT_PUBLIC_APP_URL + "/api/cars/group",
-      {
-        method: "POST",
-        body: JSON.stringify({ column: column }),
-      },
-    );
-    if (res.status === 500) return [];
-    const data = await res.json();
-    return data;
-  } catch (error) {
-    console.error("Error:", error);
-  }
 };
 
 export const getCarsInInterval = async (
@@ -35,6 +25,12 @@ export const getCarsInInterval = async (
   column: string,
   direction: string,
 ) => {
+  const key = `cars-${skip}-${length}-${column}-${direction}`;
+
+  if (cache.has(key)) {
+    return cache.get(key) as cars[];
+  }
+
   try {
     const res = await fetch(
       process.env.NEXT_PUBLIC_APP_URL +
@@ -43,6 +39,7 @@ export const getCarsInInterval = async (
 
     if (res.status === 404) return [];
     const data = await res.json();
+    cache.set(key, data);
     return data as cars[];
   } catch (error) {
     console.error("Error:", error);
@@ -110,13 +107,18 @@ export const getCarsThatAreNotInRent = async (
   startDate: string,
   endDate: string,
 ) => {
-  // /api/rentals/avaliable-cars?startDate=start&endDate=endDate
+  const key = `cars-available-${startDate}-${endDate}`;
+  if (cache.has(key)) {
+    return cache.get(key);
+  }
   const res = await fetch(
     process.env.NEXT_PUBLIC_APP_URL +
       `/api/rentals/available-cars?startDate=${startDate}&endDate=${endDate}`,
   );
 
   const data = await res.json();
+
+  cache.set(key, data);
 
   return data as Car[];
 };
@@ -150,11 +152,17 @@ export const getCarLocation = async (id: number) => {
 };
 
 export const getCoordinatesForCars = async () => {
+  const key = "cars-coordinates";
+  if (cache.has(key)) {
+    return cache.get(key);
+  }
+
   try {
     const res = await fetch(
       process.env.NEXT_PUBLIC_APP_URL + "/api/cars/coordinates",
     );
     const data = await res.json();
+    cache.set(key, data);
     return data as cars[];
   } catch (error) {
     console.error("Error:", error);

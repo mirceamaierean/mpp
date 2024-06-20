@@ -136,6 +136,9 @@ importers:
       is-online:
         specifier: ^10.0.0
         version: 10.0.0
+      lru-cache:
+        specifier: ^10.2.2
+        version: 10.2.2
       lucide-react:
         specifier: ^0.344.0
         version: 0.344.0(react@18.3.1)

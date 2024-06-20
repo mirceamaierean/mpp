@@ -205,6 +205,7 @@ export const rentalConfirmationTemplate = `<!DOCTYPE html>
 																	<p style="margin: 0; word-break: break-word;"><span style="color: #085456;"><strong>Start Date</strong></span></p>
 																	<p style="margin: 0; word-break: break-word;"><strong>End Date</strong></p>
 																	<p style="margin: 0; word-break: break-word;"><span style="color: #085456;"><strong>Car</strong></span></p>
+																	<p style="margin: 0; word-break: break-word;"><span style="color: #085456;"><strong>See you in</strong></span></p>
 																</div>
 															</td>
 														</tr>
