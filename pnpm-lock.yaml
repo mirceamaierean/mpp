@@ -190,6 +190,9 @@ importers:
       react-toastify:
         specifier: ^10.0.5
         version: 10.0.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      recharts:
+        specifier: ^2.12.7
+        version: 2.12.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       sharp:
         specifier: ^0.33.4
         version: 0.33.4
@@ -2886,10 +2889,22 @@ packages:
         integrity: sha512-GEQuDXVKQvHulQ+ecKyCubOmVjXrifAj7VR26rWVAER/IbWemaT/Tmo84ESiTtoDghg5ILdMZH7pYXQEt/Vu9A==,
       }
 
+  "@types/d3-ease@3.0.2":
+    resolution:
+      {
+        integrity: sha512-NcV1JjO5oDzoK26oMzbILE6HW7uVXOHLQvHshBUW4UMdZGfiY6v5BeQwh9a9tCzv+CeefZQHJt5SRgK154RtiA==,
+      }
+
   "@types/d3-format@1.4.5":
     resolution:
       {
         integrity: sha512-mLxrC1MSWupOSncXN/HOlWUAAIffAEBaI4+PKy2uMPsKe4FNZlk7qrbTjmzJXITQQqBHivaks4Td18azgqnotA==,
+      }
+
+  "@types/d3-interpolate@3.0.4":
+    resolution:
+      {
+        integrity: sha512-mgLPETlrpVV1YRJIglr4Ez47g7Yxjl1lj7YKsiMCb27VJH9W8NVM6Bb9d8kkpG/uAQS5AmbA48q2IAolKKo1MA==,
       }
 
   "@types/d3-path@2.0.4":
@@ -2962,6 +2977,12 @@ packages:
     resolution:
       {
         integrity: sha512-2p6olUZ4w3s+07q3Tm2dbiMZy5pCDfYwtLXXHUnVzXgQlZ/OyPtUz6OL382BkOuGlLXqfT+wqv8Fw2v8/0geBw==,
+      }
+
+  "@types/d3-timer@3.0.2":
+    resolution:
+      {
+        integrity: sha512-Ps3T8E8dZDam6fUyNiMkekK3XUsaUEik+idO9/YjPtfj2qruF8tFBXS7XhtE4iIXBLxhmLjP3SXpLhVf21I9Lw==,
       }
 
   "@types/express-serve-static-core@4.19.3":
@@ -4170,6 +4191,13 @@ packages:
       }
     engines: { node: ">=12" }
 
+  d3-ease@3.0.1:
+    resolution:
+      {
+        integrity: sha512-wR/XK3D3XcLIZwpbvQwQ5fK+8Ykds1ip7A2Txe0yxncXSdq1L9skcG7blcedkOX+ZcgxGAmLX1FrRGbADwzi0w==,
+      }
+    engines: { node: ">=12" }
+
   d3-format@1.4.5:
     resolution:
       {
@@ -4298,6 +4326,13 @@ packages:
       }
     engines: { node: ">=12" }
 
+  d3-timer@3.0.1:
+    resolution:
+      {
+        integrity: sha512-ndfJ/JxxMd3nw31uyKoY2naivF+r29V+Lc0svZxe1JvvIRmi8hUsrMvdOwgS1o6uBHmiz91geQ0ylPP0aj1VUA==,
+      }
+    engines: { node: ">=12" }
+
   d@1.0.2:
     resolution:
       {
@@ -4378,6 +4413,12 @@ packages:
     peerDependenciesMeta:
       supports-color:
         optional: true
+
+  decimal.js-light@2.5.1:
+    resolution:
+      {
+        integrity: sha512-qIMFpTMZmny+MMIitAB6D7iVPEorVw6YQRWkvarTkT4tBeSLLiHzcwj6q0MmYSFCiVpiqPJTJEYIrpcPzVEIvg==,
+      }
 
   decimal.js@10.4.3:
     resolution:
@@ -5184,6 +5225,12 @@ packages:
         integrity: sha512-D9rRn9y7kLPnJ+hMq7S/nhvoKwwvVJahBi2BPmx3bvbsEdK3W9ii8cBSGjP+72/LnM4n6fo3+dkCX5FeTQruXA==,
       }
 
+  eventemitter3@4.0.7:
+    resolution:
+      {
+        integrity: sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==,
+      }
+
   execa@5.1.1:
     resolution:
       {
@@ -5229,6 +5276,13 @@ packages:
       {
         integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==,
       }
+
+  fast-equals@5.0.1:
+    resolution:
+      {
+        integrity: sha512-WF1Wi8PwwSY7/6Kx0vKXtw8RwuSGoM1bvDaJbu7MxDlR1vovZjIAKrnzyrThgAjm6JDTu0fVgWXDlMGspodfoQ==,
+      }
+    engines: { node: ">=6.0.0" }
 
   fast-glob@3.3.2:
     resolution:
@@ -8018,6 +8072,15 @@ packages:
       "@types/react":
         optional: true
 
+  react-smooth@4.0.1:
+    resolution:
+      {
+        integrity: sha512-OE4hm7XqR0jNOq3Qmk9mFLyd6p2+j6bvbPJ7qlB7+oo0eNcL2l7WQzG6MBnT3EXY6xzkLMUBec3AfewJdA0J8w==,
+      }
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0 || ^17.0.0 || ^18.0.0
+
   react-style-singleton@2.2.1:
     resolution:
       {
@@ -8105,6 +8168,22 @@ packages:
         integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==,
       }
     engines: { node: ">=8.10.0" }
+
+  recharts-scale@0.4.5:
+    resolution:
+      {
+        integrity: sha512-kivNFO+0OcUNu7jQquLXAxz1FIwZj8nrj+YkOKc5694NbjCvcT6aSZiIzNzd2Kul4o4rTto8QVR9lMNtxD4G1w==,
+      }
+
+  recharts@2.12.7:
+    resolution:
+      {
+        integrity: sha512-hlLJMhPQfv4/3NBSAyq3gzGg4h2v69RJh6KU7b3pXYNNAELs9kEoXOjbkxdXpALqKBoVmVptGfLpxdaVYqjmXQ==,
+      }
+    engines: { node: ">=14" }
+    peerDependencies:
+      react: ^16.0.0 || ^17.0.0 || ^18.0.0
+      react-dom: ^16.0.0 || ^17.0.0 || ^18.0.0
 
   redent@3.0.0:
     resolution:
@@ -8780,6 +8859,12 @@ packages:
       }
     engines: { node: ">=0.12" }
 
+  tiny-invariant@1.3.3:
+    resolution:
+      {
+        integrity: sha512-+FbBPE1o9QAYvviau/qC5SE3caw21q3xkvWKBtja5vgqOWIHHJ3ioaq1VPfn/Szqctz2bU/oYeKd9/z5BL+PVg==,
+      }
+
   tiny-warning@1.0.3:
     resolution:
       {
@@ -9149,6 +9234,12 @@ packages:
         integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==,
       }
     engines: { node: ">= 0.8" }
+
+  victory-vendor@36.9.2:
+    resolution:
+      {
+        integrity: sha512-PnpQQMuxlwYdocC8fIJqVXvkeViHYzotI+NJrCuav0ZYFoq912ZHBk3mCeuj+5/VpodOjPe1z0Fk2ihgzlXqjQ==,
+      }
 
   w3c-xmlserializer@4.0.0:
     resolution:
@@ -11188,7 +11279,13 @@ snapshots:
 
   "@types/d3-delaunay@5.3.4": {}
 
+  "@types/d3-ease@3.0.2": {}
+
   "@types/d3-format@1.4.5": {}
+
+  "@types/d3-interpolate@3.0.4":
+    dependencies:
+      "@types/d3-color": 2.0.6
 
   "@types/d3-path@2.0.4": {}
 
@@ -11221,6 +11318,8 @@ snapshots:
   "@types/d3-time@2.1.4": {}
 
   "@types/d3-time@3.0.3": {}
+
+  "@types/d3-timer@3.0.2": {}
 
   "@types/express-serve-static-core@4.19.3":
     dependencies:
@@ -11996,6 +12095,8 @@ snapshots:
     dependencies:
       delaunator: 5.0.1
 
+  d3-ease@3.0.1: {}
+
   d3-format@1.4.5: {}
 
   d3-format@2.0.0: {}
@@ -12072,6 +12173,8 @@ snapshots:
     dependencies:
       d3-array: 3.2.4
 
+  d3-timer@3.0.1: {}
+
   d@1.0.2:
     dependencies:
       es5-ext: 0.10.64
@@ -12118,6 +12221,8 @@ snapshots:
       ms: 2.1.2
     optionalDependencies:
       supports-color: 5.5.0
+
+  decimal.js-light@2.5.1: {}
 
   decimal.js@10.4.3: {}
 
@@ -12567,7 +12672,7 @@ snapshots:
       eslint: 8.57.0
       eslint-import-resolver-node: 0.3.9
       eslint-import-resolver-typescript: 3.6.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0)
-      eslint-plugin-import: 2.29.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0)
+      eslint-plugin-import: 2.29.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0)
       eslint-plugin-jsx-a11y: 6.8.0(eslint@8.57.0)
       eslint-plugin-react: 7.34.2(eslint@8.57.0)
       eslint-plugin-react-hooks: 4.6.2(eslint@8.57.0)
@@ -12591,7 +12696,7 @@ snapshots:
       enhanced-resolve: 5.17.0
       eslint: 8.57.0
       eslint-module-utils: 2.8.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0)
-      eslint-plugin-import: 2.29.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0)
+      eslint-plugin-import: 2.29.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0)
       fast-glob: 3.3.2
       get-tsconfig: 4.7.5
       is-core-module: 2.13.1
@@ -12613,7 +12718,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-import@2.29.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-typescript@3.6.1)(eslint@8.57.0):
+  eslint-plugin-import@2.29.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-typescript@3.6.1(@typescript-eslint/parser@6.21.0(eslint@8.57.0)(typescript@5.4.5))(eslint-import-resolver-node@0.3.9)(eslint-plugin-import@2.29.1(eslint@8.57.0))(eslint@8.57.0))(eslint@8.57.0):
     dependencies:
       array-includes: 3.1.8
       array.prototype.findlastindex: 1.2.5
@@ -12777,6 +12882,8 @@ snapshots:
       d: 1.0.2
       es5-ext: 0.10.64
 
+  eventemitter3@4.0.7: {}
+
   execa@5.1.1:
     dependencies:
       cross-spawn: 7.0.3
@@ -12842,6 +12949,8 @@ snapshots:
   extend@3.0.2: {}
 
   fast-deep-equal@3.1.3: {}
+
+  fast-equals@5.0.1: {}
 
   fast-glob@3.3.2:
     dependencies:
@@ -14684,6 +14793,14 @@ snapshots:
     optionalDependencies:
       "@types/react": 18.3.3
 
+  react-smooth@4.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      fast-equals: 5.0.1
+      prop-types: 15.8.1
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      react-transition-group: 4.4.5(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+
   react-style-singleton@2.2.1(@types/react@18.3.3)(react@18.3.1):
     dependencies:
       get-nonce: 1.0.1
@@ -14753,6 +14870,23 @@ snapshots:
   readdirp@3.6.0:
     dependencies:
       picomatch: 2.3.1
+
+  recharts-scale@0.4.5:
+    dependencies:
+      decimal.js-light: 2.5.1
+
+  recharts@2.12.7(react-dom@18.3.1(react@18.3.1))(react@18.3.1):
+    dependencies:
+      clsx: 2.1.1
+      eventemitter3: 4.0.7
+      lodash: 4.17.21
+      react: 18.3.1
+      react-dom: 18.3.1(react@18.3.1)
+      react-is: 16.13.1
+      react-smooth: 4.0.1(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
+      recharts-scale: 0.4.5
+      tiny-invariant: 1.3.3
+      victory-vendor: 36.9.2
 
   redent@3.0.0:
     dependencies:
@@ -15239,6 +15373,8 @@ snapshots:
       es5-ext: 0.10.64
       next-tick: 1.1.0
 
+  tiny-invariant@1.3.3: {}
+
   tiny-warning@1.0.3: {}
 
   tmpl@1.0.5: {}
@@ -15439,6 +15575,23 @@ snapshots:
       convert-source-map: 2.0.0
 
   vary@1.1.2: {}
+
+  victory-vendor@36.9.2:
+    dependencies:
+      "@types/d3-array": 3.2.1
+      "@types/d3-ease": 3.0.2
+      "@types/d3-interpolate": 3.0.4
+      "@types/d3-scale": 4.0.8
+      "@types/d3-shape": 3.1.6
+      "@types/d3-time": 3.0.3
+      "@types/d3-timer": 3.0.2
+      d3-array: 3.2.4
+      d3-ease: 3.0.1
+      d3-interpolate: 3.0.1
+      d3-scale: 4.0.2
+      d3-shape: 3.2.0
+      d3-time: 3.1.0
+      d3-timer: 3.0.1
 
   w3c-xmlserializer@4.0.0:
     dependencies:

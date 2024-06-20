@@ -6,8 +6,8 @@ interface DateRange {
   setStartDate: React.Dispatch<React.SetStateAction<string>>;
   endDate: string;
   setEndDate: React.Dispatch<React.SetStateAction<string>>;
-  location: string;
-  setLocation: React.Dispatch<React.SetStateAction<string>>;
+  location?: string;
+  setLocation?: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const RentalDateRange: React.FC<DateRange> = ({
@@ -37,7 +37,7 @@ const RentalDateRange: React.FC<DateRange> = ({
 
   const handleLocationChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const newLocation = e.target.value;
-    setLocation(newLocation);
+    if (setLocation) setLocation(newLocation);
   };
 
   return (
@@ -75,26 +75,27 @@ const RentalDateRange: React.FC<DateRange> = ({
             required
           />
         </div>
-        {/* make a select for all the cities that exist here */}
-        <div className="flex flex-col items-center">
-          <label
-            htmlFor="city"
-            className="block text-gray-700 font-medium mb-1"
-          >
-            City
-          </label>
-          <select
-            id="city"
-            className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary w-52"
-            onChange={handleLocationChange}
-          >
-            {cities.map((city) => (
-              <option key={city} value={city}>
-                {city}
-              </option>
-            ))}
-          </select>
-        </div>
+        {setLocation && (
+          <div className="flex flex-col items-center">
+            <label
+              htmlFor="city"
+              className="block text-gray-700 font-medium mb-1"
+            >
+              City
+            </label>
+            <select
+              id="city"
+              className="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary w-52"
+              onChange={handleLocationChange}
+            >
+              {cities.map((city) => (
+                <option key={city} value={city}>
+                  {city}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
       </div>
     </>
   );

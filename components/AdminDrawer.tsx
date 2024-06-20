@@ -78,7 +78,7 @@ export default function AdminDrawer({
                 statsTable ? "bg-gray-200" : ""
               }`}
             >
-              Stats
+              Revenue
             </button>
           </li>
         </ul>

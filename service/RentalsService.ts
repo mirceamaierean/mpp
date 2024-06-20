@@ -196,3 +196,20 @@ export const checkIfCarIsAvailable = async (
 
   return data;
 };
+
+export const getRevenueInTimeFrame = async (
+  startDate: string,
+  endDate: string,
+) => {
+  const res = await fetch(
+    process.env.NEXT_PUBLIC_APP_URL +
+      "/api/rentals/revenue?startDate=" +
+      startDate +
+      "&endDate=" +
+      endDate,
+  );
+
+  const data = await res.json();
+
+  return data;
+};

@@ -10,7 +10,7 @@ export default async function Page({ params }: { params: { id: number } }) {
   return (
     <>
       <CarInfo carId={params.id} />
-      <RentalsTable carId={params.id} userEmail={user.email as string} />;
+      <RentalsTable />;
     </>
   );
 }
